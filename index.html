@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RI5 · TRAINING SYSTEM</title>
   
-  <!-- MANIFEST (estilo negro / blanco) -->
+  <!-- MANIFEST -->
   <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22RI5%20%C2%B7%20TRAINING%22%2C%22short_name%22%3A%22RI5%22%2C%22description%22%3A%22Entrenamiento%20runner%20con%20zonas%2C%20planes%20y%20soporte%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23000000%22%2C%22theme_color%22%3A%22%23ffffff%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23000000%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2268%22%20font-size%3D%2260%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-family%3D%22Arial%22%3ERI5%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%2C%7B%22src%22%3A%22data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23000000%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2268%22%20font-size%3D%2260%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-family%3D%22Arial%22%3ERI5%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
   
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -600,9 +600,14 @@
       font-size: 14px;
       margin-bottom: 8px;
       display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-right: 70px;
+    }
+    .historial-item .fecha .fecha-linea {
+      display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-right: 160px;
     }
     .historial-item .hora {
       color: var(--accent-green);
@@ -610,7 +615,8 @@
       background: rgba(50, 215, 75, 0.2);
       padding: 2px 8px;
       border-radius: 20px;
-      white-space: nowrap;
+      display: inline-block;
+      width: fit-content;
     }
     .historial-item .resumen {
       color: var(--text-secondary);
@@ -618,9 +624,26 @@
       margin-right: 60px;
       white-space: pre-wrap;
     }
+    .historial-item .predicciones {
+      color: var(--accent-blue);
+      font-size: 11px;
+      margin: 4px 0;
+      background: rgba(10, 132, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+    .historial-item .zonas-resumen {
+      color: var(--accent-purple);
+      font-size: 11px;
+      margin: 4px 0;
+      border-top: 1px dashed var(--border-color);
+      padding-top: 4px;
+    }
     .historial-item .delete-single {
       position: absolute;
-      top: 16px; right: 16px;
+      top: 16px;
+      right: 16px;
       background: transparent;
       border: 1px solid var(--accent-red);
       border-radius: 40px;
@@ -645,6 +668,7 @@
     }
     .mensaje-item .mensaje-header {
       padding: 16px;
+      padding-right: 80px;
       background: var(--bg-primary);
       cursor: pointer;
       display: flex;
@@ -653,6 +677,7 @@
       font-weight: bold;
       color: var(--accent-blue);
       transition: background 0.2s;
+      position: relative;
     }
     .mensaje-item .mensaje-header:hover {
       background: var(--bg-card);
@@ -663,6 +688,8 @@
     .mensaje-item .mensaje-header .flecha {
       font-size: 16px;
       transition: transform 0.3s;
+      margin-left: auto;
+      margin-right: 40px;
     }
     .mensaje-item .mensaje-contenido {
       max-height: 0;
@@ -686,7 +713,9 @@
     }
     .delete-mensaje {
       position: absolute;
-      top: 16px; right: 16px;
+      top: 50%;
+      right: 16px;
+      transform: translateY(-50%);
       background: transparent;
       border: 1px solid var(--accent-red);
       border-radius: 40px;
@@ -786,11 +815,25 @@
       flex-direction: column;
       gap: 10px;
       margin-bottom: 20px;
-      max-height: 200px;
+      max-height: 300px;
       overflow-y: auto;
       padding: 10px;
       background: var(--bg-primary);
       border-radius: 16px;
+    }
+    .user-selector input[type="text"] {
+      padding: 8px;
+      margin-bottom: 8px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+    .user-selector .checkbox-list {
+      max-height: 200px;
+      overflow-y: auto;
+      border-top: 1px solid var(--border-color);
+      padding-top: 8px;
     }
     .user-selector label {
       display: flex;
@@ -798,6 +841,7 @@
       gap: 10px;
       color: var(--text-secondary);
       font-size: 14px;
+      padding: 4px 0;
     }
     .user-selector input[type="checkbox"] { width: auto; margin: 0; }
     .message-input {
@@ -956,7 +1000,7 @@
       .calendario-dia { font-size: 9px; padding: 2px 1px; }
       .calendario-dia div { font-size: 7px; }
       #pwa-banner { flex-direction: column; text-align: center; }
-      .historial-item .fecha { padding-right: 100px; flex-wrap: wrap; }
+      .historial-item .fecha { padding-right: 60px; }
     }
   </style>
 </head>
@@ -1082,8 +1126,9 @@
           <div class="admin-messages">
             <h3>📨 ENVIAR MENSAJE A USUARIOS</h3>
             <div class="user-selector" id="userSelector">
-              <label><input type="checkbox" id="selectAllUsers" onchange="window.toggleAllUsers()"> TODOS</label>
-              <div id="userCheckboxes"></div>
+              <input type="text" id="userSearchInput" placeholder="🔍 Buscar usuario..." onkeyup="window.filtrarCheckboxes()">
+              <div class="checkbox-list" id="userCheckboxes"></div>
+              <label style="margin-top:8px;"><input type="checkbox" id="selectAllUsers" onchange="window.toggleAllUsers()"> TODOS</label>
             </div>
             <textarea id="messageText" class="message-input" rows="3" placeholder="> ESCRIBE TU MENSAJE..."></textarea>
             <button class="send-message-btn" onclick="window.enviarMensaje()">📤 ENVIAR MENSAJE</button>
@@ -1271,7 +1316,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <script>
     (function() {
-      // ==================== CONFIGURACIÓN DE FIREBASE (TUS DATOS) ====================
+      // ==================== CONFIGURACIÓN DE FIREBASE ====================
       const firebaseConfig = {
         apiKey: "AIzaSyBw4VYLEeFeG4Z2qJC56iPzzuAzlIkmErc",
         authDomain: "ri5-5b642.firebaseapp.com",
@@ -1313,27 +1358,39 @@
 
       // ==================== MÓDULO STORAGE (FIREBASE) ====================
       const Storage = {
+        // ========== USUARIOS (global) ==========
         getUsers() {
           return db.ref('users').once('value').then(snapshot => snapshot.val() || {});
         },
         saveUsers(u) {
           return db.ref('users').set(u);
         },
-        getHistorial() {
-          return db.ref('historial').once('value').then(snapshot => snapshot.val() || []);
+
+        // ========== HISTORIAL (por usuario) ==========
+        getHistorial(username) {
+          if (!username) return Promise.resolve([]);
+          return db.ref('users/' + username + '/historial').once('value').then(snapshot => snapshot.val() || []);
         },
-        saveHistorial(h) {
-          return db.ref('historial').set(h);
+        saveHistorial(username, h) {
+          if (!username) return Promise.reject('No user');
+          return db.ref('users/' + username + '/historial').set(h);
         },
-        getUltimoPlan() {
-          return db.ref('ultimoPlan').once('value').then(snapshot => snapshot.val() || null);
+
+        // ========== ÚLTIMO PLAN (por usuario) ==========
+        getUltimoPlan(username) {
+          if (!username) return Promise.resolve(null);
+          return db.ref('users/' + username + '/ultimoPlan').once('value').then(snapshot => snapshot.val() || null);
         },
-        setUltimoPlan(p) {
-          return db.ref('ultimoPlan').set(p);
+        setUltimoPlan(username, p) {
+          if (!username) return Promise.reject('No user');
+          return db.ref('users/' + username + '/ultimoPlan').set(p);
         },
-        removeUltimoPlan() {
-          return db.ref('ultimoPlan').remove();
+        removeUltimoPlan(username) {
+          if (!username) return Promise.reject('No user');
+          return db.ref('users/' + username + '/ultimoPlan').remove();
         },
+
+        // ========== MENSAJES (global, para comunicación) ==========
         getMensajes() {
           return db.ref('mensajes').once('value').then(snapshot => snapshot.val() || {});
         },
@@ -1548,10 +1605,7 @@
           return true;
         },
         isUserPremium() {
-          // Simplificado, en un caso real deberías comprobar la fecha del usuario actual
-          if (!AppState.currentUser) return false;
-          // Aquí podrías obtener el usuario de AppState si lo guardaras con su fecha
-          return true; // Simulación
+          return true; // Simplificado
         },
         checkPermisosPremium() {
           const sel = document.getElementById('duracionPlan');
@@ -1669,11 +1723,24 @@
             let html = '';
             Object.keys(users).forEach(u => html += `<label><input type="checkbox" class="user-checkbox" value="${u}"> ${u}</label>`);
             document.getElementById('userCheckboxes').innerHTML = html;
+            window.filtrarCheckboxes();
           });
         },
         toggleAllUsers() {
           const sel = document.getElementById('selectAllUsers').checked;
           document.querySelectorAll('.user-checkbox').forEach(cb => cb.checked = sel);
+        },
+        filtrarCheckboxes() {
+          const filtro = document.getElementById('userSearchInput').value.toLowerCase();
+          const labels = document.querySelectorAll('#userCheckboxes label');
+          labels.forEach(label => {
+            const texto = label.textContent.toLowerCase();
+            if (texto.includes(filtro)) {
+              label.style.display = 'flex';
+            } else {
+              label.style.display = 'none';
+            }
+          });
         },
         async enviarMensaje() {
           const selectAll = document.getElementById('selectAllUsers').checked;
@@ -1719,12 +1786,12 @@
           recibidos.forEach(item => {
             htmlRec += `
               <div class="mensaje-item">
-                <div class="mensaje-header" onclick="this.parentNode.classList.toggle('abierto')">
+                <div class="mensaje-header">
                   <span>📨 ${item.mensaje.fecha} · ${item.usuario}</span>
                   <span class="flecha">▼</span>
+                  <button class="delete-mensaje" onclick="window.borrarMensajeAdmin('${item.key}', ${item.idx})">🗑️</button>
                 </div>
                 <div class="mensaje-contenido">${item.mensaje.texto}</div>
-                <button class="delete-mensaje" onclick="window.borrarMensajeAdmin('${item.key}', ${item.idx})">🗑️</button>
               </div>
             `;
           });
@@ -1735,12 +1802,12 @@
           enviados.forEach(item => {
             htmlEnv += `
               <div class="mensaje-item">
-                <div class="mensaje-header" onclick="this.parentNode.classList.toggle('abierto')">
+                <div class="mensaje-header">
                   <span>📤 ${item.mensaje.fecha} · Para ${item.usuario}</span>
                   <span class="flecha">▼</span>
+                  <button class="delete-mensaje" onclick="window.borrarMensajeAdmin('${item.key}', ${item.idx})">🗑️</button>
                 </div>
                 <div class="mensaje-contenido">${item.mensaje.texto}</div>
-                <button class="delete-mensaje" onclick="window.borrarMensajeAdmin('${item.key}', ${item.idx})">🗑️</button>
               </div>
             `;
           });
@@ -1759,6 +1826,7 @@
         }
       };
 
+      window.filtrarCheckboxes = Admin.filtrarCheckboxes.bind(Admin);
       window.borrarMensajeAdmin = function(key, idx) {
         Storage.borrarMensaje(key, idx).then(() => Admin.cargarMensajesAdmin());
       };
@@ -1855,18 +1923,29 @@
         },
         async guardarCalculo() {
           if (!AppState.lastName) return alert("> CALCULA ZONAS PRIMERO_");
+          if (!AppState.currentUser) return alert("> NO HAY USUARIO_");
           const ahora = new Date();
+          // Crear resumen de zonas
+          let zonasResumen = '';
+          if (AppState.lastZones && AppState.lastZones.length) {
+            zonasResumen = AppState.lastZones.map(z => {
+              const min = Math.round(AppState.lastUL * z[2]);
+              const max = Math.round(AppState.lastUL * z[3]);
+              return `${z[0]}: ${min}-${max}`;
+            }).join(' · ');
+          }
           const data = {
             date: ahora.toLocaleDateString('es-ES'), hora: ahora.toLocaleTimeString('es-ES'),
             fechaCompleta: ahora.toLocaleDateString('es-ES') + ' ' + ahora.toLocaleTimeString('es-ES'),
             nombre: AppState.lastName, edad: AppState.lastAge, fcMax: AppState.lastFC,
             umbral: AppState.lastUL, ritmo6k: Utils.formatR(AppState.lastRitmoBase),
             predicciones: AppState.lastPred.map(p => `${p.dist}km:${Utils.formatR(p.ritmo)}`).join(' '),
-            resumen: `${AppState.lastName} · ${AppState.lastAge} años · 6km: ${Utils.formatR(AppState.lastRitmoBase)}`
+            resumen: `${AppState.lastName} · ${AppState.lastAge} años · 6km: ${Utils.formatR(AppState.lastRitmoBase)}`,
+            zonasResumen: zonasResumen
           };
-          let hist = await Storage.getHistorial();
+          let hist = await Storage.getHistorial(AppState.currentUser);
           hist.unshift(data); if (hist.length > 20) hist.pop();
-          await Storage.saveHistorial(hist);
+          await Storage.saveHistorial(AppState.currentUser, hist);
           if (document.getElementById('tab-historial').classList.contains('active')) UI.cargarHistorial();
           const btn = document.querySelector('.btn-save');
           if (btn) Utils.showTemporaryMessage(btn, "✅ GUARDADO", true);
@@ -1929,14 +2008,21 @@
         },
         async cargarHistorial() {
           const cont = document.getElementById("historialContainer");
-          const hist = await Storage.getHistorial();
+          if (!AppState.currentUser) { cont.innerHTML = '<p style="text-align:center; padding:20px; color: var(--text-secondary);">📭 SIN USUARIO</p>'; return; }
+          const hist = await Storage.getHistorial(AppState.currentUser);
           if (!hist.length) { cont.innerHTML = '<p style="text-align:center; padding:20px; color: var(--text-secondary);">📭 SIN HISTORIAL</p>'; return; }
           let html = '<div class="historial-list">';
           hist.forEach((it,i) => {
             html += `<div class="historial-item">
-              <div class="fecha">📅 ${it.date} <span class="hora">${it.hora||''}</span></div>
+              <div class="fecha">
+                <div class="fecha-linea">
+                  <span>📅 ${it.date}</span>
+                  <span class="hora">${it.hora||''}</span>
+                </div>
+              </div>
               <div class="resumen">${it.resumen||it.nombre+' · '+it.edad+' años'}</div>
-              <div class="resumen" style="margin-top:8px; font-size:11px;">📊 PRED: ${it.predicciones||''}</div>
+              ${it.predicciones ? `<div class="predicciones">📊 ${it.predicciones}</div>` : ''}
+              ${it.zonasResumen ? `<div class="zonas-resumen">❤️ ${it.zonasResumen}</div>` : ''}
               <button class="delete-single" onclick="window.borrarEntradaHistorial(${i})">🗑️ BORRAR</button>
             </div>`;
           });
@@ -1944,16 +2030,18 @@
           cont.innerHTML = html;
         },
         async borrarEntradaHistorial(i) {
+          if (!AppState.currentUser) return;
           if (!confirm("> ¿ELIMINAR ESTA ENTRADA?_")) return;
-          let hist = await Storage.getHistorial();
+          let hist = await Storage.getHistorial(AppState.currentUser);
           hist.splice(i,1);
-          await Storage.saveHistorial(hist);
+          await Storage.saveHistorial(AppState.currentUser, hist);
           this.cargarHistorial();
           alert("✅ ENTRADA ELIMINADA");
         },
         async borrarHistorial() {
+          if (!AppState.currentUser) return;
           if (!confirm("> ¿ELIMINAR TODO EL HISTORIAL?_")) return;
-          await Storage.saveHistorial([]);
+          await Storage.saveHistorial(AppState.currentUser, []);
           this.cargarHistorial();
           alert("✅ HISTORIAL LIMPIO");
         },
@@ -2051,7 +2139,7 @@
       window.enviarMensajeUsuario = UI.enviarMensajeUsuario.bind(UI);
       window.cambiarSoporteTab = UI.cambiarSoporteTab.bind(UI);
 
-      // ==================== MÓDULO PLAN GENERATOR (MATRIZ COMPLETA) ====================
+      // ==================== MÓDULO PLAN GENERATOR ====================
       const PlanGenerator = {
         ENTRENAMIENTOS_DB: {
           runner: {
@@ -2746,16 +2834,18 @@
           q.style.display = q.style.display === "block" ? "none" : "block";
         },
         async guardarPlanActual() {
+          if (!AppState.currentUser) return alert("> NO HAY USUARIO_");
           if (!AppState.planGeneradoActual) return alert("> GENERA UN PLAN PRIMERO_");
           AppState.ultimoPlanParams = { ...AppState.planGeneradoActual };
-          await Storage.setUltimoPlan(AppState.ultimoPlanParams);
+          await Storage.setUltimoPlan(AppState.currentUser, AppState.ultimoPlanParams);
           const btn = document.getElementById("guardarPlanBtn");
           btn.innerText = "✅ PLAN GUARDADO"; btn.disabled = true;
           btn.style.backgroundColor = "rgba(50, 215, 75, 0.2)";
           setTimeout(() => btn.style.backgroundColor = "", 500);
         },
         async mostrarUltimoPlanGuardado() {
-          const stored = await Storage.getUltimoPlan();
+          if (!AppState.currentUser) return alert("> NO HAY USUARIO_");
+          const stored = await Storage.getUltimoPlan(AppState.currentUser);
           if (!stored) return alert("> NO HAY PLAN GUARDADO_");
           AppState.ultimoPlanParams = stored;
           document.getElementById("modalidad").value = stored.modalidad;
@@ -2772,8 +2862,9 @@
           this.generarCalendarioEntreno();
         },
         async borrarPlanGuardado() {
+          if (!AppState.currentUser) return alert("> NO HAY USUARIO_");
           if (!confirm("> ¿ELIMINAR PLAN GUARDADO?_")) return;
-          await Storage.removeUltimoPlan();
+          await Storage.removeUltimoPlan(AppState.currentUser);
           alert("✅ PLAN ELIMINADO");
         },
         getRitmoPorZona(z) {
