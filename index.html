@@ -26,7 +26,7 @@
       --bg-secondary: #111111;
       --bg-card: #1a1a1a;
       --text-primary: #ffffff;
-      --text-secondary: #aaaaaa;
+      --text-secondary: #cccccc;
       --accent-red: #ff4530;
       --accent-green: #32d74b;
       --accent-blue: #0a84ff;
@@ -243,6 +243,7 @@
       position: relative;
       overflow: visible;
       white-space: nowrap;
+      transition: transform 0.2s, background 0.3s;
     }
     .tab-button::before {
       content: "";
@@ -258,12 +259,45 @@
       background: rgba(255, 255, 255, 0.1);
       color: var(--text-primary);
       box-shadow: inset 0 0 20px var(--glow-color);
+      transform: scale(1.05);
     }
     .tab-content { display: none; animation: glyphIn 0.5s ease; }
     .tab-content.active { display: block; }
     @keyframes glyphIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== BADGE DE MENSAJES NO LEÍDOS ===== */
+    .unread-badge {
+      display: inline-block;
+      background: var(--accent-red);
+      color: #ffffff;
+      border-radius: 20px;
+      padding: 2px 6px;
+      font-size: 10px;
+      font-weight: bold;
+      margin-left: 5px;
+      vertical-align: middle;
+      line-height: 1;
+      animation: latido 1.5s infinite;
+      box-shadow: 0 0 10px var(--accent-red);
+    }
+    @keyframes latido {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.2); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Pestaña SOPORTE cuando tiene mensajes no leídos */
+    .tab-button.soporte-unread {
+      color: var(--accent-red) !important;
+      animation: latido-texto 1.5s infinite;
+    }
+    @keyframes latido-texto {
+      0% { color: var(--accent-red); }
+      50% { color: #ff8a7a; }
+      100% { color: var(--accent-red); }
     }
 
     /* ===== INPUTS Y SELECTS ===== */
@@ -617,8 +651,9 @@
     }
     .historial-item .fecha .fecha-linea {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
     }
     .historial-item .hora {
       color: var(--accent-green);
@@ -628,6 +663,7 @@
       border-radius: 20px;
       display: inline-block;
       width: fit-content;
+      order: -1; /* La hora a la izquierda */
     }
     .historial-item .resumen {
       color: var(--text-secondary);
@@ -679,7 +715,7 @@
     }
     .mensaje-item .mensaje-header {
       padding: 16px;
-      padding-right: 80px;
+      padding-right: 70px; /* espacio para el botón */
       background: var(--bg-primary);
       cursor: pointer;
       display: flex;
@@ -695,12 +731,13 @@
     }
     .mensaje-item .mensaje-header span:first-child {
       font-size: 14px;
+      max-width: calc(100% - 50px);
     }
     .mensaje-item .mensaje-header .flecha {
       font-size: 16px;
       transition: transform 0.3s;
       margin-left: auto;
-      margin-right: 40px;
+      margin-right: 10px;
     }
     .mensaje-item .mensaje-contenido {
       max-height: 0;
@@ -776,28 +813,9 @@
       display: block;
     }
 
-    /* ===== BADGE DE MENSAJES NO LEÍDOS ===== */
-    .unread-badge {
-      display: inline-block;
-      background: var(--accent-red);
-      color: var(--text-primary);
-      border-radius: 20px;
-      padding: 2px 6px;
-      font-size: 10px;
-      font-weight: bold;
-      margin-left: 5px;
-      vertical-align: middle;
-      line-height: 1;
-      animation: parpadeo 1.5s infinite;
-    }
-    @keyframes parpadeo {
-      0% { opacity: 1; }
-      50% { opacity: 0.4; }
-      100% { opacity: 1; }
-    }
-
     /* ===== ADMIN PANEL ===== */
     .admin-panel { margin: 30px 0; padding: 20px; background: var(--bg-secondary); border-radius: 24px; }
+
     .admin-stats {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -813,51 +831,80 @@
     }
     .stat-card .number { font-size: 24px; color: var(--accent-blue); font-weight: bold; }
     .stat-card .label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; }
+
     .admin-search { margin: 20px 0; }
     .admin-search input { margin-bottom: 0; }
 
-    /* Contenedor con scroll para la tabla de usuarios */
-    .admin-table-container {
-      max-height: 300px;
+    .usuarios-lista {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 400px;
       overflow-y: auto;
+      padding: 5px;
+    }
+    .usuario-card {
+      background: var(--bg-primary);
       border: 1px solid var(--border-color);
       border-radius: 16px;
+      overflow: hidden;
+    }
+    .usuario-header {
+      padding: 16px;
+      background: var(--bg-secondary);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      color: var(--accent-blue);
+      transition: background 0.2s;
+    }
+    .usuario-header:hover {
+      background: var(--bg-card);
+    }
+    .usuario-header span:first-child {
+      font-size: 14px;
+    }
+    .usuario-header .flecha {
+      font-size: 16px;
+      transition: transform 0.3s;
+    }
+    .usuario-contenido {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      padding: 0 16px;
       background: var(--bg-primary);
-      margin: 20px 0;
     }
-    .admin-table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 600px;
+    .usuario-card.abierto .usuario-contenido {
+      max-height: 150px;
+      padding: 16px;
     }
-    .admin-table th {
-      position: sticky;
-      top: 0;
-      background: var(--bg-secondary);
-      text-align: left; padding: 12px 8px;
-      color: var(--accent-blue); font-family: var(--font-dot); font-size: 12px;
-      text-transform: uppercase; letter-spacing: 1px;
-      border-bottom: 1px solid var(--border-color);
-      z-index: 2;
+    .usuario-card.abierto .flecha {
+      transform: rotate(180deg);
     }
-    .admin-table td { padding: 12px 8px; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); }
-    .admin-btn {
-      padding: 4px 12px; background: transparent; border: 1px solid var(--accent-green);
-      border-radius: 40px; color: var(--accent-green); cursor: pointer; margin: 2px; font-size: 11px;
+    .usuario-acciones {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
     }
-    .admin-btn:hover { background: var(--accent-green); color: var(--bg-primary); }
-    .admin-delete-btn { border-color: var(--accent-red); color: var(--accent-red); }
-    .admin-delete-btn:hover { background: var(--accent-red); color: var(--bg-primary); }
-    .admin-export-btn { border-color: var(--accent-blue); color: var(--accent-blue); margin: 10px 0; }
+    .usuario-acciones button {
+      margin: 0;
+      padding: 8px 12px;
+      font-size: 12px;
+      width: auto;
+      flex: 1;
+    }
+    .usuario-info {
+      margin-bottom: 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .usuario-info p {
+      margin: 4px 0;
+    }
 
-    .admin-messages {
-      margin-top: 30px;
-      padding: 20px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--accent-purple);
-      border-radius: 24px;
-    }
-    .admin-messages h3 { margin-bottom: 20px; }
     .user-selector {
       display: flex;
       flex-direction: column;
@@ -892,6 +939,7 @@
       padding: 4px 0;
     }
     .user-selector input[type="checkbox"] { width: auto; margin: 0; }
+
     .message-input {
       width: 100%;
       padding: 12px;
@@ -913,6 +961,10 @@
       width: 100%;
     }
     .send-message-btn:hover { background: var(--accent-green); }
+
+    .admin-export-btn, .admin-btn {
+      margin: 10px 0;
+    }
 
     /* ===== BOTÓN PLAN PERSONALIZADO ===== */
     .cta { margin: 30px 0; text-align: center; }
@@ -1159,9 +1211,7 @@
           <button class="admin-btn admin-export-btn" onclick="window.exportarUsuariosCSV()">📥 EXPORTAR USUARIOS CSV</button>
           <button class="admin-btn" onclick="window.renovarExpirados()">🔄 RENOVAR EXPIRADOS</button>
           <div class="admin-panel">
-            <div class="admin-table-container">
-              <table class="admin-table" id="adminTable"></table>
-            </div>
+            <div id="usuariosLista" class="usuarios-lista"></div>
           </div>
           <div class="admin-messages">
             <h3>📨 ENVIAR MENSAJE A USUARIOS</h3>
@@ -1210,7 +1260,7 @@
           <button class="tab-button active" onclick="window.switchTab('entreno')">ENTRENO</button>
           <button class="tab-button" onclick="window.switchTab('plan')">PLAN</button>
           <button class="tab-button" onclick="window.switchTab('historial')">HISTORIAL</button>
-          <button class="tab-button" onclick="window.switchTab('soporte')">SOPORTE <span id="mensajesBadge" class="unread-badge" style="display:none;">0</span></button>
+          <button class="tab-button" onclick="window.switchTab('soporte')" id="soporteTabButton">SOPORTE <span id="mensajesBadge" class="unread-badge" style="display:none;">0</span></button>
         </div>
 
         <!-- TAB ENTRENO -->
@@ -1302,8 +1352,6 @@
               <div class="calendar-header"><div>LUN</div><div>MAR</div><div>MIÉ</div><div>JUE</div><div>VIE</div><div>SÁB</div><div>DOM</div></div>
               <div id="calendarioGrid"></div>
             </div>
-            <button class="action-button btn-save" id="guardarPlanBtn" onclick="window.guardarPlanActual()">💾 GUARDAR PLAN</button>
-            <button class="action-button btn-delete" onclick="window.cerrarPlan()">[ CERRAR ]</button>
           </div>
         </div>
 
@@ -1428,6 +1476,16 @@
         removeUltimoPlan(username) {
           if (!username) return Promise.reject('No user');
           return db.ref('users/' + username + '/ultimoPlan').remove();
+        },
+
+        // ========== ÚLTIMO CÁLCULO (por usuario) para persistencia de zonas ==========
+        getUltimoCalculo(username) {
+          if (!username) return Promise.resolve(null);
+          return db.ref('users/' + username + '/ultimoCalculo').once('value').then(snapshot => snapshot.val() || null);
+        },
+        setUltimoCalculo(username, calc) {
+          if (!username) return Promise.reject('No user');
+          return db.ref('users/' + username + '/ultimoCalculo').set(calc);
         },
 
         // ========== MENSAJES (global, para comunicación) ==========
@@ -1609,6 +1667,13 @@
             UI.changeDailyTip(); UI.startConsejoAutoChange();
             UI.cargarMensajesRecibidos();
             UI.cargarMensajesEnviados();
+            // Restaurar último cálculo si existe
+            Storage.getUltimoCalculo(username).then(calc => {
+              if (calc) {
+                AppState.setLastCalc(calc);
+                UI.mostrarResultadosGuardados(calc);
+              }
+            });
           }, 300);
         },
         mostrarAdminPanel() {
@@ -1642,6 +1707,12 @@
           document.getElementById("mainContent").style.display = "flex";
           document.getElementById("userWelcome").innerText = `> BIENVENIDO, ${saved.toUpperCase()}_ · ACCESO HASTA ${new Date(user.expires).toLocaleDateString()}`;
           UI.changeDailyTip(); UI.startConsejoAutoChange();
+          // Restaurar último cálculo
+          const calc = await Storage.getUltimoCalculo(saved);
+          if (calc) {
+            AppState.setLastCalc(calc);
+            UI.mostrarResultadosGuardados(calc);
+          }
           return true;
         },
         isUserPremium() {
@@ -1669,43 +1740,55 @@
             <div class="stat-card"><span class="number">${activos}</span><span class="label">ACTIVOS</span></div>
             <div class="stat-card"><span class="number">${expirados}</span><span class="label">EXPIRADOS</span></div>
           `;
-          let html = '<table class="admin-table"><tr><th>USUARIO</th><th>CREADO</th><th>EXPIRA</th><th>ESTADO</th><th>ACCIONES</th></tr>';
+          
+          let usuariosHtml = '<div class="usuarios-lista">';
           Object.entries(users).forEach(([u,d]) => {
             const creado = new Date(d.created).toLocaleDateString();
             const expiry = new Date(d.expires).toLocaleDateString();
             const premium = new Date() <= new Date(d.expires);
-            html += `<tr><td>${u}</td><td>${creado}</td><td>${expiry}</td>
-              <td style="color:${premium?'var(--accent-green)':'var(--accent-red)'};">${premium?'PREMIUM':'EXPIRADO'}</td>
-              <td>
-                <button class="admin-btn" onclick="window.extenderUsuario('${u}',1)">+1 MES</button>
-                <button class="admin-btn" onclick="window.extenderUsuario('${u}',2)">+2 MESES</button>
-                <button class="admin-delete-btn" onclick="window.eliminarUsuario('${u}')">ELIMINAR</button>
-              </td></tr>`;
+            usuariosHtml += `
+              <div class="usuario-card" data-usuario="${u}">
+                <div class="usuario-header" onclick="window.toggleUsuarioCard(this)">
+                  <span>${u}</span>
+                  <span class="flecha">▼</span>
+                </div>
+                <div class="usuario-contenido">
+                  <div class="usuario-info">
+                    <p>📅 Creado: ${creado}</p>
+                    <p>⏳ Expira: ${expiry}</p>
+                    <p>🔵 Estado: <span style="color:${premium?'var(--accent-green)':'var(--accent-red)'}">${premium?'PREMIUM':'EXPIRADO'}</span></p>
+                  </div>
+                  <div class="usuario-acciones">
+                    <button class="admin-btn" onclick="window.extenderUsuario('${u}',1)">+1 MES</button>
+                    <button class="admin-btn" onclick="window.extenderUsuario('${u}',2)">+2 MESES</button>
+                    <button class="admin-delete-btn" onclick="window.eliminarUsuario('${u}')">ELIMINAR</button>
+                  </div>
+                </div>
+              </div>
+            `;
           });
-          html += '</table>';
-          document.getElementById("adminTable").innerHTML = html;
+          usuariosHtml += '</div>';
+          document.getElementById("usuariosLista").innerHTML = usuariosHtml;
+          
           document.getElementById("adminWelcome").innerText = `> BIENVENIDO, ADMIN_ · ${new Date().toLocaleString()}`;
           this.actualizarSelectorUsuarios();
           this.mostrarHistorialMensajes();
         },
+        toggleUsuarioCard(header) {
+          const card = header.closest('.usuario-card');
+          card.classList.toggle('abierto');
+        },
         async filtrarUsuarios() {
           const search = document.getElementById("adminSearch").value.toLowerCase();
-          const users = await Storage.getUsers();
-          let html = '<table class="admin-table"><tr><th>USUARIO</th><th>CREADO</th><th>EXPIRA</th><th>ESTADO</th><th>ACCIONES</th></tr>';
-          Object.entries(users).forEach(([u,d]) => {
-            if (!u.toLowerCase().includes(search)) return;
-            const creado = new Date(d.created).toLocaleDateString();
-            const expiry = new Date(d.expires).toLocaleDateString();
-            const premium = new Date() <= new Date(d.expires);
-            html += `<tr><td>${u}</td><td>${creado}</td><td>${expiry}</td>
-              <td style="color:${premium?'var(--accent-green)':'var(--accent-red)'};">${premium?'PREMIUM':'EXPIRADO'}</td>
-              <td>
-                <button class="admin-btn" onclick="window.extenderUsuario('${u}',1)">+1 MES</button>
-                <button class="admin-btn" onclick="window.extenderUsuario('${u}',2)">+2 MESES</button>
-                <button class="admin-delete-btn" onclick="window.eliminarUsuario('${u}')">ELIMINAR</button>
-              </td></tr>`;
+          const cards = document.querySelectorAll('.usuario-card');
+          cards.forEach(card => {
+            const usuario = card.dataset.usuario.toLowerCase();
+            if (usuario.includes(search)) {
+              card.style.display = 'block';
+            } else {
+              card.style.display = 'none';
+            }
           });
-          document.getElementById("adminTable").innerHTML = html + '</table>';
         },
         async extenderUsuario(u, m) {
           const users = await Storage.getUsers();
@@ -1866,6 +1949,7 @@
         }
       };
 
+      window.toggleUsuarioCard = Admin.toggleUsuarioCard.bind(Admin);
       window.filtrarCheckboxes = Admin.filtrarCheckboxes.bind(Admin);
       window.borrarMensajeAdmin = function(key, idx) {
         Storage.borrarMensaje(key, idx).then(() => Admin.cargarMensajesAdmin());
@@ -1925,23 +2009,41 @@
             ["Z5","VO₂MÁX",1.02,1.06,0.95,"z5","RITMO: "+Utils.formatR(ritmoBase*0.95)+"<br><br>🔹 Mejora potencia aeróbica máxima. Esfuerzos intensos de 3-8 minutos."],
             ["Z6","VELOCIDAD",1.06,1.12,0.85,"z6","RITMO: "+Utils.formatR(ritmoBase*0.85)+"<br><br>🔹 Desarrolla potencia neuromuscular. Reclutamiento de fibras rápidas."]
           ];
-          AppState.setLastCalc({name, age, fcMax, ul:UL, zones, pred, ritmoBase});
-          let html = `<h2>> MÉTRICAS_</h2><div style="text-align:center; margin:20px 0;">
-            ${name} · ${age} años<br>
-            FC MÁX: ${fcMax} lpm · UMBRAL: ${UL} lpm<br>
-            RITMO 6km: ${Utils.formatR(ritmoBase)} min/km
-          </div>`;
-          html += `<h2>> PREDICCIONES_</h2>`;
-          pred.forEach(p => html += `<div class="pred-bar" style="border-color:${p.color}; color:${p.color};">${p.dist} km → ${Utils.formatR(p.ritmo)} min/km</div>`);
-          html += `<h2>> ZONAS_</h2>`;
-          zones.forEach(z => {
-            const min = Math.round(UL * z[2]), max = Math.round(UL * z[3]);
-            html += `<div class="zone-card ${z[5]}" onclick="this.classList.toggle('active')"><strong>${z[0]} – ${z[1]}</strong><br>FC: ${min}-${max} lpm<div class="long">${z[6]}</div></div>`;
-          });
-          html += `<button class="action-button btn-copy" onclick="window.copyResults()">📋 COPIAR RESULTADOS</button>
-                   <button class="action-button btn-save" onclick="window.guardarCalculo()">💾 GUARDAR HISTORIAL</button>`;
-          document.getElementById("results").innerHTML = html;
+          const calcData = {name, age, fcMax, ul:UL, zones, pred, ritmoBase};
+          AppState.setLastCalc(calcData);
+          UI.mostrarResultados(calcData);
           document.getElementById("footer").innerText = `${name} · ${new Date().toLocaleDateString('es-ES')} · RI5`;
+          
+          // Guardar automáticamente en historial y como último cálculo
+          this.guardarCalculoAutomatico(calcData);
+        },
+        async guardarCalculoAutomatico(calcData) {
+          if (!AppState.currentUser) return;
+          const ahora = new Date();
+          let zonasResumen = '';
+          if (calcData.zones && calcData.zones.length) {
+            zonasResumen = calcData.zones.map(z => {
+              const min = Math.round(calcData.ul * z[2]);
+              const max = Math.round(calcData.ul * z[3]);
+              return `${z[0]}: ${min}-${max}`;
+            }).join(' · ');
+          }
+          const data = {
+            date: ahora.toLocaleDateString('es-ES'), hora: ahora.toLocaleTimeString('es-ES'),
+            fechaCompleta: ahora.toLocaleDateString('es-ES') + ' ' + ahora.toLocaleTimeString('es-ES'),
+            nombre: calcData.name, edad: calcData.age, fcMax: calcData.fcMax,
+            umbral: calcData.ul, ritmo6k: Utils.formatR(calcData.ritmoBase),
+            predicciones: calcData.pred.map(p => `${p.dist}km:${Utils.formatR(p.ritmo)}`).join(' '),
+            resumen: `${calcData.name} · ${calcData.age} años · 6km: ${Utils.formatR(calcData.ritmoBase)}`,
+            zonasResumen: zonasResumen
+          };
+          let hist = await Storage.getHistorial(AppState.currentUser);
+          hist.unshift(data);
+          if (hist.length > 10) hist.pop(); // Máximo 10 entradas
+          await Storage.saveHistorial(AppState.currentUser, hist);
+          // Guardar como último cálculo
+          await Storage.setUltimoCalculo(AppState.currentUser, calcData);
+          if (document.getElementById('tab-historial').classList.contains('active')) UI.cargarHistorial();
         },
         copyResults() {
           if (!AppState.lastName) return alert("> CALCULA ZONAS PRIMERO_");
@@ -1960,35 +2062,6 @@
             const btn = document.querySelector('.btn-copy');
             if (btn) Utils.showTemporaryMessage(btn, "✅ COPIADO", true);
           }).catch(() => alert("> NO SE PUDO COPIAR. SELECCIONA MANUALMENTE_"));
-        },
-        async guardarCalculo() {
-          if (!AppState.lastName) return alert("> CALCULA ZONAS PRIMERO_");
-          if (!AppState.currentUser) return alert("> NO HAY USUARIO_");
-          const ahora = new Date();
-          // Crear resumen de zonas
-          let zonasResumen = '';
-          if (AppState.lastZones && AppState.lastZones.length) {
-            zonasResumen = AppState.lastZones.map(z => {
-              const min = Math.round(AppState.lastUL * z[2]);
-              const max = Math.round(AppState.lastUL * z[3]);
-              return `${z[0]}: ${min}-${max}`;
-            }).join(' · ');
-          }
-          const data = {
-            date: ahora.toLocaleDateString('es-ES'), hora: ahora.toLocaleTimeString('es-ES'),
-            fechaCompleta: ahora.toLocaleDateString('es-ES') + ' ' + ahora.toLocaleTimeString('es-ES'),
-            nombre: AppState.lastName, edad: AppState.lastAge, fcMax: AppState.lastFC,
-            umbral: AppState.lastUL, ritmo6k: Utils.formatR(AppState.lastRitmoBase),
-            predicciones: AppState.lastPred.map(p => `${p.dist}km:${Utils.formatR(p.ritmo)}`).join(' '),
-            resumen: `${AppState.lastName} · ${AppState.lastAge} años · 6km: ${Utils.formatR(AppState.lastRitmoBase)}`,
-            zonasResumen: zonasResumen
-          };
-          let hist = await Storage.getHistorial(AppState.currentUser);
-          hist.unshift(data); if (hist.length > 20) hist.pop();
-          await Storage.saveHistorial(AppState.currentUser, hist);
-          if (document.getElementById('tab-historial').classList.contains('active')) UI.cargarHistorial();
-          const btn = document.querySelector('.btn-save');
-          if (btn) Utils.showTemporaryMessage(btn, "✅ GUARDADO", true);
         }
       };
 
@@ -2030,9 +2103,42 @@
           const n = this.validarCampo('name'), a = this.validarCampo('age'), t = this.validarCampo('time');
           document.getElementById("calcBtn").disabled = !(n && a && t);
         },
+        mostrarResultados(calcData) {
+          let html = `<h2>> MÉTRICAS_</h2><div style="text-align:center; margin:20px 0;">
+            ${calcData.name} · ${calcData.age} años<br>
+            FC MÁX: ${calcData.fcMax} lpm · UMBRAL: ${calcData.ul} lpm<br>
+            RITMO 6km: ${Utils.formatR(calcData.ritmoBase)} min/km
+          </div>`;
+          html += `<h2>> PREDICCIONES_</h2>`;
+          calcData.pred.forEach(p => html += `<div class="pred-bar" style="border-color:${p.color}; color:${p.color};">${p.dist} km → ${Utils.formatR(p.ritmo)} min/km</div>`);
+          html += `<h2>> ZONAS_</h2>`;
+          calcData.zones.forEach(z => {
+            const min = Math.round(calcData.ul * z[2]), max = Math.round(calcData.ul * z[3]);
+            html += `<div class="zone-card ${z[5]}" onclick="this.classList.toggle('active')"><strong>${z[0]} – ${z[1]}</strong><br>FC: ${min}-${max} lpm<div class="long">${z[6]}</div></div>`;
+          });
+          html += `<button class="action-button btn-copy" onclick="window.copyResults()">📋 COPIAR RESULTADOS</button>`;
+          document.getElementById("results").innerHTML = html;
+        },
+        mostrarResultadosGuardados(calcData) {
+          // Similar a mostrarResultados pero sin guardar de nuevo
+          let html = `<h2>> MÉTRICAS_</h2><div style="text-align:center; margin:20px 0;">
+            ${calcData.name} · ${calcData.age} años<br>
+            FC MÁX: ${calcData.fcMax} lpm · UMBRAL: ${calcData.ul} lpm<br>
+            RITMO 6km: ${Utils.formatR(calcData.ritmoBase)} min/km
+          </div>`;
+          html += `<h2>> PREDICCIONES_</h2>`;
+          calcData.pred.forEach(p => html += `<div class="pred-bar" style="border-color:${p.color}; color:${p.color};">${p.dist} km → ${Utils.formatR(p.ritmo)} min/km</div>`);
+          html += `<h2>> ZONAS_</h2>`;
+          calcData.zones.forEach(z => {
+            const min = Math.round(calcData.ul * z[2]), max = Math.round(calcData.ul * z[3]);
+            html += `<div class="zone-card ${z[5]}" onclick="this.classList.toggle('active')"><strong>${z[0]} – ${z[1]}</strong><br>FC: ${min}-${max} lpm<div class="long">${z[6]}</div></div>`;
+          });
+          html += `<button class="action-button btn-copy" onclick="window.copyResults()">📋 COPIAR RESULTADOS</button>`;
+          document.getElementById("results").innerHTML = html;
+        },
         switchTab(tab) {
-          document.querySelectorAll('.tab-button').forEach(b=>b.classList.remove('active'));
-          document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+          document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
           const btns = document.querySelectorAll('.tab-button');
           for (let b of btns) {
             if (b.textContent.includes(tab==='entreno'?'ENTRENO':tab==='plan'?'PLAN':tab==='historial'?'HISTORIAL':'SOPORTE')) {
@@ -2056,8 +2162,8 @@
             html += `<div class="historial-item">
               <div class="fecha">
                 <div class="fecha-linea">
-                  <span>📅 ${it.date}</span>
                   <span class="hora">${it.hora||''}</span>
+                  <span>📅 ${it.date}</span>
                 </div>
               </div>
               <div class="resumen">${it.resumen||it.nombre+' · '+it.edad+' años'}</div>
@@ -2156,11 +2262,14 @@
         },
         actualizarBadgeMensajes() {
           const b = document.getElementById('mensajesBadge');
+          const soporteTab = document.getElementById('soporteTabButton');
           if (AppState.mensajesNoLeidos > 0) {
             b.style.display = 'inline-block';
             b.innerText = AppState.mensajesNoLeidos;
+            soporteTab.classList.add('soporte-unread');
           } else {
             b.style.display = 'none';
+            soporteTab.classList.remove('soporte-unread');
           }
         },
         cerrarModalSesion() {
@@ -2170,7 +2279,6 @@
         },
         cerrarPlan() {
           document.getElementById("calendarioEntreno").style.display = "none";
-          document.getElementById("guardarPlanBtn").style.display = "none";
           AppState.planGeneradoActual = null;
         }
       };
@@ -2179,7 +2287,7 @@
       window.enviarMensajeUsuario = UI.enviarMensajeUsuario.bind(UI);
       window.cambiarSoporteTab = UI.cambiarSoporteTab.bind(UI);
 
-      // ==================== MÓDULO PLAN GENERATOR (con matriz completa) ====================
+      // ==================== MÓDULO PLAN GENERATOR ====================
       const PlanGenerator = {
         ENTRENAMIENTOS_DB: {
           runner: {
@@ -2878,10 +2986,6 @@
           if (!AppState.planGeneradoActual) return alert("> GENERA UN PLAN PRIMERO_");
           AppState.ultimoPlanParams = { ...AppState.planGeneradoActual };
           await Storage.setUltimoPlan(AppState.currentUser, AppState.ultimoPlanParams);
-          const btn = document.getElementById("guardarPlanBtn");
-          btn.innerText = "✅ PLAN GUARDADO"; btn.disabled = true;
-          btn.style.backgroundColor = "rgba(50, 215, 75, 0.2)";
-          setTimeout(() => btn.style.backgroundColor = "", 500);
         },
         async mostrarUltimoPlanGuardado() {
           if (!AppState.currentUser) return alert("> NO HAY USUARIO_");
@@ -3043,7 +3147,8 @@
               grid.appendChild(fragment);
               AppState.planGeneradoActual = { modalidad, distancia, macrociclo, diasPorSemana:diasSem, nivel, experiencia:exp, objetivo:obj, diaLargo, fechaInicio };
               document.getElementById("calendarioEntreno").style.display = "block";
-              document.getElementById("guardarPlanBtn").style.display = "block";
+              // Guardar automáticamente el plan
+              this.guardarPlanActual();
               if (btn) Utils.hideLoading(btn);
             } catch (e) { console.error(e); alert("> ERROR GENERANDO PLAN_"); if (btn) Utils.hideLoading(btn); }
           }, 300);
@@ -3120,7 +3225,6 @@
       window.enviarMensaje = Admin.enviarMensaje.bind(Admin);
       window.startCalc = Training.startCalc.bind(Training);
       window.copyResults = Training.copyResults.bind(Training);
-      window.guardarCalculo = Training.guardarCalculo.bind(Training);
       window.switchTab = UI.switchTab.bind(UI);
       window.changeDailyTip = UI.changeDailyTip.bind(UI);
       window.changeConsejo = UI.changeConsejo.bind(UI);
@@ -3129,7 +3233,6 @@
       window.cerrarModalSesion = UI.cerrarModalSesion.bind(UI);
       window.cerrarPlan = UI.cerrarPlan.bind(UI);
       window.toggleCuestionario = PlanGenerator.toggleCuestionario.bind(PlanGenerator);
-      window.guardarPlanActual = PlanGenerator.guardarPlanActual.bind(PlanGenerator);
       window.mostrarUltimoPlanGuardado = PlanGenerator.mostrarUltimoPlanGuardado.bind(PlanGenerator);
       window.borrarPlanGuardado = PlanGenerator.borrarPlanGuardado.bind(PlanGenerator);
       window.generarCalendarioEntreno = PlanGenerator.generarCalendarioEntreno.bind(PlanGenerator);
