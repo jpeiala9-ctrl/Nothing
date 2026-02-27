@@ -741,7 +741,7 @@
     }
     .historial-item .delete-single:hover { background: var(--accent-red); color: var(--bg-primary); }
 
-    /* ===== MENSAJES ===== */
+    /* ===== MENSAJES (ajustados para evitar superposición) ===== */
     .mensaje-item {
       margin-bottom: 10px;
       border-left: 4px solid var(--accent-blue);
@@ -752,7 +752,7 @@
     }
     .mensaje-item .mensaje-header {
       padding: 16px;
-      padding-right: 70px;
+      padding-right: 90px; /* Más espacio para el botón */
       background: var(--bg-primary);
       cursor: pointer;
       display: flex;
@@ -768,13 +768,17 @@
     }
     .mensaje-item .mensaje-header span:first-child {
       font-size: 14px;
-      max-width: calc(100% - 50px);
+      max-width: calc(100% - 70px); /* Deja espacio para la flecha y el botón */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .mensaje-item .mensaje-header .flecha {
       font-size: 16px;
       transition: transform 0.3s;
       margin-left: auto;
       margin-right: 10px;
+      flex-shrink: 0;
     }
     .mensaje-item .mensaje-contenido {
       max-height: 0;
@@ -809,6 +813,7 @@
       font-size: 10px;
       cursor: pointer;
       z-index: 3;
+      flex-shrink: 0;
     }
     .delete-mensaje:hover {
       background: var(--accent-red);
@@ -1131,6 +1136,12 @@
       .calendario-dia div { font-size: 7px; }
       #pwa-banner { flex-direction: column; text-align: center; }
       .historial-item .fecha { padding-right: 60px; }
+      .mensaje-item .mensaje-header {
+        padding-right: 80px;
+      }
+      .mensaje-item .mensaje-header span:first-child {
+        max-width: calc(100% - 60px);
+      }
     }
   </style>
 </head>
@@ -1773,14 +1784,9 @@
         },
         isUserPremium() {
           if (!AppState.currentUser) return false;
-          const users = Storage.getUsers(); // Esto es síncrono, pero en realidad debería ser async. Simplificamos.
-          // En un entorno real, deberíamos tener la fecha en AppState.
-          // Por ahora, asumimos que el usuario actual tiene la fecha en AppState.
-          // Pero como no la tenemos, haremos una comprobación rápida con los datos en memoria.
-          // Esto es una simplificación, pero para el propósito actual es suficiente.
-          // Idealmente deberíamos almacenar la fecha de expiración en AppState al hacer login.
-          return true; // Simplificado, asumimos que todos son premium para pruebas.
-          // En producción, habría que obtener la fecha del usuario.
+          // Para simplificar, asumimos que todos son premium en este ejemplo.
+          // En producción, deberías verificar la fecha de expiración almacenada.
+          return true;
         },
         checkPermisosPremium() {
           const sel = document.getElementById('duracionPlan');
@@ -2219,7 +2225,6 @@
             let detalleHtml = `<div class="detalle">`;
             detalleHtml += `<p><strong>📊 PREDICCIONES:</strong> ${it.predicciones || ''}</p>`;
             detalleHtml += `<p><strong>❤️ ZONAS:</strong> ${it.zonasResumen || ''}</p>`;
-            // Si hubiera más información, se puede añadir
             detalleHtml += `</div>`;
             
             html += `<div class="historial-item" onclick="window.toggleHistorialDetalle(this)">
@@ -3142,20 +3147,14 @@
 
               // Asignar tipos de sesión de forma inteligente
               const tipoPorDia = {};
-              // Primero, asignar el día largo
               tipoPorDia[diaLargo] = 'largo';
               
-              // Identificar posibles días para series y tempo (evitando que estén juntos)
               const otrosDias = diasEntreno.filter(d => d !== diaLargo);
-              // Intentar asignar series a un día y tempo a otro, dejando espacio
-              // Si hay al menos 3 días, podemos poner series y tempo en días separados
               let diaSeries = null;
               let diaTempo = null;
               if (otrosDias.length >= 2) {
-                // Elegir el primer día disponible para series y el último para tempo, o al revés
                 diaSeries = otrosDias[0];
                 diaTempo = otrosDias[otrosDias.length - 1];
-                // Si están muy cerca (diferencia 1), intentar reajustar
                 if (Math.abs(diaSeries - diaTempo) <= 2 && otrosDias.length > 2) {
                   diaSeries = otrosDias[1];
                   diaTempo = otrosDias[otrosDias.length - 1];
@@ -3163,11 +3162,8 @@
                 tipoPorDia[diaSeries] = 'series';
                 tipoPorDia[diaTempo] = 'tempo';
               } else if (otrosDias.length === 1) {
-                // Solo un día adicional, alternar entre series y tempo por semana
-                // Lo manejaremos en el bucle semanal
                 tipoPorDia[otrosDias[0]] = 'alternar';
               }
-              // El resto serán rodaje
               diasEntreno.forEach(d => {
                 if (!tipoPorDia[d]) tipoPorDia[d] = 'rodaje';
               });
@@ -3183,7 +3179,6 @@
                 if (diasEntreno.includes(diaSem)) {
                   let tipo = tipoPorDia[diaSem];
                   if (tipo === 'alternar') {
-                    // Alternar entre series y tempo según la semana
                     tipo = (semana % 2 === 0) ? 'series' : 'tempo';
                   }
                   
