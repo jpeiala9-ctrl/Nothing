@@ -38,6 +38,9 @@
       --font-dot: 'Courier New', 'Dot Matrix', monospace;
       --dot-color: rgba(255, 255, 255, 0.05);
       --gold: #ffd700;
+      --slider-color: rgba(191, 90, 242, 0.25);
+      --new-user-bg: rgba(10, 132, 255, 0.2);
+      --new-user-border: #0a84ff;
     }
 
     @media (prefers-color-scheme: light) {
@@ -51,6 +54,9 @@
         --glow-color: rgba(0, 0, 0, 0.1);
         --dot-color: rgba(0, 0, 0, 0.05);
         --gold: #b8860b;
+        --slider-color: rgba(191, 90, 242, 0.15);
+        --new-user-bg: rgba(10, 132, 255, 0.1);
+        --new-user-border: #0a84ff;
       }
       input, button, select { color: #111111; }
       .curiosity span, .curiosity small { color: #111111; }
@@ -209,7 +215,7 @@
     .auth-form { display: none; animation: glyphIn 0.5s ease; }
     .auth-form.active { display: block; }
 
-    /* ===== PESTAÑAS PRINCIPALES ===== */
+    /* ===== PESTAÑAS PRINCIPALES CON EFECTO PASTILLA ===== */
     .tabs-container { margin: 30px 0; }
     .tabs-header {
       display: flex;
@@ -221,6 +227,18 @@
       padding: 4px;
       border-radius: 40px;
       border: 1px solid var(--border-color);
+      position: relative;
+    }
+    .tab-slider {
+      position: absolute;
+      height: calc(100% - 8px);
+      top: 4px;
+      left: 4px;
+      background: var(--slider-color);
+      border-radius: 30px;
+      transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+      pointer-events: none;
+      z-index: 0;
     }
     .tab-button {
       flex: 1;
@@ -238,32 +256,11 @@
       position: relative;
       overflow: hidden;
       white-space: nowrap;
-      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-    }
-    .tab-button::before {
-      content: "";
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 0;
-      height: 0;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
-      transform: translate(-50%, -50%);
-      transition: width 0.4s ease, height 0.4s ease;
-      border-radius: 50%;
-      z-index: 0;
-    }
-    .tab-button:hover::before {
-      width: 200px;
-      height: 200px;
+      transition: color 0.3s ease;
+      z-index: 1;
     }
     .tab-button.active {
-      background: rgba(255, 255, 255, 0.1);
       color: var(--text-primary);
-      box-shadow: inset 0 0 15px var(--glow-color);
-    }
-    .tab-button span, .tab-button .unread-badge {
-      position: relative;
-      z-index: 1;
     }
     .tab-content { display: none; animation: glyphIn 0.5s ease; }
     .tab-content.active { display: block; }
@@ -699,7 +696,7 @@
     }
     .historial-item .delete-single:hover { background: var(--accent-red); color: var(--bg-primary); }
 
-    /* ===== MENSAJES (reestructurados sin superposición) ===== */
+    /* ===== MENSAJES (estructura mejorada) ===== */
     .mensaje-item {
       margin-bottom: 10px;
       border-left: 4px solid var(--accent-blue);
@@ -825,9 +822,6 @@
     .stat-card .number { font-size: 24px; color: var(--accent-blue); font-weight: bold; }
     .stat-card .label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; }
 
-    .admin-search { margin: 20px 0; }
-    .admin-search input { margin-bottom: 0; }
-
     /* Acordeón de usuarios */
     .usuarios-acordeon {
       background: var(--bg-primary);
@@ -861,12 +855,20 @@
       background: var(--bg-primary);
     }
     .usuarios-acordeon.abierto .usuarios-contenido {
-      max-height: 500px;
+      max-height: 600px;
       overflow-y: auto;
       padding: 16px;
     }
     .usuarios-acordeon.abierto .flecha {
       transform: rotate(180deg);
+    }
+    .admin-search-inline {
+      margin-bottom: 16px;
+    }
+    .admin-search-inline input {
+      margin-bottom: 0;
+      padding: 12px;
+      font-size: 14px;
     }
     .usuarios-lista {
       display: flex;
@@ -881,6 +883,11 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .usuario-item.nuevo {
+      background: var(--new-user-bg);
+      border-color: var(--new-user-border);
     }
     .usuario-info {
       display: flex;
@@ -1080,7 +1087,8 @@
 
     .nota-plan {
       color: var(--text-secondary); margin: 20px 0; padding: 16px;
-      border: 1px dashed var(--border-color); border-radius: 16px; font-size: 12px; text-align: center;
+      border: 1px dashed var(--border-color); border-radius: 16px; font-size: 14px; text-align: center;
+      line-height: 1.6;
     }
     #results { margin-top: 30px; }
     .footer {
@@ -1233,26 +1241,27 @@
         <div class="tabs-header">
           <button class="tab-button active" onclick="window.switchAdminTab('usuarios')">USUARIOS</button>
           <button class="tab-button" onclick="window.switchAdminTab('soporte')">SOPORTE</button>
+          <div class="tab-slider" id="adminTabSlider"></div>
         </div>
         <div id="admin-tab-usuarios" class="tab-content active">
           <div class="admin-stats" id="adminStats"></div>
-          <div class="admin-search">
-            <input type="text" id="adminSearch" placeholder="> BUSCAR USUARIO_" onkeyup="window.filtrarUsuarios()">
-          </div>
-          <button class="admin-btn admin-export-btn" onclick="window.exportarUsuariosCSV()">📥 EXPORTAR USUARIOS CSV</button>
-          <button class="admin-btn" onclick="window.renovarExpirados()">🔄 RENOVAR EXPIRADOS</button>
           <div class="admin-panel">
-            <!-- Acordeón de usuarios -->
+            <!-- Acordeón de usuarios con buscador interno -->
             <div class="usuarios-acordeon" id="usuariosAcordeon">
               <div class="usuarios-header" onclick="window.toggleUsuariosAcordeon()">
                 <span>👥 USUARIOS REGISTRADOS</span>
                 <span class="flecha">▼</span>
               </div>
               <div class="usuarios-contenido" id="usuariosContenido">
+                <div class="admin-search-inline">
+                  <input type="text" id="adminSearchInline" placeholder="🔍 Buscar usuario..." onkeyup="window.filtrarUsuariosInline()">
+                </div>
                 <div class="usuarios-lista" id="usuariosLista"></div>
               </div>
             </div>
           </div>
+          <button class="admin-btn admin-export-btn" onclick="window.exportarUsuariosCSV()">📥 EXPORTAR USUARIOS CSV</button>
+          <button class="admin-btn" onclick="window.renovarExpirados()">🔄 RENOVAR EXPIRADOS</button>
         </div>
         <div id="admin-tab-soporte" class="tab-content">
           <h2>SOPORTE</h2>
@@ -1287,6 +1296,7 @@
           <button class="tab-button" onclick="window.switchTab('plan')">PLAN</button>
           <button class="tab-button" onclick="window.switchTab('historial')">HISTORIAL</button>
           <button class="tab-button" onclick="window.switchTab('soporte')" id="soporteTabButton">SOPORTE</button>
+          <div class="tab-slider" id="mainTabSlider"></div>
         </div>
 
         <!-- TAB ENTRENO -->
@@ -1369,7 +1379,11 @@
 
           <div id="calendarioEntreno" style="display:none;">
             <h3>> TU PLAN_</h3>
-            <div class="nota-plan">> NOTA: Plan genérico. Consulta a un profesional.</div>
+            <div class="nota-plan">
+              > Este plan es una guía general basada en tu perfil. Ajusta las intensidades según tus sensaciones. 
+              Escucha a tu cuerpo, respeta los descansos y, si tienes dudas, consulta con un entrenador profesional. 
+              ¡Disfruta del proceso y confía en tu progreso!
+            </div>
             <p id="resumenObjetivo" style="color: var(--accent-blue); margin:20px 0; text-align:center;"></p>
             <div class="calendar-grid-container">
               <div class="calendar-header"><div>LUN</div><div>MAR</div><div>MIÉ</div><div>JUE</div><div>VIE</div><div>SÁB</div><div>DOM</div></div>
@@ -1511,7 +1525,7 @@
           return db.ref('users/' + username + '/ultimoCalculo').set(calc);
         },
 
-        // ========== MENSAJES ==========
+        // ========== MENSAJES (sin borrado automático) ==========
         getMensajes() {
           return db.ref('mensajes').once('value').then(snapshot => snapshot.val() || {});
         },
@@ -1520,26 +1534,13 @@
         },
         getMensajesUsuario(u) {
           return this.getMensajes().then(todos => {
-            const ahora = Date.now();
-            const lista = todos[u] || [];
-            const validos = lista.filter(m => {
-              if (!m.leido) return true;
-              if (!m.fechaLectura) return true;
-              const diffHoras = (ahora - new Date(m.fechaLectura).getTime()) / (1000 * 60 * 60);
-              return diffHoras < 24;
-            });
-            if (validos.length !== lista.length) {
-              todos[u] = validos;
-              return this.saveMensajes(todos).then(() => validos);
-            }
-            return validos;
+            return todos[u] || [];
           });
         },
         marcarLeido(u, index) {
           return this.getMensajes().then(todos => {
             if (todos[u] && todos[u][index]) {
               todos[u][index].leido = true;
-              todos[u][index].fechaLectura = new Date().toISOString();
               return this.saveMensajes(todos);
             }
           });
@@ -1566,7 +1567,6 @@
             return this.saveMensajes(todos);
           });
         },
-        // Nuevo: enviar mensaje de admin a usuario
         enviarMensajeAdminAUsuario(usuario, texto) {
           return this.getMensajes().then(todos => {
             if (!todos[usuario]) todos[usuario] = [];
@@ -1633,7 +1633,8 @@
         camposTocados: { name: false, age: false, time: false },
         currentUser: null, currentSesionDetalle: null, deferredPrompt: null,
         mensajesNoLeidos: 0,
-        isPremium: false, // se actualizará al loguearse
+        isPremium: false,
+        usuariosVistos: JSON.parse(localStorage.getItem('usuariosVistos') || '[]'), // para no volver a destacar
         setLastCalc(d) {
           this.lastName = d.name; this.lastAge = d.age; this.lastFC = d.fcMax;
           this.lastUL = d.ul; this.lastZones = d.zones; this.lastPred = d.pred;
@@ -1648,14 +1649,10 @@
           this.currentUser = u;
           this.isPremium = premium;
           u ? localStorage.setItem('ri5_current_user', u) : localStorage.removeItem('ri5_current_user');
-          // Actualizar título RI5
           const title = document.getElementById('ri5Title');
           if (title) {
-            if (premium) {
-              title.classList.add('premium');
-            } else {
-              title.classList.remove('premium');
-            }
+            if (premium) title.classList.add('premium');
+            else title.classList.remove('premium');
           }
         }
       };
@@ -1687,11 +1684,10 @@
             password: Utils.hashPassword(password), 
             created: new Date().toISOString(), 
             expires: expiry.toISOString(),
-            premium: false // por defecto no premium
+            premium: false
           };
           await Storage.saveUsers(users);
           
-          // Enviar mensaje de bienvenida
           await Storage.enviarMensajeAdminAUsuario(username, "¡Bienvenido a RI5! Empieza calculando tus zonas de entrenamiento y genera tu primer plan.");
           
           AppState.setCurrentUser(username, false);
@@ -1767,7 +1763,6 @@
           document.getElementById("loginPage").style.display = "none";
           document.getElementById("mainContent").style.display = "flex";
           document.getElementById("userWelcome").innerText = `> BIENVENIDO, ${saved.toUpperCase()}_ · ACCESO HASTA ${new Date(user.expires).toLocaleDateString()}`;
-          // Actualizar título premium
           const title = document.getElementById('ri5Title');
           if (title) {
             if (AppState.isPremium) title.classList.add('premium');
@@ -1808,8 +1803,12 @@
             const creado = new Date(d.created).toLocaleDateString();
             const expiry = new Date(d.expires).toLocaleDateString();
             const premium = d.premium ? '✅ PREMIUM' : '❌ NO PREMIUM';
+            // Destacar si es nuevo (menos de 24h y no visto)
+            const creadoDate = new Date(d.created);
+            const esNuevo = (ahora - creadoDate) < 24*60*60*1000 && !AppState.usuariosVistos.includes(u);
+            const claseNuevo = esNuevo ? 'nuevo' : '';
             usuariosHtml += `
-              <div class="usuario-item">
+              <div class="usuario-item ${claseNuevo}" data-usuario="${u}" onclick="window.marcarUsuarioVisto('${u}')">
                 <div class="usuario-nombre">${u}</div>
                 <div class="usuario-info">
                   <span>📅 ${creado}</span>
@@ -1817,11 +1816,11 @@
                   <span>${premium}</span>
                 </div>
                 <div class="usuario-acciones">
-                  <button class="admin-btn" onclick="window.extenderUsuario('${u}',1)">+1 MES</button>
-                  <button class="admin-btn" onclick="window.extenderUsuario('${u}',3)">+3 MESES</button>
-                  <button class="admin-btn" onclick="window.togglePremium('${u}')">👑 PREMIUM</button>
-                  <button class="admin-btn" onclick="window.enviarMensajeAUsuario('${u}')">📨 MENSAJE</button>
-                  <button class="admin-delete-btn" onclick="window.eliminarUsuario('${u}')">ELIMINAR</button>
+                  <button class="admin-btn" onclick="event.stopPropagation(); window.extenderUsuario('${u}',1)">+1 MES</button>
+                  <button class="admin-btn" onclick="event.stopPropagation(); window.extenderUsuario('${u}',3)">+3 MESES</button>
+                  <button class="admin-btn" onclick="event.stopPropagation(); window.togglePremium('${u}')">👑 PREMIUM</button>
+                  <button class="admin-btn" onclick="event.stopPropagation(); window.enviarMensajeAUsuario('${u}')">📨 MENSAJE</button>
+                  <button class="admin-delete-btn" onclick="event.stopPropagation(); window.eliminarUsuario('${u}')">ELIMINAR</button>
                 </div>
               </div>
             `;
@@ -1830,13 +1829,14 @@
           
           document.getElementById("adminWelcome").innerText = `> BIENVENIDO, ADMIN_ · ${new Date().toLocaleString()}`;
           this.mostrarHistorialMensajes();
+          this.cargarMensajesAdmin();
         },
         toggleUsuariosAcordeon() {
           const acordeon = document.getElementById('usuariosAcordeon');
           acordeon.classList.toggle('abierto');
         },
-        async filtrarUsuarios() {
-          const search = document.getElementById("adminSearch").value.toLowerCase();
+        async filtrarUsuariosInline() {
+          const search = document.getElementById("adminSearchInline").value.toLowerCase();
           const items = document.querySelectorAll('.usuario-item');
           items.forEach(item => {
             const nombre = item.querySelector('.usuario-nombre').textContent.toLowerCase();
@@ -1846,6 +1846,14 @@
               item.style.display = 'none';
             }
           });
+        },
+        marcarUsuarioVisto(usuario) {
+          if (!AppState.usuariosVistos.includes(usuario)) {
+            AppState.usuariosVistos.push(usuario);
+            localStorage.setItem('usuariosVistos', JSON.stringify(AppState.usuariosVistos));
+          }
+          const item = document.querySelector(`.usuario-item[data-usuario="${usuario}"]`);
+          if (item) item.classList.remove('nuevo');
         },
         async extenderUsuario(u, m) {
           const users = await Storage.getUsers();
@@ -1935,7 +1943,7 @@
           recibidos.forEach(item => {
             htmlRec += `
               <div class="mensaje-item">
-                <div class="mensaje-header">
+                <div class="mensaje-header" onclick="this.parentNode.classList.toggle('abierto')">
                   <span>📨 ${item.mensaje.fecha} · ${item.usuario}</span>
                   <span class="flecha">▼</span>
                   <button class="delete-mensaje" onclick="event.stopPropagation(); window.borrarMensajeAdmin('${item.key}', ${item.idx})">🗑️</button>
@@ -1951,7 +1959,7 @@
           enviados.forEach(item => {
             htmlEnv += `
               <div class="mensaje-item">
-                <div class="mensaje-header">
+                <div class="mensaje-header" onclick="this.parentNode.classList.toggle('abierto')">
                   <span>📤 ${item.mensaje.fecha} · Para ${item.usuario}</span>
                   <span class="flecha">▼</span>
                   <button class="delete-mensaje" onclick="event.stopPropagation(); window.borrarMensajeAdmin('${item.key}', ${item.idx})">🗑️</button>
@@ -1976,11 +1984,17 @@
       };
 
       window.toggleUsuariosAcordeon = Admin.toggleUsuariosAcordeon.bind(Admin);
+      window.filtrarUsuariosInline = Admin.filtrarUsuariosInline.bind(Admin);
+      window.marcarUsuarioVisto = Admin.marcarUsuarioVisto.bind(Admin);
       window.borrarMensajeAdmin = function(key, idx) {
         Storage.borrarMensaje(key, idx).then(() => Admin.cargarMensajesAdmin());
       };
       window.enviarMensajeAUsuario = Admin.enviarMensajeAUsuario.bind(Admin);
       window.togglePremium = Admin.togglePremium.bind(Admin);
+      window.extenderUsuario = Admin.extenderUsuario.bind(Admin);
+      window.eliminarUsuario = Admin.eliminarUsuario.bind(Admin);
+      window.exportarUsuariosCSV = Admin.exportarUsuariosCSV.bind(Admin);
+      window.renovarExpirados = Admin.renovarExpirados.bind(Admin);
 
       window.switchAdminTab = function(tab) {
         document.querySelectorAll('#adminPage .tab-button').forEach(b => b.classList.remove('active'));
@@ -1993,6 +2007,8 @@
           document.getElementById('admin-tab-soporte').classList.add('active');
           Admin.cargarMensajesAdmin();
         }
+        // Mover slider
+        setTimeout(() => UI.moverSliderAdmin(), 50);
       };
 
       window.cambiarAdminSoporteTab = function(tab) {
@@ -2065,7 +2081,7 @@
           };
           let hist = await Storage.getHistorial(AppState.currentUser);
           hist.unshift(data);
-          if (hist.length > 10) hist.pop(); // Máximo 10 entradas
+          if (hist.length > 10) hist.pop();
           await Storage.saveHistorial(AppState.currentUser, hist);
           await Storage.setUltimoCalculo(AppState.currentUser, calcData);
           if (document.getElementById('tab-historial').classList.contains('active')) UI.cargarHistorial();
@@ -2170,10 +2186,27 @@
             }
           }
           document.getElementById(`tab-${tab}`).classList.add('active');
+          this.moverSliderMain();
           if (tab === 'historial') this.cargarHistorial();
           if (tab === 'soporte') {
             this.cargarMensajesRecibidos();
             this.cargarMensajesEnviados();
+          }
+        },
+        moverSliderMain() {
+          const slider = document.getElementById('mainTabSlider');
+          const activeTab = document.querySelector('#mainContent .tab-button.active');
+          if (slider && activeTab) {
+            slider.style.width = activeTab.offsetWidth + 'px';
+            slider.style.left = activeTab.offsetLeft + 'px';
+          }
+        },
+        moverSliderAdmin() {
+          const slider = document.getElementById('adminTabSlider');
+          const activeTab = document.querySelector('#adminPage .tab-button.active');
+          if (slider && activeTab) {
+            slider.style.width = activeTab.offsetWidth + 'px';
+            slider.style.left = activeTab.offsetLeft + 'px';
           }
         },
         async cargarHistorial() {
@@ -2343,7 +2376,7 @@
 
       // ==================== MÓDULO PLAN GENERATOR ====================
       const PlanGenerator = {
-        // Matriz completa de entrenamientos (runner y trail para todas las distancias y niveles)
+        // Matriz completa de entrenamientos (runner y trail) - incluye todas las combinaciones
         ENTRENAMIENTOS_DB: {
           runner: {
             "2k": {
@@ -3050,8 +3083,7 @@
           document.getElementById("modalidad").value = stored.modalidad;
           document.getElementById("distObjetivo").value = stored.distancia;
           document.getElementById("duracionPlan").value = stored.macrociclo / 4;
-          // Restaurar checkboxes de días
-          const diasGuardados = stored.diasEntreno || [4,6]; // por defecto mar y jue
+          const diasGuardados = stored.diasEntreno || [4,6];
           for (let i = 1; i <= 7; i++) {
             const cb = document.getElementById(`dia${i}`);
             if (cb) cb.checked = diasGuardados.includes(i);
@@ -3096,14 +3128,12 @@
               const fechaInicio = document.getElementById("fechaInicio").value;
               if (!fechaInicio) return alert("> SELECCIONA UNA FECHA DE INICIO_");
               
-              // Obtener días seleccionados
               const diasEntreno = [];
               for (let i = 1; i <= 7; i++) {
                 const cb = document.getElementById(`dia${i}`);
                 if (cb && cb.checked) diasEntreno.push(i);
               }
               if (diasEntreno.length === 0) return alert("> SELECCIONA AL MENOS UN DÍA DE ENTRENO_");
-              // Asegurar que el día largo esté incluido
               if (!diasEntreno.includes(diaLargo)) {
                 if (confirm("> El día de tirada larga no está seleccionado. ¿Añadirlo automáticamente?")) {
                   diasEntreno.push(diaLargo);
@@ -3115,9 +3145,6 @@
               diasEntreno.sort((a,b) => a - b);
               
               const fecha = new Date(fechaInicio + "T00:00:00");
-              const diaInicio = fecha.getDay(); // 0 domingo, 1 lunes, ..., 6 sábado
-              let diaInicioNum = diaInicio === 0 ? 7 : diaInicio;
-              
               const macrociclo = meses * 4;
               const mapa = { "2k":"2 km", "5k":"5 km", "10k":"10 km", "medio":"MEDIA", "maraton":"MARATÓN" };
               const diaNombre = ["","LUN","MAR","MIÉ","JUE","VIE","SÁB","DOM"][diaLargo];
@@ -3127,92 +3154,72 @@
               grid.innerHTML = "";
               const totalDias = macrociclo * 7;
 
-              // Asignar tipos de sesión de forma inteligente
+              // Algoritmo mejorado de planificación
+              // Definir microciclos (3 semanas carga, 1 descarga)
               const tipoPorDia = {};
               tipoPorDia[diaLargo] = 'largo';
               
               const otrosDias = diasEntreno.filter(d => d !== diaLargo);
-              let diaSeries = null;
-              let diaTempo = null;
-              if (otrosDias.length >= 2) {
-                diaSeries = otrosDias[0];
-                diaTempo = otrosDias[otrosDias.length - 1];
-                if (Math.abs(diaSeries - diaTempo) <= 2 && otrosDias.length > 2) {
-                  diaSeries = otrosDias[1];
-                  diaTempo = otrosDias[otrosDias.length - 1];
-                }
-                tipoPorDia[diaSeries] = 'series';
-                tipoPorDia[diaTempo] = 'tempo';
-              } else if (otrosDias.length === 1) {
-                tipoPorDia[otrosDias[0]] = 'alternar';
-              }
-              diasEntreno.forEach(d => {
-                if (!tipoPorDia[d]) tipoPorDia[d] = 'rodaje';
+              // Rotar los tipos de sesión para que no siempre sean los mismos días
+              const posiblesTipos = ['series', 'tempo', 'rodaje'];
+              otrosDias.forEach((dia, index) => {
+                // Asignar de forma rotativa según el índice para variedad
+                tipoPorDia[dia] = posiblesTipos[index % posiblesTipos.length];
               });
 
-              const usados = { rodaje:{}, series:{}, tempo:{}, largo:{} };
+              const usados = { rodaje: {}, series: {}, tempo: {}, largo: {} };
               const fragment = document.createDocumentFragment();
 
-              for (let dia=1; dia<=totalDias; dia++) {
-                const semana = Math.floor((dia-1)/7);
-                const diaSem = (dia-1)%7 + 1;
+              for (let dia = 1; dia <= totalDias; dia++) {
+                const semana = Math.floor((dia - 1) / 7);
+                const diaSem = (dia - 1) % 7 + 1;
                 let color = "sesion-descanso", breve = "D", detalle = null;
 
                 if (diasEntreno.includes(diaSem)) {
                   let tipo = tipoPorDia[diaSem];
-                  if (tipo === 'alternar') {
-                    tipo = (semana % 2 === 0) ? 'series' : 'tempo';
-                  }
                   
-                  // Personalización: ajustar duración según ritmo base
+                  // Aplicar periodización: semanas de descarga (4,8,12...) reducir intensidad
+                  const esSemanaDescarga = (semana + 1) % 4 === 0;
                   let factorPersonal = 1.0;
                   if (AppState.lastRitmoBase) {
-                    const ritmoRef = 5.0; // min/km
+                    const ritmoRef = 5.0;
                     factorPersonal = Math.min(1.2, Math.max(0.8, ritmoRef / AppState.lastRitmoBase));
                   }
+                  if (esSemanaDescarga) {
+                    factorPersonal *= 0.8; // reducir carga
+                  }
 
+                  // Seleccionar entrenamiento según tipo y semana
                   if (tipo === 'largo') {
                     const opts = this.ENTRENAMIENTOS_DB[modalidad]?.[distancia]?.[nivel]?.largo;
                     if (opts && opts.length) {
-                      const clave = `largo_sem${semana}`;
-                      if (!usados.largo[clave]) usados.largo[clave] = 0;
-                      const idx = (semana + usados.largo[clave]) % opts.length;
-                      detalle = { ...opts[idx], tipo:"largo" };
+                      const idx = (semana * 2) % opts.length; // rotación
+                      detalle = { ...opts[idx], tipo: "largo" };
                       detalle.duracion = Math.round(detalle.duracion * factorPersonal);
-                      usados.largo[clave]++;
                       color = "sesion-largo"; breve = "L";
                     }
                   } else if (tipo === 'series') {
                     const opts = this.ENTRENAMIENTOS_DB[modalidad]?.[distancia]?.[nivel]?.series;
                     if (opts && opts.length) {
-                      const clave = `series_sem${semana}`;
-                      if (!usados.series[clave]) usados.series[clave] = 0;
-                      const idx = (semana*2 + usados.series[clave]) % opts.length;
-                      detalle = { ...opts[idx], tipo:"series" };
+                      const idx = (semana * 3) % opts.length;
+                      detalle = { ...opts[idx], tipo: "series" };
                       detalle.duracion = Math.round(detalle.duracion * factorPersonal);
-                      usados.series[clave]++;
                       color = "sesion-series"; breve = "S";
                     }
                   } else if (tipo === 'tempo') {
                     const opts = this.ENTRENAMIENTOS_DB[modalidad]?.[distancia]?.[nivel]?.tempo;
                     if (opts && opts.length) {
-                      const clave = `tempo_sem${semana}`;
-                      if (!usados.tempo[clave]) usados.tempo[clave] = 0;
-                      const idx = (semana*3 + usados.tempo[clave]) % opts.length;
-                      detalle = { ...opts[idx], tipo:"tempo" };
+                      const idx = (semana * 4) % opts.length;
+                      detalle = { ...opts[idx], tipo: "tempo" };
                       detalle.duracion = Math.round(detalle.duracion * factorPersonal);
-                      usados.tempo[clave]++;
                       color = "sesion-tempo"; breve = "T";
                     }
                   } else {
                     const opts = this.ENTRENAMIENTOS_DB[modalidad]?.[distancia]?.[nivel]?.rodaje;
                     if (opts && opts.length) {
-                      const clave = `rodaje_sem${semana}`;
-                      if (!usados.rodaje[clave]) usados.rodaje[clave] = 0;
-                      const idx = (semana*4 + usados.rodaje[clave]) % opts.length;
-                      detalle = { ...opts[idx], tipo:"rodaje" };
+                      const idx = (semana * 5) % opts.length;
+                      detalle = { ...opts[idx], tipo: "rodaje" };
                       detalle.duracion = Math.round(detalle.duracion * factorPersonal);
-                      usados.rodaje[clave]++;
                       color = "sesion-rodaje"; breve = "R";
                     }
                   }
@@ -3308,10 +3315,16 @@
         document.getElementById("age").addEventListener("input", () => { if(AppState.camposTocados.age) UI.validarCampo('age'); UI.validarTodo(); });
         document.getElementById("time").addEventListener("input", () => { if(AppState.camposTocados.time) UI.validarCampo('time'); UI.validarTodo(); });
         UI.validarTodo();
-        UI.initDiasCheckboxes(); // Inicializar checkboxes de días
+        UI.initDiasCheckboxes();
         if (localStorage.getItem('pwa_banner_closed')==='true' || localStorage.getItem('pwa_installed')==='true') document.getElementById('pwa-banner').style.display='none';
         PWA.init(); PWA.registerServiceWorker();
         setTimeout(() => { if (AppState.deferredPrompt && localStorage.getItem('pwa_installed')!=='true') document.getElementById('pwa-banner').style.display='flex'; }, 3000);
+        
+        // Inicializar sliders
+        setTimeout(() => {
+          UI.moverSliderMain();
+          UI.moverSliderAdmin();
+        }, 100);
       });
 
       window.switchAuthTab = Auth.switchAuthTab.bind(Auth);
@@ -3319,11 +3332,6 @@
       window.loginUser = Auth.loginUser.bind(Auth);
       window.logoutUser = Auth.logoutUser.bind(Auth);
       window.logoutAdmin = Auth.logoutAdmin.bind(Auth);
-      window.extenderUsuario = Admin.extenderUsuario.bind(Admin);
-      window.eliminarUsuario = Admin.eliminarUsuario.bind(Admin);
-      window.filtrarUsuarios = Admin.filtrarUsuarios.bind(Admin);
-      window.exportarUsuariosCSV = Admin.exportarUsuariosCSV.bind(Admin);
-      window.renovarExpirados = Admin.renovarExpirados.bind(Admin);
       window.startCalc = Training.startCalc.bind(Training);
       window.copyResults = Training.copyResults.bind(Training);
       window.switchTab = UI.switchTab.bind(UI);
