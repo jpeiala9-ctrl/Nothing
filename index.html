@@ -105,6 +105,11 @@
       background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
     }
 
+    /* Ajuste específico para el título de la pestaña ENTRENO */
+    #tab-entreno h2 {
+      margin-bottom: 30px;
+    }
+
     .wrapper {
       min-height: 100vh;
       display: flex;
@@ -149,18 +154,18 @@
 
     .card.admin-card {
       max-width: 800px;
-      max-height: 90vh;
+      max-height: none;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      overflow: visible;
     }
     .card.admin-card .tabs-container {
-      flex: 1;
-      overflow-y: auto;
+      flex: none;
+      overflow-y: visible;
       padding-right: 5px;
     }
 
-    /* ===== HEADER CON CERRAR SESIÓN ===== */
+    /* ===== HEADER CON ICONO DE APAGADO ===== */
     .app-header {
       display: flex;
       justify-content: space-between;
@@ -169,20 +174,33 @@
       flex-wrap: wrap;
       gap: 15px;
     }
-    .logout-btn {
-      padding: 8px 16px;
+    .logout-icon {
+      width: 40px;
+      height: 40px;
+      padding: 0;
       background: transparent;
-      border: 1px solid var(--accent-red);
-      border-radius: 40px;
-      color: var(--accent-red);
-      font-family: var(--font-mono);
-      font-size: 12px;
+      border: 2px solid var(--accent-green);
+      border-radius: 50%;
+      color: var(--accent-green);
+      font-size: 24px;
+      line-height: 1;
       cursor: pointer;
       transition: all 0.3s ease;
-      min-width: 100px;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .logout-btn:hover {
+    .logout-icon:hover {
+      background: var(--accent-green);
+      color: var(--bg-primary);
+      border-color: var(--accent-green);
+    }
+    /* En el panel de admin, el icono será rojo */
+    #adminPage .logout-icon {
+      border-color: var(--accent-red);
+      color: var(--accent-red);
+    }
+    #adminPage .logout-icon:hover {
       background: var(--accent-red);
       color: var(--bg-primary);
       border-color: var(--accent-red);
@@ -252,6 +270,13 @@
     .tab-button.active {
       background: rgba(255, 255, 255, 0.1);
       color: var(--text-primary);
+    }
+    /* Pestaña de soporte activa sin mensajes no leídos: naranja */
+    #soporteTabButton.active:not(.soporte-unread) {
+      color: #ffa500 !important;
+    }
+    #adminSoporteTab.active:not(.soporte-unread) {
+      color: #ffa500 !important;
     }
     .tab-content { display: none; animation: glyphIn 0.5s ease; }
     .tab-content.active { display: block; }
@@ -346,63 +371,6 @@
     .button-main:hover::before { left: 100%; }
     .button-main:hover { box-shadow: 0 0 25px rgba(10, 132, 255, 0.4); }
     .button-main:disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
-
-    /* ===== TARJETA DE INFORMACIÓN ===== */
-    .info-card {
-      margin: 30px 0;
-      padding: 20px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: 24px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .info-card .title {
-      font-family: var(--font-dot);
-      font-size: 18px;
-      letter-spacing: 2px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .info-card .subtitle {
-      color: var(--text-secondary);
-      font-size: 12px;
-      margin-bottom: 16px;
-      text-align: center;
-    }
-    .info-card .content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s ease;
-      opacity: 0;
-    }
-    .info-card.active .content {
-      max-height: 600px;
-      overflow-y: auto;
-      opacity: 1;
-      padding-right: 10px;
-    }
-    .feature-section {
-      margin: 20px 0;
-      padding: 16px;
-      background: var(--bg-primary);
-      border-radius: 16px;
-      border: 1px solid var(--border-color);
-    }
-    .feature-section h4 { color: var(--accent-blue); margin-bottom: 12px; font-size: 14px; }
-    .feature-section ul { list-style: none; }
-    .feature-section li {
-      margin: 12px 0;
-      padding: 8px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 1px dashed var(--border-color);
-    }
-    .feature-icon { font-size: 20px; min-width: 30px; }
 
     /* ===== CURIOSIDAD ===== */
     .curiosity {
@@ -590,7 +558,7 @@
     .btn-plan { border-color: var(--accent-yellow); }
     .btn-view { border-color: var(--accent-purple); }
 
-    /* ===== HISTORIAL CON SELECTOR DE CANTIDAD Y PASTILLAS ===== */
+    /* ===== HISTORIAL (tarjetas compactas con expansión) ===== */
     .historial-controls {
       display: flex;
       justify-content: flex-end;
@@ -611,7 +579,7 @@
     }
     .historial-list { display: flex; flex-direction: column; gap: 12px; }
     .historial-item {
-      padding: 16px;
+      padding: 10px;
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
       border-radius: 16px;
@@ -627,28 +595,8 @@
       color: var(--accent-blue);
       font-family: var(--font-dot);
       font-size: 14px;
-      margin-bottom: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding-right: 70px;
+      margin-bottom: 4px;
       text-align: center;
-    }
-    .historial-item .fecha .fecha-linea {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .historial-item .hora {
-      color: var(--accent-green);
-      font-size: 12px;
-      background: rgba(50, 215, 75, 0.2);
-      padding: 2px 8px;
-      border-radius: 20px;
-      display: inline-block;
-      width: fit-content;
     }
     .historial-item .resumen {
       color: var(--text-secondary);
@@ -657,10 +605,29 @@
       white-space: pre-wrap;
       text-align: center;
     }
+    .historial-item .delete-single {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: 1px solid var(--accent-red);
+      border-radius: 40px;
+      color: var(--accent-red);
+      padding: 4px 8px;
+      font-size: 10px;
+      cursor: pointer;
+      width: auto;
+      margin: 0;
+      z-index: 2;
+    }
+    .historial-item .delete-single:hover {
+      background: var(--accent-red);
+      color: var(--bg-primary);
+    }
     .historial-item .detalle {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.5s ease;
+      transition: max-height 0.4s ease, padding 0.3s ease;
       margin-top: 0;
       color: var(--text-secondary);
       font-size: 13px;
@@ -669,20 +636,24 @@
     }
     .historial-item.abierto .detalle {
       max-height: 400px;
-      margin-top: 16px;
+      margin-top: 12px;
       border-top-color: var(--border-color);
-      padding-top: 16px;
+      padding-top: 12px;
+    }
+    .historial-item .hora-detalle {
+      color: var(--accent-green);
+      font-size: 12px;
+      margin-bottom: 6px;
     }
     .historial-item .predicciones {
       color: var(--accent-blue);
       font-size: 11px;
-      margin: 4px 0;
+      margin: 6px 0;
       background: rgba(10, 132, 255, 0.1);
-      padding: 2px 6px;
-      border-radius: 12px;
+      padding: 4px 8px;
+      border-radius: 20px;
       display: inline-block;
     }
-    /* Pastillas de zonas - centradas */
     .zonas-pastillas {
       display: flex;
       flex-wrap: wrap;
@@ -714,22 +685,6 @@
       border-radius: 50%;
       display: inline-block;
     }
-    .historial-item .delete-single {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      background: transparent;
-      border: 1px solid var(--accent-red);
-      border-radius: 40px;
-      color: var(--accent-red);
-      padding: 4px 12px;
-      font-size: 10px;
-      cursor: pointer;
-      width: auto;
-      margin: 0;
-      z-index: 2;
-    }
-    .historial-item .delete-single:hover { background: var(--accent-red); color: var(--bg-primary); }
 
     /* ===== MENSAJES (estructura mejorada) ===== */
     .mensaje-item {
@@ -841,7 +796,7 @@
     /* ===== ADMIN PANEL ===== */
     .admin-panel { margin: 30px 0; padding: 20px; background: var(--bg-secondary); border-radius: 24px; }
 
-    /* Estadísticas rediseñadas */
+    /* Estadísticas */
     .admin-stats {
       display: flex;
       gap: 12px;
@@ -1048,22 +1003,6 @@
       border: none;
     }
 
-    /* ===== BOTÓN PLAN PERSONALIZADO (ahora es un texto informativo) ===== */
-    .plan-info {
-      margin: 30px 0;
-      padding: 20px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--accent-green);
-      border-radius: 24px;
-      text-align: center;
-      color: var(--text-secondary);
-      font-size: 14px;
-      line-height: 1.6;
-    }
-    .plan-info strong {
-      color: var(--accent-green);
-    }
-
     /* ===== MODAL DETALLE SESIÓN ===== */
     #detalleSesion {
       display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
@@ -1124,7 +1063,7 @@
       transform: translateX(-50%) scale(1.05);
     }
 
-    /* ===== BANNER PWA ===== */
+    /* ===== BANNER PWA (siempre visible si el navegador lo permite) ===== */
     #pwa-banner {
       position: fixed; bottom: 20px; left: 20px; right: 20px; max-width: 400px; margin: 0 auto;
       background: var(--bg-card); border: 2px solid var(--accent-blue); border-radius: 40px;
@@ -1242,61 +1181,6 @@
         <div class="error-message" id="registerError"></div>
         <button class="button-main" onclick="window.registerUser()">[ REGISTRARSE ]</button>
       </div>
-      <div class="info-card" onclick="this.classList.toggle('active')">
-        <div class="title"><span>⎔</span> QUÉ PUEDES HACER <span>▼</span></div>
-        <div class="subtitle">// pulsa para ver todas las funciones</div>
-        <div class="content">
-          <div class="feature-section">
-            <h4>> ENTRENO_</h4>
-            <ul>
-              <li><span class="feature-icon">⚡</span> Calcular zonas de entrenamiento</li>
-              <li><span class="feature-icon">❤️</span> Obtener FC máxima y umbral</li>
-              <li><span class="feature-icon">📊</span> Ver predicciones para 2k, 6k, 10k, media y maratón</li>
-              <li><span class="feature-icon">🎯</span> Explorar zonas Z1-Z6 con descripciones</li>
-            </ul>
-          </div>
-          <div class="feature-section">
-            <h4>> PLANES DE ENTRENAMIENTO_</h4>
-            <ul>
-              <li><span class="feature-icon">📅</span> Generar plan personalizado</li>
-              <li><span class="feature-icon">🏃</span> Modalidades: Runner (asfalto) y Trail (montaña)</li>
-              <li><span class="feature-icon">📏</span> Distancias: 2k, 5k, 10k, media maratón, maratón</li>
-              <li><span class="feature-icon">📈</span> Niveles: Principiante, Intermedio, Avanzado</li>
-              <li><span class="feature-icon">⏱️</span> Duración: 1 o 3 meses</li>
-              <li><span class="feature-icon">📆</span> Elegir día de tirada larga y fecha de inicio</li>
-            </ul>
-          </div>
-          <div class="feature-section">
-            <h4>> VISUALIZACIÓN_</h4>
-            <ul>
-              <li><span class="feature-icon">🗓️</span> Calendario interactivo semana a semana</li>
-              <li><span class="feature-icon">🔍</span> Pulsar cualquier día para ver detalle de la sesión</li>
-              <li><span class="feature-icon">🎨</span> Colores distintos por tipo de entrenamiento</li>
-            </ul>
-          </div>
-          <div class="feature-section">
-            <h4>> GUARDAR Y COMPARTIR_</h4>
-            <ul>
-              <li><span class="feature-icon">📋</span> Copiar resultados al portapapeles</li>
-              <li><span class="feature-icon">💾</span> Guardar cálculos en historial local</li>
-              <li><span class="feature-icon">📂</span> Cargar último plan guardado</li>
-              <li><span class="feature-icon">🗑️</span> Borrado individual en historial</li>
-            </ul>
-          </div>
-          <div class="feature-section">
-            <h4>> EXTRAS_</h4>
-            <ul>
-              <li><span class="feature-icon">💡</span> Consejos de entrenamiento aleatorios</li>
-              <li><span class="feature-icon">📱</span> Información sobre planes genéricos</li>
-              <li><span class="feature-icon">🔄</span> Consejos automáticos cada 8 segundos</li>
-              <li><span class="feature-icon">✉️</span> Soporte: mensajes con el administrador</li>
-            </ul>
-          </div>
-          <div style="text-align: center; margin-top: 20px; padding: 15px; color: var(--accent-green); border: 1px dashed var(--accent-green); border-radius: 16px;">
-            > REGÍSTRATE Y COMIENZA <
-          </div>
-        </div>
-      </div>
       <div id="dailyTip" class="curiosity" onclick="window.changeDailyTip()">
         <span>> CONSEJO DEL DÍA_</span><small>// pulsa para nuevo consejo</small>
       </div>
@@ -1308,7 +1192,7 @@
     <div class="card admin-card">
       <div class="app-header">
         <h1>RI5·ADMIN</h1>
-        <button class="logout-btn" onclick="window.logoutAdmin()">CERRAR SESIÓN</button>
+        <button class="logout-icon" onclick="window.logoutAdmin()" title="Cerrar sesión">⏻</button>
       </div>
       <p style="color: var(--accent-green); margin:20px 0; text-align:center;" id="adminWelcome"></p>
       <div class="tabs-container">
@@ -1361,7 +1245,7 @@
     <div class="card">
       <div class="app-header">
         <h1 id="ri5Title" onclick="window.showPremiumBenefits()">RI5</h1>
-        <button class="logout-btn" onclick="window.logoutUser()">CERRAR SESIÓN</button>
+        <button class="logout-icon" onclick="window.logoutUser()" title="Cerrar sesión">⏻</button>
       </div>
       <p style="color: var(--text-secondary); margin:20px 0; text-align:center;" id="userWelcome"></p>
       <div class="tabs-container">
@@ -1514,10 +1398,6 @@
         </div>
       </div>
 
-      <div class="plan-info">
-        <p><strong>📌 Información sobre planes genéricos</strong></p>
-        <p>Los planes generados son orientativos y están basados en principios generales de entrenamiento. Puedes usarlos como base y adaptarlos a tus necesidades. Escucha a tu cuerpo y ajusta las intensidades si es necesario.</p>
-      </div>
       <div class="footer" id="footer"></div>
     </div>
   </div>
@@ -1958,7 +1838,7 @@
             await Storage.saveUsers(users);
             this.actualizarAdminPanel();
             alert(`✅ Usuario ${u} extendido ${m} mes(es)`);
-            this.abrirModalUsuarios(); // Refresca la modal
+            this.abrirModalUsuarios();
           }
         },
         async togglePremium(u) {
@@ -2284,6 +2164,7 @@
           if (!hist.length) { cont.innerHTML = '<p style="text-align:center; padding:20px; color: var(--text-secondary);">📭 SIN HISTORIAL</p>'; return; }
           let html = '<div class="historial-list">';
           hist.forEach((it,i) => {
+            // Preparar zonas para el detalle
             let zonasHtml = '';
             if (it.zonasResumen && Array.isArray(it.zonasResumen)) {
               zonasHtml = '<div class="zonas-pastillas">';
@@ -2293,17 +2174,24 @@
               });
               zonasHtml += '</div>';
             }
+            // Predicciones para el detalle
+            const predHtml = it.predicciones ? `<div class="predicciones">📊 ${it.predicciones}</div>` : '';
+            // Hora para el detalle
+            const horaHtml = it.hora ? `<div class="hora-detalle">🕒 ${it.hora}</div>` : '';
+
             html += `<div class="historial-item" onclick="window.toggleHistorialDetalle(this)">
               <div class="fecha">
-                <div class="fecha-linea">
-                  <span class="hora">${it.hora||''}</span>
-                  <span>📅 ${it.date}</span>
-                </div>
+                <span>📅 ${it.date}</span>
               </div>
-              <div class="resumen">${it.resumen||it.nombre+' · '+it.edad+' años'}</div>
-              ${it.predicciones ? `<div class="predicciones">📊 ${it.predicciones}</div>` : ''}
-              ${zonasHtml}
+              <div class="resumen">${it.resumen || it.nombre + ' · ' + it.edad + ' años'}</div>
               <button class="delete-single" onclick="event.stopPropagation(); window.borrarEntradaHistorial(${i})">🗑️ BORRAR</button>
+              <div class="detalle">
+                ${horaHtml}
+                ${predHtml}
+                ${zonasHtml}
+                ${it.fcMax ? `<div>❤️ FC Máx: ${it.fcMax} lpm</div>` : ''}
+                ${it.umbral ? `<div>⚡ Umbral: ${it.umbral} lpm</div>` : ''}
+              </div>
             </div>`;
           });
           html += '</div>';
@@ -3332,6 +3220,8 @@
               grid.appendChild(fragment);
               AppState.planGeneradoActual = { modalidad, distancia, macrociclo, diasPorSemana:diasEntreno.length, nivel, experiencia:exp, objetivo:obj, diaLargo, fechaInicio, diasEntreno };
               document.getElementById("calendarioEntreno").style.display = "block";
+              // Desplazar y centrar el calendario
+              setTimeout(() => document.getElementById("calendarioEntreno").scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
               this.guardarPlanActual();
               if (btn) Utils.hideLoading(btn);
             } catch (e) { console.error(e); alert("> ERROR GENERANDO PLAN_"); if (btn) Utils.hideLoading(btn); }
@@ -3345,7 +3235,10 @@
           window.addEventListener('beforeinstallprompt', e => {
             e.preventDefault();
             AppState.deferredPrompt = e;
-            if (localStorage.getItem('pwa_installed') !== 'true') document.getElementById('pwa-banner').style.display = 'flex';
+            // Mostrar banner si no está instalada (sin comprobar cierre previo)
+            if (localStorage.getItem('pwa_installed') !== 'true') {
+              document.getElementById('pwa-banner').style.display = 'flex';
+            }
           });
           window.addEventListener('appinstalled', () => {
             document.getElementById('pwa-banner').style.display = 'none';
@@ -3364,7 +3257,7 @@
         },
         cerrarBannerPWA() {
           document.getElementById('pwa-banner').style.display = 'none';
-          localStorage.setItem('pwa_banner_closed', 'true');
+          // No guardamos en localStorage para que vuelva a aparecer en futuras visitas
         },
         registerServiceWorker() {
           if ('serviceWorker' in navigator) {
@@ -3389,7 +3282,8 @@
         document.getElementById("time").addEventListener("input", () => { if(AppState.camposTocados.time) UI.validarCampo('time'); UI.validarTodo(); });
         UI.validarTodo();
         UI.initDiasCheckboxes();
-        if (localStorage.getItem('pwa_banner_closed')==='true' || localStorage.getItem('pwa_installed')==='true') document.getElementById('pwa-banner').style.display='none';
+        // Ya no comprobamos pwa_banner_closed
+        if (localStorage.getItem('pwa_installed')==='true') document.getElementById('pwa-banner').style.display='none';
         PWA.init(); PWA.registerServiceWorker();
         setTimeout(() => { if (AppState.deferredPrompt && localStorage.getItem('pwa_installed')!=='true') document.getElementById('pwa-banner').style.display='flex'; }, 3000);
       });
