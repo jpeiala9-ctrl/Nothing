@@ -41,6 +41,8 @@
       --slider-color: rgba(191, 90, 242, 0.25);
       --new-user-bg: rgba(10, 132, 255, 0.2);
       --new-user-border: #0a84ff;
+      --stat-bg: #1e1e1e;
+      --stat-number: #ffffff;
     }
 
     @media (prefers-color-scheme: light) {
@@ -57,8 +59,10 @@
         --slider-color: rgba(191, 90, 242, 0.15);
         --new-user-bg: rgba(10, 132, 255, 0.1);
         --new-user-border: #0a84ff;
+        --stat-bg: #e0e0e0;
+        --stat-number: #111111;
       }
-      input, button, select { color: #111111; }
+      input, button, select, textarea { color: #111111; }
       .curiosity span, .curiosity small { color: #111111; }
     }
 
@@ -220,7 +224,6 @@
     .tabs-header {
       display: flex;
       justify-content: center;
-      flex-wrap: wrap;
       gap: 4px;
       margin-bottom: 20px;
       background: var(--bg-secondary);
@@ -228,6 +231,8 @@
       border-radius: 40px;
       border: 1px solid var(--border-color);
       position: relative;
+      height: 48px;
+      align-items: center;
     }
     .tab-slider {
       position: absolute;
@@ -244,7 +249,11 @@
       flex: 1;
       min-width: 70px;
       max-width: 100px;
-      padding: 12px 4px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
       background: transparent;
       border: none;
       color: var(--text-secondary);
@@ -280,8 +289,8 @@
       100% { color: var(--accent-red); }
     }
 
-    /* ===== INPUTS Y SELECTS ===== */
-    input, button, select {
+    /* ===== INPUTS, SELECTS Y TEXTAREAS ===== */
+    input, button, select, textarea {
       width: 100%;
       padding: 16px;
       background: var(--bg-secondary);
@@ -294,11 +303,16 @@
       transition: all 0.3s ease;
       outline: none;
     }
-    input:focus, select:focus {
+    textarea {
+      border-radius: 24px;
+      resize: vertical;
+      min-height: 100px;
+    }
+    input:focus, select:focus, textarea:focus {
       border-color: var(--accent-blue);
       box-shadow: 0 0 15px rgba(10, 132, 255, 0.4);
     }
-    input::placeholder {
+    input::placeholder, textarea::placeholder {
       color: var(--text-secondary);
       font-family: var(--font-mono);
       letter-spacing: 1px;
@@ -592,7 +606,25 @@
     .btn-plan { border-color: var(--accent-yellow); }
     .btn-view { border-color: var(--accent-purple); }
 
-    /* ===== HISTORIAL ===== */
+    /* ===== HISTORIAL CON SELECTOR DE CANTIDAD Y PASTILLAS ===== */
+    .historial-controls {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .historial-controls label {
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+    .historial-controls select {
+      width: auto;
+      padding: 8px 12px;
+      margin: 0;
+      font-size: 12px;
+      background: var(--bg-primary);
+    }
     .historial-list { display: flex; flex-direction: column; gap: 12px; }
     .historial-item {
       padding: 16px;
@@ -663,21 +695,36 @@
       border-radius: 12px;
       display: inline-block;
     }
-    .historial-item .zonas-resumen {
-      color: var(--accent-purple);
-      font-size: 11px;
-      margin: 4px 0;
-      border-top: 1px dashed var(--border-color);
-      padding-top: 4px;
-    }
-    .historial-item .detalle p {
+    /* Pastillas de zonas */
+    .zonas-pastillas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
       margin: 8px 0;
     }
-    .historial-item .detalle .zona-detalle {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 8px 16px;
-      margin: 8px 0;
+    .zona-pastilla {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: bold;
+      background: var(--bg-primary);
+      border: 1px solid;
+    }
+    .zona-pastilla.z1 { border-color: var(--accent-blue); color: var(--accent-blue); }
+    .zona-pastilla.z2 { border-color: var(--accent-green); color: var(--accent-green); }
+    .zona-pastilla.z3 { border-color: var(--accent-yellow); color: var(--accent-yellow); }
+    .zona-pastilla.z4 { border-color: var(--accent-red); color: var(--accent-red); }
+    .zona-pastilla.z5 { border-color: var(--accent-purple); color: var(--accent-purple); }
+    .zona-pastilla.z6 { border-color: var(--accent-blue); color: var(--accent-blue); }
+    .zona-pastilla span {
+      background: currentColor;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
     }
     .historial-item .delete-single {
       position: absolute;
@@ -806,23 +853,30 @@
     /* ===== ADMIN PANEL ===== */
     .admin-panel { margin: 30px 0; padding: 20px; background: var(--bg-secondary); border-radius: 24px; }
 
+    /* Estadísticas rediseñadas */
     .admin-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      display: flex;
       gap: 12px;
+      justify-content: center;
       margin: 20px 0;
+      flex-wrap: wrap;
     }
-    .stat-card {
-      background: var(--bg-primary);
+    .stat-badge {
+      background: var(--stat-bg);
+      padding: 6px 14px;
+      border-radius: 40px;
       border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 16px;
-      text-align: center;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
-    .stat-card .number { font-size: 24px; color: var(--accent-blue); font-weight: bold; }
-    .stat-card .label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; }
+    .stat-badge .number {
+      color: var(--accent-blue);
+      font-weight: bold;
+    }
 
-    /* Acordeón de usuarios */
+    /* Acordeón de usuarios con scroll */
     .usuarios-acordeon {
       background: var(--bg-primary);
       border: 1px solid var(--border-color);
@@ -855,7 +909,7 @@
       background: var(--bg-primary);
     }
     .usuarios-acordeon.abierto .usuarios-contenido {
-      max-height: 600px;
+      max-height: 400px;
       overflow-y: auto;
       padding: 16px;
     }
@@ -916,12 +970,19 @@
     }
 
     /* ===== SELECCIÓN DE DÍAS (checkboxes) ===== */
+    .dias-semana-label {
+      text-align: center;
+      color: var(--accent-yellow);
+      font-family: var(--font-dot);
+      font-size: 14px;
+      margin: 10px 0 5px;
+    }
     .dias-semana-container {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       justify-content: center;
-      margin: 16px 0;
+      margin: 5px 0 16px;
       background: var(--bg-secondary);
       padding: 12px;
       border-radius: 40px;
@@ -1090,6 +1151,14 @@
       border: 1px dashed var(--border-color); border-radius: 16px; font-size: 14px; text-align: center;
       line-height: 1.6;
     }
+    .nota-plan a {
+      color: var(--accent-green);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .nota-plan a:hover {
+      text-decoration: underline;
+    }
     #results { margin-top: 30px; }
     .footer {
       margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color);
@@ -1108,7 +1177,7 @@
 
     @media (max-width: 480px) {
       .card { padding: 20px; }
-      .tabs-header { flex-wrap: wrap; }
+      .tabs-header { flex-wrap: wrap; height: auto; }
       .tab-button { min-width: 60px; font-size: 11px; padding: 10px 2px; }
       .calendario-dia { font-size: 9px; padding: 2px 1px; }
       .calendario-dia div { font-size: 7px; }
@@ -1142,8 +1211,9 @@
     <p>✔ Planes de entrenamiento de hasta 3 meses</p>
     <p>✔ Prioridad en soporte</p>
     <p>✔ Acceso a contenido exclusivo</p>
-    <p>✔ Sin límites en el historial</p>
+    <p>✔ Historial ampliado hasta 25 entradas</p>
     <p>✔ Y mucho más...</p>
+    <p>🔗 Para hacerte premium, contacta por Instagram <strong>@navegacionpro</strong></p>
     <button onclick="document.getElementById('premiumModal').style.display='none'">CERRAR</button>
   </div>
 
@@ -1244,9 +1314,10 @@
           <div class="tab-slider" id="adminTabSlider"></div>
         </div>
         <div id="admin-tab-usuarios" class="tab-content active">
+          <!-- Estadísticas rediseñadas -->
           <div class="admin-stats" id="adminStats"></div>
           <div class="admin-panel">
-            <!-- Acordeón de usuarios con buscador interno -->
+            <!-- Acordeón de usuarios con buscador interno y scroll -->
             <div class="usuarios-acordeon" id="usuariosAcordeon">
               <div class="usuarios-header" onclick="window.toggleUsuariosAcordeon()">
                 <span>👥 USUARIOS REGISTRADOS</span>
@@ -1337,6 +1408,7 @@
               <option value="3">3 MESES</option>
             </select>
 
+            <div class="dias-semana-label">📅 DÍAS QUE ENTRENAS A LA SEMANA</div>
             <div class="dias-semana-container" id="diasSemanaContainer">
               <!-- Checkboxes generados por JS -->
             </div>
@@ -1380,9 +1452,9 @@
           <div id="calendarioEntreno" style="display:none;">
             <h3>> TU PLAN_</h3>
             <div class="nota-plan">
-              > Este plan es una guía general basada en tu perfil. Ajusta las intensidades según tus sensaciones. 
-              Escucha a tu cuerpo, respeta los descansos y, si tienes dudas, consulta con un entrenador profesional. 
-              ¡Disfruta del proceso y confía en tu progreso!
+              > Este plan es una guía general basada en tu perfil. Para un plan personalizado y exhaustivo, 
+              visita nuestro <a href="https://www.instagram.com/navegacionpro" target="_blank">Instagram @navegacionpro</a>.
+              Ajusta las intensidades según tus sensaciones, respeta los descansos y ¡disfruta del proceso!
             </div>
             <p id="resumenObjetivo" style="color: var(--accent-blue); margin:20px 0; text-align:center;"></p>
             <div class="calendar-grid-container">
@@ -1395,6 +1467,13 @@
         <!-- TAB HISTORIAL -->
         <div id="tab-historial" class="tab-content">
           <h2>> HISTORIAL_</h2>
+          <div class="historial-controls">
+            <label for="historialLimit">Mostrar:</label>
+            <select id="historialLimit" onchange="window.cargarHistorial()">
+              <option value="10">10 entradas</option>
+              <option value="25">25 entradas</option>
+            </select>
+          </div>
           <div id="historialContainer"></div>
           <button class="action-button btn-delete" onclick="window.borrarHistorial()" style="margin-top:16px;">🗑️ LIMPIAR TODO EL HISTORIAL</button>
         </div>
@@ -1414,7 +1493,7 @@
             <div id="soporte-enviados" class="soporte-panel">
               <h3>Tus mensajes al admin</h3>
               <div class="nuevo-mensaje">
-                <textarea id="mensajeUsuario" class="message-input" rows="3" placeholder="> ESCRIBE TU CONSULTA..."></textarea>
+                <textarea id="mensajeUsuario" placeholder="> ESCRIBE TU CONSULTA..."></textarea>
                 <button class="send-message-btn" onclick="window.enviarMensajeUsuario()">📤 ENVIAR MENSAJE</button>
               </div>
               <div id="listaMensajesEnviados" style="margin-top:20px;"></div>
@@ -1634,7 +1713,7 @@
         currentUser: null, currentSesionDetalle: null, deferredPrompt: null,
         mensajesNoLeidos: 0,
         isPremium: false,
-        usuariosVistos: JSON.parse(localStorage.getItem('usuariosVistos') || '[]'), // para no volver a destacar
+        usuariosVistos: JSON.parse(localStorage.getItem('usuariosVistos') || '[]'),
         setLastCalc(d) {
           this.lastName = d.name; this.lastAge = d.age; this.lastFC = d.fcMax;
           this.lastUL = d.ul; this.lastZones = d.zones; this.lastPred = d.pred;
@@ -1679,23 +1758,24 @@
           if (password.length < 4) { err.innerText = "> CONTRASEÑA MÍNIMO 4 CARACTERES_"; err.classList.add('visible'); return; }
           const users = await Storage.getUsers();
           if (users[username]) { err.innerText = "> EL USUARIO YA EXISTE_"; err.classList.add('visible'); return; }
-          const expiry = new Date(); expiry.setMonth(expiry.getMonth()+1);
+          const expiry = new Date(); 
+          expiry.setMonth(expiry.getMonth() + 3); // 3 meses de prueba premium
           users[username] = { 
             password: Utils.hashPassword(password), 
             created: new Date().toISOString(), 
             expires: expiry.toISOString(),
-            premium: false
+            premium: true // ¡Ahora premium gratis al registrarse!
           };
           await Storage.saveUsers(users);
           
-          await Storage.enviarMensajeAdminAUsuario(username, "¡Bienvenido a RI5! Empieza calculando tus zonas de entrenamiento y genera tu primer plan.");
+          await Storage.enviarMensajeAdminAUsuario(username, "¡Bienvenido a RI5! Disfruta de 3 meses premium gratis. Empieza calculando tus zonas y genera tu primer plan.");
           
-          AppState.setCurrentUser(username, false);
+          AppState.setCurrentUser(username, true);
           document.getElementById("loginPage").style.opacity = "0";
           setTimeout(() => {
             document.getElementById("loginPage").style.display = "none";
             document.getElementById("mainContent").style.display = "flex";
-            document.getElementById("userWelcome").innerText = `> BIENVENIDO, ${username.toUpperCase()}_ · ACCESO HASTA ${expiry.toLocaleDateString()}`;
+            document.getElementById("userWelcome").innerText = `> BIENVENIDO, ${username.toUpperCase()}_ · PREMIUM HASTA ${expiry.toLocaleDateString()}`;
             document.getElementById("mainContent").style.opacity = "1";
             UI.changeDailyTip(); UI.startConsejoAutoChange();
           }, 300);
@@ -1710,7 +1790,16 @@
           const user = users[username];
           if (!user || user.password !== Utils.hashPassword(password)) { err.innerText = "> USUARIO O CONTRASEÑA INCORRECTOS_"; err.classList.add('visible'); return; }
           const now = new Date(), expiry = new Date(user.expires);
-          if (now > expiry) { err.innerText = "> TU ACCESO HA EXPIRADO. SOLICITA UN NUEVO CÓDIGO._"; err.classList.add('visible'); return; }
+          if (now > expiry) { 
+            if (user.premium) {
+              // Si expiró pero era premium, lo dejamos pasar pero avisamos
+              alert("> Tu período premium ha expirado. Algunas funciones pueden estar limitadas. Contacta en Instagram para renovar.");
+            } else {
+              err.innerText = "> TU ACCESO HA EXPIRADO. SOLICITA UN NUEVO CÓDIGO._"; 
+              err.classList.add('visible'); 
+              return;
+            }
+          }
           AppState.setCurrentUser(username, user.premium || false);
           const mensajes = await Storage.getMensajesUsuario(username);
           AppState.mensajesNoLeidos = mensajes.filter(m => !m.leido).length;
@@ -1719,7 +1808,7 @@
           setTimeout(() => {
             document.getElementById("loginPage").style.display = "none";
             document.getElementById("mainContent").style.display = "flex";
-            document.getElementById("userWelcome").innerText = `> BIENVENIDO, ${username.toUpperCase()}_ · ACCESO HASTA ${expiry.toLocaleDateString()}`;
+            document.getElementById("userWelcome").innerText = `> BIENVENIDO, ${username.toUpperCase()}_ · ${user.premium ? 'PREMIUM' : 'ACCESO'} HASTA ${expiry.toLocaleDateString()}`;
             document.getElementById("mainContent").style.opacity = "1";
             UI.changeDailyTip(); UI.startConsejoAutoChange();
             UI.cargarMensajesRecibidos();
@@ -1757,12 +1846,22 @@
           const users = await Storage.getUsers();
           const user = users[saved];
           if (!user) { localStorage.removeItem('ri5_current_user'); return false; }
-          if (new Date() > new Date(user.expires)) { localStorage.removeItem('ri5_current_user'); return false; }
+          const now = new Date(), expiry = new Date(user.expires);
+          if (now > expiry) {
+            if (!user.premium) {
+              localStorage.removeItem('ri5_current_user'); 
+              return false;
+            }
+            // Si es premium expirado, dejamos pasar pero avisamos después
+          }
           AppState.currentUser = saved;
           AppState.isPremium = user.premium || false;
           document.getElementById("loginPage").style.display = "none";
           document.getElementById("mainContent").style.display = "flex";
-          document.getElementById("userWelcome").innerText = `> BIENVENIDO, ${saved.toUpperCase()}_ · ACCESO HASTA ${new Date(user.expires).toLocaleDateString()}`;
+          document.getElementById("userWelcome").innerText = `> BIENVENIDO, ${saved.toUpperCase()}_ · ${user.premium ? 'PREMIUM' : 'ACCESO'} HASTA ${expiry.toLocaleDateString()}`;
+          if (now > expiry && user.premium) {
+            setTimeout(() => alert("> Tu período premium ha expirado. Algunas funciones pueden estar limitadas. Contacta en Instagram para renovar."), 500);
+          }
           const title = document.getElementById('ri5Title');
           if (title) {
             if (AppState.isPremium) title.classList.add('premium');
@@ -1792,10 +1891,11 @@
           const ahora = new Date();
           const activos = Object.values(users).filter(u => new Date(u.expires) > ahora).length;
           const expirados = total - activos;
+          // Estadísticas en formato badge
           document.getElementById("adminStats").innerHTML = `
-            <div class="stat-card"><span class="number">${total}</span><span class="label">TOTAL</span></div>
-            <div class="stat-card"><span class="number">${activos}</span><span class="label">ACTIVOS</span></div>
-            <div class="stat-card"><span class="number">${expirados}</span><span class="label">EXPIRADOS</span></div>
+            <span class="stat-badge">📊 TOTAL <span class="number">${total}</span></span>
+            <span class="stat-badge">✅ ACTIVOS <span class="number">${activos}</span></span>
+            <span class="stat-badge">⏳ EXPIRADOS <span class="number">${expirados}</span></span>
           `;
           
           let usuariosHtml = '';
@@ -1803,7 +1903,6 @@
             const creado = new Date(d.created).toLocaleDateString();
             const expiry = new Date(d.expires).toLocaleDateString();
             const premium = d.premium ? '✅ PREMIUM' : '❌ NO PREMIUM';
-            // Destacar si es nuevo (menos de 24h y no visto)
             const creadoDate = new Date(d.created);
             const esNuevo = (ahora - creadoDate) < 24*60*60*1000 && !AppState.usuariosVistos.includes(u);
             const claseNuevo = esNuevo ? 'nuevo' : '';
@@ -2007,7 +2106,6 @@
           document.getElementById('admin-tab-soporte').classList.add('active');
           Admin.cargarMensajesAdmin();
         }
-        // Mover slider
         setTimeout(() => UI.moverSliderAdmin(), 50);
       };
 
@@ -2067,8 +2165,8 @@
             zonasResumen = calcData.zones.map(z => {
               const min = Math.round(calcData.ul * z[2]);
               const max = Math.round(calcData.ul * z[3]);
-              return `${z[0]}: ${min}-${max}`;
-            }).join(' · ');
+              return { zona: z[0], min, max };
+            });
           }
           const data = {
             date: ahora.toLocaleDateString('es-ES'), hora: ahora.toLocaleTimeString('es-ES'),
@@ -2081,7 +2179,9 @@
           };
           let hist = await Storage.getHistorial(AppState.currentUser);
           hist.unshift(data);
-          if (hist.length > 10) hist.pop();
+          // Límite según premium
+          const limite = AppState.isPremium ? 25 : 10;
+          if (hist.length > limite) hist.pop();
           await Storage.saveHistorial(AppState.currentUser, hist);
           await Storage.setUltimoCalculo(AppState.currentUser, calcData);
           if (document.getElementById('tab-historial').classList.contains('active')) UI.cargarHistorial();
@@ -2212,14 +2312,25 @@
         async cargarHistorial() {
           const cont = document.getElementById("historialContainer");
           if (!AppState.currentUser) { cont.innerHTML = '<p style="text-align:center; padding:20px; color: var(--text-secondary);">📭 SIN USUARIO</p>'; return; }
-          const hist = await Storage.getHistorial(AppState.currentUser);
+          let hist = await Storage.getHistorial(AppState.currentUser);
+          const limite = parseInt(document.getElementById('historialLimit').value);
+          if (hist.length > limite) hist = hist.slice(0, limite);
           if (!hist.length) { cont.innerHTML = '<p style="text-align:center; padding:20px; color: var(--text-secondary);">📭 SIN HISTORIAL</p>'; return; }
           let html = '<div class="historial-list">';
           hist.forEach((it,i) => {
-            let detalleHtml = `<div class="detalle">`;
-            detalleHtml += `<p><strong>📊 PREDICCIONES:</strong> ${it.predicciones || ''}</p>`;
-            detalleHtml += `<p><strong>❤️ ZONAS:</strong> ${it.zonasResumen || ''}</p>`;
-            detalleHtml += `</div>`;
+            // Generar pastillas de zonas
+            let zonasHtml = '';
+            if (it.zonasResumen && Array.isArray(it.zonasResumen)) {
+              zonasHtml = '<div class="zonas-pastillas">';
+              it.zonasResumen.forEach(z => {
+                const zonaClass = z.zona.toLowerCase();
+                zonasHtml += `<span class="zona-pastilla ${zonaClass}"><span></span> ${z.zona}: ${z.min}-${z.max}</span>`;
+              });
+              zonasHtml += '</div>';
+            } else if (it.zonasResumen && typeof it.zonasResumen === 'string') {
+              // Compatibilidad con datos antiguos
+              zonasHtml = `<div class="zonas-resumen">❤️ ${it.zonasResumen}</div>`;
+            }
             
             html += `<div class="historial-item" onclick="window.toggleHistorialDetalle(this)">
               <div class="fecha">
@@ -2230,8 +2341,7 @@
               </div>
               <div class="resumen">${it.resumen||it.nombre+' · '+it.edad+' años'}</div>
               ${it.predicciones ? `<div class="predicciones">📊 ${it.predicciones}</div>` : ''}
-              ${it.zonasResumen ? `<div class="zonas-resumen">❤️ ${it.zonasResumen}</div>` : ''}
-              ${detalleHtml}
+              ${zonasHtml}
               <button class="delete-single" onclick="event.stopPropagation(); window.borrarEntradaHistorial(${i})">🗑️ BORRAR</button>
             </div>`;
           });
@@ -2239,6 +2349,8 @@
           cont.innerHTML = html;
         },
         toggleHistorialDetalle(el) {
+          // En la nueva versión, ya no hay detalle desplegable porque se ven las pastillas directamente
+          // Podemos mantener la funcionalidad por si se quiere añadir más info en el futuro
           el.classList.toggle('abierto');
         },
         async borrarEntradaHistorial(i) {
@@ -2373,6 +2485,7 @@
       window.toggleMensajeRecibido = UI.toggleMensajeRecibido.bind(UI);
       window.enviarMensajeUsuario = UI.enviarMensajeUsuario.bind(UI);
       window.cambiarSoporteTab = UI.cambiarSoporteTab.bind(UI);
+      window.cargarHistorial = UI.cargarHistorial.bind(UI);
 
       // ==================== MÓDULO PLAN GENERATOR ====================
       const PlanGenerator = {
@@ -3154,20 +3267,17 @@
               grid.innerHTML = "";
               const totalDias = macrociclo * 7;
 
-              // Algoritmo mejorado de planificación
-              // Definir microciclos (3 semanas carga, 1 descarga)
+              // Asignar tipos de sesión
               const tipoPorDia = {};
               tipoPorDia[diaLargo] = 'largo';
               
               const otrosDias = diasEntreno.filter(d => d !== diaLargo);
-              // Rotar los tipos de sesión para que no siempre sean los mismos días
               const posiblesTipos = ['series', 'tempo', 'rodaje'];
               otrosDias.forEach((dia, index) => {
-                // Asignar de forma rotativa según el índice para variedad
                 tipoPorDia[dia] = posiblesTipos[index % posiblesTipos.length];
               });
 
-              const usados = { rodaje: {}, series: {}, tempo: {}, largo: {} };
+              const usados = { rodaje: 0, series: 0, tempo: 0, largo: 0 };
               const fragment = document.createDocumentFragment();
 
               for (let dia = 1; dia <= totalDias; dia++) {
@@ -3178,49 +3288,52 @@
                 if (diasEntreno.includes(diaSem)) {
                   let tipo = tipoPorDia[diaSem];
                   
-                  // Aplicar periodización: semanas de descarga (4,8,12...) reducir intensidad
-                  const esSemanaDescarga = (semana + 1) % 4 === 0;
+                  // Aplicar periodización (semana de descarga cada 4)
+                  const esDescarga = (semana + 1) % 4 === 0;
                   let factorPersonal = 1.0;
                   if (AppState.lastRitmoBase) {
                     const ritmoRef = 5.0;
                     factorPersonal = Math.min(1.2, Math.max(0.8, ritmoRef / AppState.lastRitmoBase));
                   }
-                  if (esSemanaDescarga) {
-                    factorPersonal *= 0.8; // reducir carga
-                  }
+                  if (esDescarga) factorPersonal *= 0.8;
 
-                  // Seleccionar entrenamiento según tipo y semana
+                  // Seleccionar entrenamiento según tipo
+                  let opts = [];
                   if (tipo === 'largo') {
-                    const opts = this.ENTRENAMIENTOS_DB[modalidad]?.[distancia]?.[nivel]?.largo;
-                    if (opts && opts.length) {
-                      const idx = (semana * 2) % opts.length; // rotación
+                    opts = this.ENTRENAMIENTOS_DB[modalidad]?.[distancia]?.[nivel]?.largo || [];
+                    if (opts.length) {
+                      const idx = (semana * 2 + usados.largo) % opts.length;
                       detalle = { ...opts[idx], tipo: "largo" };
                       detalle.duracion = Math.round(detalle.duracion * factorPersonal);
                       color = "sesion-largo"; breve = "L";
+                      usados.largo++;
                     }
                   } else if (tipo === 'series') {
-                    const opts = this.ENTRENAMIENTOS_DB[modalidad]?.[distancia]?.[nivel]?.series;
-                    if (opts && opts.length) {
-                      const idx = (semana * 3) % opts.length;
+                    opts = this.ENTRENAMIENTOS_DB[modalidad]?.[distancia]?.[nivel]?.series || [];
+                    if (opts.length) {
+                      const idx = (semana * 3 + usados.series) % opts.length;
                       detalle = { ...opts[idx], tipo: "series" };
                       detalle.duracion = Math.round(detalle.duracion * factorPersonal);
                       color = "sesion-series"; breve = "S";
+                      usados.series++;
                     }
                   } else if (tipo === 'tempo') {
-                    const opts = this.ENTRENAMIENTOS_DB[modalidad]?.[distancia]?.[nivel]?.tempo;
-                    if (opts && opts.length) {
-                      const idx = (semana * 4) % opts.length;
+                    opts = this.ENTRENAMIENTOS_DB[modalidad]?.[distancia]?.[nivel]?.tempo || [];
+                    if (opts.length) {
+                      const idx = (semana * 4 + usados.tempo) % opts.length;
                       detalle = { ...opts[idx], tipo: "tempo" };
                       detalle.duracion = Math.round(detalle.duracion * factorPersonal);
                       color = "sesion-tempo"; breve = "T";
+                      usados.tempo++;
                     }
                   } else {
-                    const opts = this.ENTRENAMIENTOS_DB[modalidad]?.[distancia]?.[nivel]?.rodaje;
-                    if (opts && opts.length) {
-                      const idx = (semana * 5) % opts.length;
+                    opts = this.ENTRENAMIENTOS_DB[modalidad]?.[distancia]?.[nivel]?.rodaje || [];
+                    if (opts.length) {
+                      const idx = (semana * 5 + usados.rodaje) % opts.length;
                       detalle = { ...opts[idx], tipo: "rodaje" };
                       detalle.duracion = Math.round(detalle.duracion * factorPersonal);
                       color = "sesion-rodaje"; breve = "R";
+                      usados.rodaje++;
                     }
                   }
                 }
@@ -3320,7 +3433,6 @@
         PWA.init(); PWA.registerServiceWorker();
         setTimeout(() => { if (AppState.deferredPrompt && localStorage.getItem('pwa_installed')!=='true') document.getElementById('pwa-banner').style.display='flex'; }, 3000);
         
-        // Inicializar sliders
         setTimeout(() => {
           UI.moverSliderMain();
           UI.moverSliderAdmin();
