@@ -43,6 +43,8 @@
       --new-user-border: #0a84ff;
       --stat-bg: #1e1e1e;
       --stat-number: #ffffff;
+      --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 6px 6px rgba(0, 0, 0, 0.3), inset 0 1px 2px rgba(255,255,255,0.05);
+      --pill-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255,255,255,0.1);
     }
 
     @media (prefers-color-scheme: light) {
@@ -61,6 +63,8 @@
         --new-user-border: #0a84ff;
         --stat-bg: #e0e0e0;
         --stat-number: #111111;
+        --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.05), inset 0 1px 2px rgba(255,255,255,0.8);
+        --pill-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255,255,255,0.6);
       }
       input, button, select, textarea { color: #111111; }
       .curiosity span, .curiosity small { color: #111111; }
@@ -96,6 +100,8 @@
       text-transform: uppercase;
       position: relative;
       display: inline-block;
+      text-align: center;
+      width: 100%;
     }
     h1::after, h2::after {
       content: "";
@@ -109,33 +115,45 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
       padding: 20px;
-      overflow-y: auto;
+      overflow: hidden;
     }
 
     #loginPage.wrapper {
-      align-items: flex-start;
-      padding-top: 20px;
-      padding-bottom: 20px;
+      align-items: center;
     }
 
     .card {
       width: 100%;
       max-width: 540px;
+      max-height: 90vh;
+      overflow-y: auto;
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: 28px;
       padding: 30px;
-      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.6), inset 0 0 10px var(--glow-color);
+      box-shadow: var(--card-shadow);
       position: relative;
-      overflow: hidden;
-      margin: 20px 0;
+      margin: 0;
       transition: border-color 0.3s, box-shadow 0.3s;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-blue) var(--bg-secondary);
+    }
+    .card::-webkit-scrollbar {
+      width: 6px;
+    }
+    .card::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+      border-radius: 10px;
+    }
+    .card::-webkit-scrollbar-thumb {
+      background: var(--accent-blue);
+      border-radius: 10px;
     }
     .card:hover {
       border-color: rgba(255,255,255,0.2);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 0 10px var(--glow-color);
     }
     .card::before {
       content: "";
@@ -145,6 +163,7 @@
       background-size: 30px 30px;
       opacity: 0.3;
       pointer-events: none;
+      border-radius: 28px;
     }
 
     .card.admin-card {
@@ -153,11 +172,13 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      padding: 20px;
     }
     .card.admin-card .tabs-container {
       flex: 1;
       overflow-y: auto;
       padding-right: 5px;
+      margin-top: 10px;
     }
 
     /* ===== HEADER CON CERRAR SESIÓN ===== */
@@ -210,6 +231,7 @@
       cursor: pointer;
       transition: all 0.3s ease;
       border-radius: 30px;
+      text-align: center;
     }
     .auth-tab.active {
       background: rgba(255, 255, 255, 0.1);
@@ -267,6 +289,7 @@
       white-space: nowrap;
       transition: color 0.3s ease;
       z-index: 1;
+      text-align: center;
     }
     .tab-button.active {
       color: var(--text-primary);
@@ -302,11 +325,13 @@
       margin-bottom: 16px;
       transition: all 0.3s ease;
       outline: none;
+      text-align: center;
     }
     textarea {
       border-radius: 24px;
       resize: vertical;
       min-height: 100px;
+      text-align: left;
     }
     input:focus, select:focus, textarea:focus {
       border-color: var(--accent-blue);
@@ -316,6 +341,7 @@
       color: var(--text-secondary);
       font-family: var(--font-mono);
       letter-spacing: 1px;
+      text-align: center;
     }
     input.error { border-color: var(--accent-red); }
 
@@ -374,6 +400,7 @@
       border-radius: 24px;
       cursor: pointer;
       transition: all 0.3s ease;
+      box-shadow: var(--pill-shadow);
     }
     .info-card .title {
       font-family: var(--font-dot);
@@ -410,7 +437,7 @@
       border-radius: 16px;
       border: 1px solid var(--border-color);
     }
-    .feature-section h4 { color: var(--accent-blue); margin-bottom: 12px; font-size: 14px; }
+    .feature-section h4 { color: var(--accent-blue); margin-bottom: 12px; font-size: 14px; text-align: center; }
     .feature-section ul { list-style: none; }
     .feature-section li {
       margin: 12px 0;
@@ -420,7 +447,7 @@
       gap: 12px;
       border-bottom: 1px dashed var(--border-color);
     }
-    .feature-icon { font-size: 20px; min-width: 30px; }
+    .feature-icon { font-size: 20px; min-width: 30px; text-align: center; }
 
     /* ===== CURIOSIDAD ===== */
     .curiosity {
@@ -433,6 +460,7 @@
       cursor: pointer;
       position: relative;
       overflow: hidden;
+      box-shadow: var(--pill-shadow);
     }
     .curiosity::before {
       content: "";
@@ -447,7 +475,7 @@
       50% { transform: scale(1.2); opacity: 0.2; }
       100% { transform: scale(1); opacity: 0.5; }
     }
-    .curiosity span { font-size: 18px; line-height: 1.5; position: relative; z-index: 1; }
+    .curiosity span { font-size: 18px; line-height: 1.5; position: relative; z-index: 1; display: block; }
     .curiosity small { display: block; color: var(--text-secondary); margin-top: 12px; font-size: 12px; }
 
     /* ===== ZONAS DE ENTRENAMIENTO ===== */
@@ -461,6 +489,8 @@
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      box-shadow: var(--pill-shadow);
+      text-align: center;
     }
     .zone-card::after {
       content: "";
@@ -560,6 +590,7 @@
       white-space: normal;
       word-break: break-word;
       line-height: 1.2;
+      box-shadow: var(--pill-shadow);
     }
     .calendario-dia:hover {
       border-color: var(--accent-blue);
@@ -595,6 +626,7 @@
       transition: all 0.3s ease;
       width: 100%;
       text-align: center;
+      box-shadow: var(--pill-shadow);
     }
     .action-button:hover {
       border-color: var(--accent-blue);
@@ -609,10 +641,11 @@
     /* ===== HISTORIAL CON SELECTOR DE CANTIDAD Y PASTILLAS ===== */
     .historial-controls {
       display: flex;
-      justify-content: flex-end;
+      justify-content: center;
       align-items: center;
       gap: 10px;
       margin-bottom: 15px;
+      flex-wrap: wrap;
     }
     .historial-controls label {
       color: var(--text-secondary);
@@ -635,6 +668,7 @@
       text-align: left;
       cursor: pointer;
       transition: all 0.2s ease;
+      box-shadow: var(--pill-shadow);
     }
     .historial-item:hover {
       background: var(--bg-card);
@@ -670,6 +704,7 @@
       font-size: 12px;
       margin-right: 60px;
       white-space: pre-wrap;
+      text-align: center;
     }
     .historial-item .detalle {
       max-height: 0;
@@ -701,6 +736,7 @@
       flex-wrap: wrap;
       gap: 6px;
       margin: 8px 0;
+      justify-content: center;
     }
     .zona-pastilla {
       display: inline-flex;
@@ -712,6 +748,7 @@
       font-weight: bold;
       background: var(--bg-primary);
       border: 1px solid;
+      box-shadow: var(--pill-shadow);
     }
     .zona-pastilla.z1 { border-color: var(--accent-blue); color: var(--accent-blue); }
     .zona-pastilla.z2 { border-color: var(--accent-green); color: var(--accent-green); }
@@ -740,6 +777,7 @@
       width: auto;
       margin: 0;
       z-index: 2;
+      box-shadow: var(--pill-shadow);
     }
     .historial-item .delete-single:hover { background: var(--accent-red); color: var(--bg-primary); }
 
@@ -750,6 +788,7 @@
       background: var(--bg-secondary);
       border-radius: 16px;
       overflow: hidden;
+      box-shadow: var(--pill-shadow);
     }
     .mensaje-item .mensaje-header {
       padding: 16px;
@@ -773,6 +812,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      text-align: left;
     }
     .mensaje-item .mensaje-header .flecha {
       font-size: 16px;
@@ -789,6 +829,7 @@
       font-size: 10px;
       cursor: pointer;
       flex-shrink: 0;
+      box-shadow: var(--pill-shadow);
     }
     .delete-mensaje:hover {
       background: var(--accent-red);
@@ -838,6 +879,7 @@
       cursor: pointer;
       border-radius: 30px;
       transition: all 0.3s;
+      text-align: center;
     }
     .soporte-tab.active {
       background: rgba(255, 255, 255, 0.1);
@@ -870,13 +912,14 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      box-shadow: var(--pill-shadow);
     }
     .stat-badge .number {
       color: var(--accent-blue);
       font-weight: bold;
     }
 
-    /* Acordeón de usuarios con scroll */
+    /* Acordeón de usuarios - ahora es un modal */
     .usuarios-acordeon {
       background: var(--bg-primary);
       border: 1px solid var(--border-color);
@@ -889,8 +932,9 @@
       background: var(--bg-secondary);
       cursor: pointer;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
+      gap: 8px;
       font-weight: bold;
       color: var(--accent-blue);
       transition: background 0.2s;
@@ -902,19 +946,57 @@
       font-size: 16px;
       transition: transform 0.3s;
     }
-    .usuarios-contenido {
-      max-height: 0;
+
+    /* Modal de usuarios */
+    #usuariosModal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 700px;
+      max-height: 80vh;
+      background: var(--bg-card);
+      border: 3px solid var(--border-color);
+      border-radius: 32px;
+      padding: 20px;
+      z-index: 20000;
+      box-shadow: var(--card-shadow);
       overflow: hidden;
-      transition: max-height 0.5s ease;
-      background: var(--bg-primary);
+      display: flex;
+      flex-direction: column;
     }
-    .usuarios-acordeon.abierto .usuarios-contenido {
-      max-height: 400px;
+    #usuariosModal .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    #usuariosModal .modal-header h2 {
+      margin: 0;
+      color: var(--accent-blue);
+    }
+    #usuariosModal .close-modal {
+      background: transparent;
+      border: 1px solid var(--accent-red);
+      border-radius: 40px;
+      color: var(--accent-red);
+      padding: 8px 16px;
+      font-size: 12px;
+      cursor: pointer;
+      width: auto;
+      margin: 0;
+    }
+    #usuariosModal .close-modal:hover {
+      background: var(--accent-red);
+      color: var(--bg-primary);
+    }
+    #usuariosModal .modal-content-scroll {
       overflow-y: auto;
-      padding: 16px;
-    }
-    .usuarios-acordeon.abierto .flecha {
-      transform: rotate(180deg);
+      padding-right: 5px;
     }
     .admin-search-inline {
       margin-bottom: 16px;
@@ -923,6 +1005,7 @@
       margin-bottom: 0;
       padding: 12px;
       font-size: 14px;
+      text-align: left;
     }
     .usuarios-lista {
       display: flex;
@@ -938,6 +1021,7 @@
       flex-direction: column;
       gap: 8px;
       transition: background 0.3s, border-color 0.3s;
+      box-shadow: var(--pill-shadow);
     }
     .usuario-item.nuevo {
       background: var(--new-user-bg);
@@ -967,6 +1051,7 @@
       padding: 6px 12px;
       font-size: 11px;
       width: auto;
+      box-shadow: var(--pill-shadow);
     }
 
     /* ===== SELECCIÓN DE DÍAS (checkboxes) ===== */
@@ -1030,7 +1115,8 @@
       max-width: 400px;
       width: 90%;
       z-index: 20000;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.9);
+      box-shadow: var(--card-shadow);
+      text-align: center;
     }
     #premiumModal h2 {
       color: var(--gold);
@@ -1045,6 +1131,9 @@
       background: var(--gold);
       color: #000;
       border: none;
+      padding: 12px 24px;
+      border-radius: 40px;
+      cursor: pointer;
     }
 
     /* ===== BOTÓN PLAN PERSONALIZADO ===== */
@@ -1067,7 +1156,7 @@
       display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
       width: 90%; max-width: 520px; background: var(--bg-card); border: 3px solid var(--border-color);
       border-radius: 32px; padding: 0; z-index: 10000; opacity: 0; transition: all 0.3s ease;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 0 20px var(--glow-color);
+      box-shadow: var(--card-shadow);
       pointer-events: auto;
     }
     #detalleSesion.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -1127,14 +1216,15 @@
       position: fixed; bottom: 20px; left: 20px; right: 20px; max-width: 400px; margin: 0 auto;
       background: var(--bg-card); border: 2px solid var(--accent-blue); border-radius: 40px;
       padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;
-      gap: 16px; z-index: 100000; box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      gap: 16px; z-index: 100000; box-shadow: var(--card-shadow);
       animation: slideUp 0.5s ease;
     }
     @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    #pwa-banner span { color: var(--text-primary); font-size: 14px; flex: 1; }
+    #pwa-banner span { color: var(--text-primary); font-size: 14px; flex: 1; text-align: center; }
     #pwa-banner button {
       width: auto; margin: 0; padding: 8px 16px; background: var(--accent-blue);
       border: none; color: var(--bg-primary); font-weight: bold; cursor: pointer;
+      border-radius: 40px;
     }
     #pwa-banner button:hover { background: var(--accent-green); }
     #pwa-banner .close-banner { background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); }
@@ -1215,6 +1305,18 @@
     <p>✔ Y mucho más...</p>
     <p>🔗 Para hacerte premium, contacta por Instagram <strong>@navegacionpro</strong></p>
     <button onclick="document.getElementById('premiumModal').style.display='none'">CERRAR</button>
+  </div>
+
+  <!-- MODAL USUARIOS (ADMIN) -->
+  <div id="usuariosModal">
+    <div class="modal-header">
+      <h2>👥 USUARIOS REGISTRADOS</h2>
+      <button class="close-modal" onclick="window.cerrarModalUsuarios()">CERRAR</button>
+    </div>
+    <div class="admin-search-inline">
+      <input type="text" id="adminSearchModal" placeholder="🔍 Buscar usuario..." onkeyup="window.filtrarUsuariosModal()">
+    </div>
+    <div class="modal-content-scroll" id="usuariosModalLista"></div>
   </div>
 
   <!-- LOGIN PAGE -->
@@ -1317,18 +1419,10 @@
           <!-- Estadísticas rediseñadas -->
           <div class="admin-stats" id="adminStats"></div>
           <div class="admin-panel">
-            <!-- Acordeón de usuarios con buscador interno y scroll -->
-            <div class="usuarios-acordeon" id="usuariosAcordeon">
-              <div class="usuarios-header" onclick="window.toggleUsuariosAcordeon()">
-                <span>👥 USUARIOS REGISTRADOS</span>
-                <span class="flecha">▼</span>
-              </div>
-              <div class="usuarios-contenido" id="usuariosContenido">
-                <div class="admin-search-inline">
-                  <input type="text" id="adminSearchInline" placeholder="🔍 Buscar usuario..." onkeyup="window.filtrarUsuariosInline()">
-                </div>
-                <div class="usuarios-lista" id="usuariosLista"></div>
-              </div>
+            <!-- En lugar de acordeón, un botón que abre el modal -->
+            <div class="usuarios-header" onclick="window.abrirModalUsuarios()">
+              <span>👥 VER USUARIOS REGISTRADOS</span>
+              <span class="flecha">▼</span>
             </div>
           </div>
           <button class="admin-btn admin-export-btn" onclick="window.exportarUsuariosCSV()">📥 EXPORTAR USUARIOS CSV</button>
@@ -1898,6 +1992,14 @@
             <span class="stat-badge">⏳ EXPIRADOS <span class="number">${expirados}</span></span>
           `;
           
+          document.getElementById("adminWelcome").innerText = `> BIENVENIDO, ADMIN_ · ${new Date().toLocaleString()}`;
+          this.mostrarHistorialMensajes();
+          this.cargarMensajesAdmin();
+          // Preparar lista para modal
+          this.actualizarListaUsuariosModal(users);
+        },
+        actualizarListaUsuariosModal(users) {
+          const ahora = new Date();
           let usuariosHtml = '';
           Object.entries(users).forEach(([u,d]) => {
             const creado = new Date(d.created).toLocaleDateString();
@@ -1924,19 +2026,17 @@
               </div>
             `;
           });
-          document.getElementById("usuariosLista").innerHTML = usuariosHtml || '<p>📭 NO HAY USUARIOS</p>';
-          
-          document.getElementById("adminWelcome").innerText = `> BIENVENIDO, ADMIN_ · ${new Date().toLocaleString()}`;
-          this.mostrarHistorialMensajes();
-          this.cargarMensajesAdmin();
+          document.getElementById("usuariosModalLista").innerHTML = usuariosHtml || '<p>📭 NO HAY USUARIOS</p>';
         },
-        toggleUsuariosAcordeon() {
-          const acordeon = document.getElementById('usuariosAcordeon');
-          acordeon.classList.toggle('abierto');
+        abrirModalUsuarios() {
+          document.getElementById('usuariosModal').style.display = 'flex';
         },
-        async filtrarUsuariosInline() {
-          const search = document.getElementById("adminSearchInline").value.toLowerCase();
-          const items = document.querySelectorAll('.usuario-item');
+        cerrarModalUsuarios() {
+          document.getElementById('usuariosModal').style.display = 'none';
+        },
+        filtrarUsuariosModal() {
+          const search = document.getElementById("adminSearchModal").value.toLowerCase();
+          const items = document.querySelectorAll('#usuariosModalLista .usuario-item');
           items.forEach(item => {
             const nombre = item.querySelector('.usuario-nombre').textContent.toLowerCase();
             if (nombre.includes(search)) {
@@ -2082,8 +2182,9 @@
         }
       };
 
-      window.toggleUsuariosAcordeon = Admin.toggleUsuariosAcordeon.bind(Admin);
-      window.filtrarUsuariosInline = Admin.filtrarUsuariosInline.bind(Admin);
+      window.abrirModalUsuarios = Admin.abrirModalUsuarios.bind(Admin);
+      window.cerrarModalUsuarios = Admin.cerrarModalUsuarios.bind(Admin);
+      window.filtrarUsuariosModal = Admin.filtrarUsuariosModal.bind(Admin);
       window.marcarUsuarioVisto = Admin.marcarUsuarioVisto.bind(Admin);
       window.borrarMensajeAdmin = function(key, idx) {
         Storage.borrarMensaje(key, idx).then(() => Admin.cargarMensajesAdmin());
@@ -2349,8 +2450,6 @@
           cont.innerHTML = html;
         },
         toggleHistorialDetalle(el) {
-          // En la nueva versión, ya no hay detalle desplegable porque se ven las pastillas directamente
-          // Podemos mantener la funcionalidad por si se quiere añadir más info en el futuro
           el.classList.toggle('abierto');
         },
         async borrarEntradaHistorial(i) {
