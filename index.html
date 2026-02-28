@@ -191,7 +191,43 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .logout-icon {
+
+    /* Animación RGB para el botón de usuario */
+    @keyframes rgbButton {
+      0% { 
+        border-color: #ff0000;
+        color: #ff0000;
+        box-shadow: 0 0 10px #ff0000;
+      }
+      20% { 
+        border-color: #ff8800;
+        color: #ff8800;
+        box-shadow: 0 0 10px #ff8800;
+      }
+      40% { 
+        border-color: #ffff00;
+        color: #ffff00;
+        box-shadow: 0 0 10px #ffff00;
+      }
+      60% { 
+        border-color: #00ff00;
+        color: #00ff00;
+        box-shadow: 0 0 10px #00ff00;
+      }
+      80% { 
+        border-color: #0000ff;
+        color: #0000ff;
+        box-shadow: 0 0 10px #0000ff;
+      }
+      100% { 
+        border-color: #ff0000;
+        color: #ff0000;
+        box-shadow: 0 0 10px #ff0000;
+      }
+    }
+
+    /* Botón de usuario con RGB animado */
+    #mainContent .logout-icon {
       flex-shrink: 0;
       width: 40px;
       height: 40px;
@@ -207,16 +243,35 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      animation: rgbButton 3s linear infinite;
     }
-    .logout-icon:hover {
+
+    #mainContent .logout-icon:hover {
       background: var(--accent-green);
       color: var(--bg-primary);
       border-color: var(--accent-green);
+      animation: none;
     }
+
+    /* Botón de admin se mantiene rojo sin animación */
     #adminPage .logout-icon {
-      border-color: var(--accent-red);
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      background: transparent;
+      border: 2px solid var(--accent-red);
+      border-radius: 50%;
       color: var(--accent-red);
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+
     #adminPage .logout-icon:hover {
       background: var(--accent-red);
       color: var(--bg-primary);
@@ -597,7 +652,7 @@
     .historial-list { display: flex; flex-direction: column; gap: 12px; }
     .historial-item {
       position: relative;
-      padding: 12px 70px 12px 12px;
+      padding: 12px 40px 12px 12px;
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
       border-radius: 16px;
@@ -622,26 +677,26 @@
       text-align: center;
       word-break: break-word;
     }
-    .historial-item .delete-single {
+    .historial-item .delete-icon {
       position: absolute;
       top: 50%;
-      right: 12px;
+      right: 10px;
       transform: translateY(-50%);
       background: transparent;
-      border: 1px solid var(--accent-red);
-      border-radius: 40px;
+      border: none;
       color: var(--accent-red);
-      padding: 6px 12px;
-      font-size: 11px;
+      font-size: 18px;
       cursor: pointer;
       width: auto;
+      padding: 5px;
       margin: 0;
       z-index: 2;
-      white-space: nowrap;
+      opacity: 0.7;
+      transition: opacity 0.2s;
     }
-    .historial-item .delete-single:hover {
-      background: var(--accent-red);
-      color: var(--bg-primary);
+    .historial-item .delete-icon:hover {
+      opacity: 1;
+      color: var(--accent-red);
     }
     .historial-item .detalle {
       max-height: 0;
@@ -734,7 +789,8 @@
       min-width: 150px;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
+      white-space: normal;
+      word-break: break-word;
     }
     .mensaje-item .mensaje-header .flecha {
       font-size: 16px;
@@ -860,94 +916,26 @@
     }
 
     /* Modal de usuarios - DISEÑO EXPANDIBLE */
-    .modal-overlay {
+    #modalUsuarios {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(4px);
-      z-index: 9999;
-    }
-    .modal-overlay.visible { display: block; }
-
-    #detalleSesion {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90%;
-      max-width: 500px;
-      background: var(--bg-card);
-      border: 2px solid var(--border-color);
-      border-radius: 24px;
-      padding: 0;
-      z-index: 10000;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-    }
-    #detalleSesion.visible { display: block; }
-
-    #detalleSesion .modal-content {
-      padding: 30px 25px 80px;
-      position: relative;
-      background: var(--bg-card);
-      border-radius: 22px;
-      text-align: center;
-    }
-
-    #detalleSesion .modal-content.sesion-descanso { border: 2px solid var(--border-color); }
-    #detalleSesion .modal-content.sesion-rodaje { border: 2px solid var(--accent-blue); }
-    #detalleSesion .modal-content.sesion-series { border: 2px solid var(--accent-green); }
-    #detalleSesion .modal-content.sesion-tempo { border: 2px solid var(--accent-yellow); }
-    #detalleSesion .modal-content.sesion-largo { border: 2px solid var(--accent-red); }
-
-    #tituloSesion {
-      margin: 0 0 20px;
-      color: var(--accent-blue);
-      font-size: 22px;
-    }
-
-    #descripcionSesion {
-      color: var(--text-secondary);
-      line-height: 1.7;
-      font-size: 14px;
-      margin-bottom: 30px;
-      max-height: 60vh;
-      overflow-y: auto;
-      padding-right: 5px;
-    }
-
-    .close-btn {
-      background: var(--accent-red);
-      color: white;
-      border: none;
-      padding: 12px 30px;
-      border-radius: 40px;
-      font-weight: bold;
-      cursor: pointer;
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: auto;
-      min-width: 120px;
-    }
-
-    /* Modal de usuarios */
-    #modalUsuarios .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(8px);
       z-index: 20000;
+    }
+    #modalUsuarios.active {
+      display: flex;
       align-items: center;
       justify-content: center;
     }
-    #modalUsuarios .modal-overlay.active {
-      display: flex;
+    #modalUsuarios .modal-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
     }
     #modalUsuarios .modal-content {
+      position: relative;
+      z-index: 20001;
       background: var(--bg-card);
       border: 2px solid var(--border-color);
       border-radius: 32px;
@@ -957,7 +945,6 @@
       max-height: 80vh;
       overflow-y: auto;
       box-shadow: 0 20px 40px rgba(0,0,0,0.9);
-      position: relative;
     }
     #modalUsuarios .modal-content h2 {
       margin-bottom: 20px;
@@ -1133,6 +1120,80 @@
       cursor: pointer;
     }
     #premiumModal button:hover { box-shadow: 0 0 20px var(--gold); }
+
+    /* Overlay y modal de detalle de sesión (ÚNICOS) */
+    #modalOverlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+    }
+    #modalOverlay.visible { display: block; }
+
+    #detalleSesion {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 500px;
+      background: var(--bg-card);
+      border: 2px solid var(--border-color);
+      border-radius: 24px;
+      padding: 0;
+      z-index: 10000;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    #detalleSesion.visible { display: block; }
+
+    #detalleSesion .modal-content {
+      padding: 30px 25px 80px;
+      position: relative;
+      background: var(--bg-card);
+      border-radius: 22px;
+      text-align: center;
+    }
+
+    #detalleSesion .modal-content.sesion-descanso { border: 2px solid var(--border-color); }
+    #detalleSesion .modal-content.sesion-rodaje { border: 2px solid var(--accent-blue); }
+    #detalleSesion .modal-content.sesion-series { border: 2px solid var(--accent-green); }
+    #detalleSesion .modal-content.sesion-tempo { border: 2px solid var(--accent-yellow); }
+    #detalleSesion .modal-content.sesion-largo { border: 2px solid var(--accent-red); }
+
+    #tituloSesion {
+      margin: 0 0 20px;
+      color: var(--accent-blue);
+      font-size: 22px;
+    }
+
+    #descripcionSesion {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 14px;
+      margin-bottom: 30px;
+      max-height: 60vh;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+
+    .close-btn {
+      background: var(--accent-red);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: auto;
+      min-width: 120px;
+    }
 
     /* ===== BANNER PWA ===== */
     #pwa-banner {
@@ -1310,7 +1371,7 @@
 
   <!-- MODAL DE USUARIOS PARA ADMIN (con diseño expandible) -->
   <div id="modalUsuarios">
-    <div class="modal-overlay" id="modalUsuariosOverlay" onclick="if(event.target===this) document.getElementById('modalUsuarios').classList.remove('active')">
+    <div class="modal-overlay" onclick="if(event.target===this) document.getElementById('modalUsuarios').classList.remove('active')">
       <div class="modal-content">
         <button class="modal-close" onclick="document.getElementById('modalUsuarios').classList.remove('active')">✕</button>
         <h2>👥 USUARIOS REGISTRADOS</h2>
@@ -1476,6 +1537,8 @@
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
   <script>
     (function() {
       // ==================== CONFIGURACIÓN DE FIREBASE ====================
@@ -1823,7 +1886,7 @@
             html+=`<div class="historial-item" onclick="window.toggleHistorialDetalle(this)">
               <div class="fecha">📅 ${it.date}</div>
               <div class="resumen">${it.resumen||it.nombre+' · '+it.edad+' años'}</div>
-              <button class="delete-single" onclick="event.stopPropagation(); window.borrarEntradaHistorial(${i})">🗑️ BORRAR</button>
+              <button class="delete-icon" onclick="event.stopPropagation(); window.borrarEntradaHistorial(${i})" title="Eliminar">🗑️</button>
               <div class="detalle">${hora}${pred}${zonas}${it.fcMax?`<div>❤️ FC Máx: ${it.fcMax} lpm</div>`:''}${it.umbral?`<div>⚡ Umbral: ${it.umbral} lpm</div>`:''}</div>
             </div>`;
           });
@@ -1922,21 +1985,1165 @@
                   { nombre: "Largo fondo", duracion: 65, unidad: "min", desc: "Fondo largo continuo.", estructura: "65' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
                 ]
               },
-              intermedio: { /* Similar, ampliado */ },
-              avanzado: { /* Similar, ampliado */ }
+              intermedio: {
+                rodaje: [
+                  { nombre: "Rodaje activo", duracion: 35, unidad: "min", desc: "Ritmo vivo dentro de Z2.", estructura: "10' calentamiento + 20' Z2 vivo + 5' enfriamiento", sensacion: "Sostenible", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje calidad", duracion: 40, unidad: "min", desc: "Ritmo sostenido en Z2 alto.", estructura: "40' Z2 continuo", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje aeróbico", duracion: 45, unidad: "min", desc: "Fondo aeróbico.", estructura: "45' Z2 constante", sensacion: "Fluido", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 30, unidad: "min", desc: "Sesión para mantener forma.", estructura: "30' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 40, unidad: "min", desc: "Introduce 3 cambios de ritmo.", estructura: "10' calentamiento + 3x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación activa", duracion: 25, unidad: "min", desc: "Después de sesión intensa.", estructura: "25' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 50, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "50' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 45, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 15' Z2 medio + 15' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Series 400m", duracion: 40, unidad: "min", desc: "6x400m con recuperación 2'.", estructura: "15' calentamiento + 6x400m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 600m", duracion: 45, unidad: "min", desc: "5x600m con recuperación 2'30.", estructura: "15' calentamiento + 5x600m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
+                  { nombre: "Pirámide", duracion: 45, unidad: "min", desc: "200-400-600-400-200m.", estructura: "15' calentamiento + pirámide + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4-Z5" },
+                  { nombre: "Series 800m", duracion: 50, unidad: "min", desc: "4x800m con recuperación 3'.", estructura: "15' calentamiento + 4x800m + 10' enfriamiento", sensacion: "Muy exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 1000m", duracion: 55, unidad: "min", desc: "3x1000m con recuperación 3'.", estructura: "15' calentamiento + 3x1000m + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z5" },
+                  { nombre: "Fartlek avanzado", duracion: 40, unidad: "min", desc: "Juega con ritmos variables.", estructura: "10' calentamiento + 15' fartlek + 15' enfriamiento", sensacion: "Divertido", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 200m rápidas", duracion: 35, unidad: "min", desc: "10x200m con recuperación 1'.", estructura: "15' calentamiento + 10x200m + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo sostenido", duracion: 35, unidad: "min", desc: "20' a ritmo de tempo.", estructura: "10' calentamiento + 20' tempo + 5' enfriamiento", sensacion: "Continuo", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral", duracion: 40, unidad: "min", desc: "25' a ritmo umbral.", estructura: "10' calentamiento + 25' Z4 + 5' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo variable", duracion: 40, unidad: "min", desc: "Alterna 5' Z3 / 3' Z4.", estructura: "10' calentamiento + 4x(5' Z3 + 3' Z4) + 5' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo largo", duracion: 45, unidad: "min", desc: "30' a ritmo tempo.", estructura: "10' calentamiento + 30' Z3 + 5' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 45, unidad: "min", desc: "Aumenta ritmo cada 10'.", estructura: "10' calentamiento + 10' Z3 + 10' Z4 + 10' Z3 + 5' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo umbral largo", duracion: 50, unidad: "min", desc: "35' a ritmo umbral.", estructura: "10' calentamiento + 35' Z4 + 5' enfriamiento", sensacion: "Muy exigente", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo con cambios", duracion: 40, unidad: "min", desc: "Introduce 4 cambios de ritmo.", estructura: "10' calentamiento + 20' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" }
+                ],
+                largo: [
+                  { nombre: "Largo con cambios", duracion: 50, unidad: "min", desc: "Últimos 15' a ritmo tempo.", estructura: "25' Z2 + 15' Z3 + 10' enfriamiento", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo progresivo", duracion: 55, unidad: "min", desc: "De Z2 a Z4 progresivamente.", estructura: "20' Z2 + 20' Z3 + 15' Z4", sensacion: "Simulación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo fondo", duracion: 60, unidad: "min", desc: "Fondo largo.", estructura: "60' Z2 continuo", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo calidad", duracion: 65, unidad: "min", desc: "Incluye cambios de ritmo.", estructura: "40' Z2 + 4x3' Z4 + 13' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo específico", duracion: 70, unidad: "min", desc: "Preparación para competición.", estructura: "45' Z2 + 5x3' Z4 + 10' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo resistencia", duracion: 75, unidad: "min", desc: "Fondo largo continuo.", estructura: "75' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo con series", duracion: 80, unidad: "min", desc: "Incluye series cortas.", estructura: "50' Z2 + 3x1000m Z4 + 15' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" }
+                ]
+              },
+              avanzado: {
+                rodaje: [
+                  { nombre: "Rodaje calidad", duracion: 40, unidad: "min", desc: "Ritmo sostenido en Z2 alto.", estructura: "40' Z2 continuo", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje activo", duracion: 45, unidad: "min", desc: "Ritmo vivo exigente.", estructura: "45' Z2 vivo", sensacion: "Sostenible", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje técnico", duracion: 50, unidad: "min", desc: "Enfoque en cadencia.", estructura: "50' Z2 con cadencia alta", sensacion: "Eficiente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 35, unidad: "min", desc: "Sesión para mantener forma.", estructura: "35' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 45, unidad: "min", desc: "Introduce 4 cambios de ritmo.", estructura: "10' calentamiento + 4x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 30, unidad: "min", desc: "Después de sesión intensa.", estructura: "30' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 55, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "55' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 50, unidad: "min", desc: "Aumenta ritmo cada 10'.", estructura: "10' Z2 + 20' Z2 medio + 20' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Series 800m", duracion: 45, unidad: "min", desc: "5x800m con recuperación 3'.", estructura: "15' calentamiento + 5x800m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 1000m", duracion: 50, unidad: "min", desc: "4x1000m con recuperación 3'.", estructura: "15' calentamiento + 4x1000m + 10' enfriamiento", sensacion: "Muy intenso", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 1200m", duracion: 55, unidad: "min", desc: "3x1200m con recuperación 3'30.", estructura: "15' calentamiento + 3x1200m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 1600m", duracion: 60, unidad: "min", desc: "3x1600m con recuperación 4'.", estructura: "15' calentamiento + 3x1600m + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" },
+                  { nombre: "Pirámide larga", duracion: 55, unidad: "min", desc: "200-400-800-1200-800-400-200m.", estructura: "15' calentamiento + pirámide + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z5" },
+                  { nombre: "Fartlek avanzado", duracion: 45, unidad: "min", desc: "Juega con ritmos intensos.", estructura: "10' calentamiento + 20' fartlek + 15' enfriamiento", sensacion: "Divertido", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 600m", duracion: 50, unidad: "min", desc: "6x600m con recuperación 2'.", estructura: "15' calentamiento + 6x600m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo largo", duracion: 40, unidad: "min", desc: "25' a ritmo umbral.", estructura: "10' calentamiento + 25' Z4 + 5' enfriamiento", sensacion: "Umbral", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo umbral", duracion: 45, unidad: "min", desc: "30' a ritmo umbral.", estructura: "10' calentamiento + 30' Z4 + 5' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo variable", duracion: 45, unidad: "min", desc: "Alterna 3' Z3 / 3' Z4.", estructura: "10' calentamiento + 5x(3' Z3 + 3' Z4) + 5' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo competición", duracion: 50, unidad: "min", desc: "35' a ritmo competición.", estructura: "10' calentamiento + 35' Z4 + 5' enfriamiento", sensacion: "Ritmo carrera", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo progresivo", duracion: 50, unidad: "min", desc: "Aumenta ritmo cada 8'.", estructura: "10' calentamiento + 8' Z3 + 8' Z4 + 8' Z3 + 8' Z4 + 8' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo umbral largo", duracion: 55, unidad: "min", desc: "40' a ritmo umbral.", estructura: "10' calentamiento + 40' Z4 + 5' enfriamiento", sensacion: "Muy exigente", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo con cambios", duracion: 45, unidad: "min", desc: "Introduce 5 cambios de ritmo.", estructura: "10' calentamiento + 25' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo progresivo", duracion: 55, unidad: "min", desc: "De Z2 a Z4 progresivamente.", estructura: "20' Z2 + 20' Z3 + 15' Z4", sensacion: "Simulación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo específico", duracion: 60, unidad: "min", desc: "Incluye cambios de ritmo.", estructura: "40' Z2 + 4x3' Z4 + 8' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 65, unidad: "min", desc: "Progresión constante.", estructura: "30' Z2 + 20' Z3 + 15' Z4", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo fondo", duracion: 70, unidad: "min", desc: "Fondo largo continuo.", estructura: "70' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo con series", duracion: 75, unidad: "min", desc: "Incluye series largas.", estructura: "45' Z2 + 3x1000m Z4 + 15' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo resistencia", duracion: 80, unidad: "min", desc: "Fondo largo con cambios.", estructura: "60' Z2 + 20' Z3", sensacion: "Resistencia", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo ultradistancia", duracion: 90, unidad: "min", desc: "Preparación para maratón.", estructura: "70' Z2 + 20' Z3", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z3" }
+                ]
+              }
             },
-            "5k": { /* Similar, ampliado */ },
-            "10k": { /* Similar, ampliado */ },
-            "medio": { /* Similar, ampliado */ },
-            "maraton": { /* Similar, ampliado */ }
+            "5k": {
+              principiante: {
+                rodaje: [
+                  { nombre: "Rodaje 5k suave", duracion: 35, unidad: "min", desc: "Rodaje suave para 5k.", estructura: "10' calentamiento + 20' Z2 + 5' enfriamiento", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Fondo 5k", duracion: 40, unidad: "min", desc: "Fondo aeróbico.", estructura: "40' Z2 continuo", sensacion: "Constante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo 5k", duracion: 40, unidad: "min", desc: "Aumenta ritmo cada 10'.", estructura: "10' calentamiento + 20' progresivo + 10' enfriamiento", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación 5k", duracion: 30, unidad: "min", desc: "Sesión muy suave.", estructura: "30' Z1-Z2", sensacion: "Muy fácil", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje matinal 5k", duracion: 35, unidad: "min", desc: "Despertar suave.", estructura: "35' Z2", sensacion: "Refrescante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con cambios 5k", duracion: 40, unidad: "min", desc: "Introduce cambios de ritmo.", estructura: "10' calentamiento + 20' con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje base 5k", duracion: 45, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "45' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje regenerativo 5k", duracion: 30, unidad: "min", desc: "Después de sesión dura.", estructura: "30' Z1", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" }
+                ],
+                series: [
+                  { nombre: "Series 300m", duracion: 40, unidad: "min", desc: "8x300m con recuperación.", estructura: "15' calentamiento + 8x300m + 10' enfriamiento", sensacion: "Velocidad", tipo: "series", zona: "Z4" },
+                  { nombre: "Fartlek 5k", duracion: 35, unidad: "min", desc: "1' rápido + 2' suave.", estructura: "10' calentamiento + 8 repeticiones + 5' enfriamiento", sensacion: "Dinámico", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 200m", duracion: 35, unidad: "min", desc: "10x200m con recuperación 1'.", estructura: "15' calentamiento + 10x200m + 5' enfriamiento", sensacion: "Rápidas", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 400m", duracion: 40, unidad: "min", desc: "6x400m con recuperación 2'.", estructura: "15' calentamiento + 6x400m + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 600m", duracion: 45, unidad: "min", desc: "4x600m con recuperación 2'30.", estructura: "15' calentamiento + 4x600m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Pirámide 5k", duracion: 45, unidad: "min", desc: "200-400-600-400-200m.", estructura: "15' calentamiento + pirámide + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4-Z5" },
+                  { nombre: "Series 800m", duracion: 50, unidad: "min", desc: "3x800m con recuperación 3'.", estructura: "15' calentamiento + 3x800m + 10' enfriamiento", sensacion: "Muy exigente", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo 5k", duracion: 35, unidad: "min", desc: "15' a ritmo tempo.", estructura: "10' calentamiento + 15' Z3 + 10' enfriamiento", sensacion: "Constante", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo corto", duracion: 30, unidad: "min", desc: "12' a ritmo tempo.", estructura: "10' calentamiento + 12' Z3 + 8' enfriamiento", sensacion: "Controlado", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 40, unidad: "min", desc: "Aumenta ritmo cada 5'.", estructura: "10' calentamiento + 5' Z2 + 5' Z3 + 5' Z4 + 5' Z3 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z2-Z4" },
+                  { nombre: "Tempo umbral", duracion: 40, unidad: "min", desc: "20' a ritmo umbral.", estructura: "10' calentamiento + 20' Z4 + 10' enfriamiento", sensacion: "Fuerte", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo largo", duracion: 45, unidad: "min", desc: "25' a ritmo tempo.", estructura: "10' calentamiento + 25' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 40, unidad: "min", desc: "Alterna 3' Z3 / 2' Z4.", estructura: "10' calentamiento + 6x(3' Z3 + 2' Z4) + 5' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 45, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 25' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" }
+                ],
+                largo: [
+                  { nombre: "Largo 5k", duracion: 50, unidad: "min", desc: "Rodaje largo resistencia.", estructura: "50' Z2 continuo", sensacion: "Base", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo con cambios", duracion: 55, unidad: "min", desc: "Últimos 15' más rápido.", estructura: "40' Z2 + 15' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo fondo", duracion: 60, unidad: "min", desc: "Fondo largo.", estructura: "60' Z2 continuo", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 55, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "40' Z2 + 15' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 65, unidad: "min", desc: "Incluye cambios.", estructura: "45' Z2 + 4x3' Z4 + 8' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 60, unidad: "min", desc: "Progresión constante.", estructura: "40' Z2 + 20' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 70, unidad: "min", desc: "Fondo largo.", estructura: "70' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              },
+              intermedio: {
+                rodaje: [
+                  { nombre: "Rodaje activo 5k", duracion: 40, unidad: "min", desc: "Ritmo vivo controlado.", estructura: "40' Z2 vivo", sensacion: "Eficiente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje calidad", duracion: 45, unidad: "min", desc: "Ritmo exigente.", estructura: "45' Z2 alto", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje aeróbico", duracion: 50, unidad: "min", desc: "Fondo aeróbico.", estructura: "50' Z2 constante", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 35, unidad: "min", desc: "Sesión para mantener forma.", estructura: "35' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 45, unidad: "min", desc: "Introduce 4 cambios.", estructura: "10' calentamiento + 4x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 30, unidad: "min", desc: "Después de sesión intensa.", estructura: "30' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 55, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "55' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 50, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 15' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Series 600m", duracion: 45, unidad: "min", desc: "6x600m con recuperación.", estructura: "15' calentamiento + 6x600m + 10' enfriamiento", sensacion: "Intensidad", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 800m", duracion: 50, unidad: "min", desc: "5x800m con recuperación 2'30.", estructura: "15' calentamiento + 5x800m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Pirámide 5k", duracion: 50, unidad: "min", desc: "200-400-600-800-600-400-200m.", estructura: "15' calentamiento + pirámide + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4-Z5" },
+                  { nombre: "Series 1000m", duracion: 55, unidad: "min", desc: "4x1000m con recuperación 3'.", estructura: "15' calentamiento + 4x1000m + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 400m", duracion: 45, unidad: "min", desc: "8x400m con recuperación 1'30.", estructura: "15' calentamiento + 8x400m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
+                  { nombre: "Fartlek avanzado", duracion: 45, unidad: "min", desc: "Juega con ritmos.", estructura: "10' calentamiento + 20' fartlek + 15' enfriamiento", sensacion: "Divertido", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 200m rápidas", duracion: 40, unidad: "min", desc: "12x200m con recuperación 1'.", estructura: "15' calentamiento + 12x200m + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo umbral", duracion: 40, unidad: "min", desc: "20' a ritmo umbral.", estructura: "10' calentamiento + 20' umbral + 10' enfriamiento", sensacion: "Sostenido", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo 5k", duracion: 45, unidad: "min", desc: "25' a ritmo umbral.", estructura: "10' calentamiento + 25' Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo variable", duracion: 45, unidad: "min", desc: "Alterna 5' Z3 / 3' Z4.", estructura: "10' calentamiento + 3x(5' Z3 + 3' Z4) + 2' Z3 + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo largo", duracion: 50, unidad: "min", desc: "30' a ritmo tempo.", estructura: "10' calentamiento + 30' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 50, unidad: "min", desc: "Aumenta cada 8'.", estructura: "10' calentamiento + 8' Z3 + 8' Z4 + 8' Z3 + 8' Z4 + 8' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 45, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 25' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral largo", duracion: 55, unidad: "min", desc: "35' a ritmo umbral.", estructura: "10' calentamiento + 35' Z4 + 10' enfriamiento", sensacion: "Muy exigente", tipo: "tempo", zona: "Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo calidad", duracion: 60, unidad: "min", desc: "Progresión últimos 20'.", estructura: "40' Z2 + 20' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo con cambios", duracion: 65, unidad: "min", desc: "Incluye series cortas.", estructura: "45' Z2 + 4x3' Z4 + 8' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo progresivo", duracion: 70, unidad: "min", desc: "Aumenta ritmo cada 20'.", estructura: "30' Z2 + 20' Z3 + 20' Z2", sensacion: "Controlado", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 75, unidad: "min", desc: "Incluye cambios.", estructura: "45' Z2 + 5x3' Z4 + 15' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo fondo", duracion: 80, unidad: "min", desc: "Fondo largo continuo.", estructura: "80' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo resistencia", duracion: 85, unidad: "min", desc: "Fondo largo con cambios.", estructura: "60' Z2 + 25' Z3", sensacion: "Resistencia", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo con series", duracion: 90, unidad: "min", desc: "Incluye series largas.", estructura: "60' Z2 + 4x800m Z4 + 15' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" }
+                ]
+              },
+              avanzado: {
+                rodaje: [
+                  { nombre: "Rodaje alto", duracion: 45, unidad: "min", desc: "Ritmo exigente Z2.", estructura: "45' Z2 alto", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje activo", duracion: 50, unidad: "min", desc: "Ritmo vivo.", estructura: "50' Z2 vivo", sensacion: "Sostenible", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje técnico", duracion: 55, unidad: "min", desc: "Enfoque en cadencia.", estructura: "55' Z2 cadencia alta", sensacion: "Eficiente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 40, unidad: "min", desc: "Sesión para mantener forma.", estructura: "40' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 50, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 5x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 35, unidad: "min", desc: "Después de sesión intensa.", estructura: "35' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 60, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "60' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 55, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 20' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Series 1000m", duracion: 50, unidad: "min", desc: "5x1000m con recuperación.", estructura: "15' calentamiento + 5x1000m + 10' enfriamiento", sensacion: "Muy intenso", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 1200m", duracion: 55, unidad: "min", desc: "4x1200m con recuperación 3'30.", estructura: "15' calentamiento + 4x1200m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 1600m", duracion: 60, unidad: "min", desc: "3x1600m con recuperación 4'.", estructura: "15' calentamiento + 3x1600m + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 800m", duracion: 50, unidad: "min", desc: "6x800m con recuperación 2'.", estructura: "15' calentamiento + 6x800m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z5" },
+                  { nombre: "Pirámide larga", duracion: 60, unidad: "min", desc: "400-800-1200-1600-1200-800-400m.", estructura: "15' calentamiento + pirámide + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z5" },
+                  { nombre: "Fartlek avanzado", duracion: 50, unidad: "min", desc: "Juega con ritmos intensos.", estructura: "10' calentamiento + 25' fartlek + 15' enfriamiento", sensacion: "Divertido", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 600m", duracion: 55, unidad: "min", desc: "8x600m con recuperación 1'30.", estructura: "15' calentamiento + 8x600m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo competición", duracion: 45, unidad: "min", desc: "30' a ritmo 5k.", estructura: "10' calentamiento + 30' Z4 + 5' enfriamiento", sensacion: "Ritmo carrera", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo umbral", duracion: 50, unidad: "min", desc: "35' a ritmo umbral.", estructura: "10' calentamiento + 35' Z4 + 5' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo variable", duracion: 50, unidad: "min", desc: "Alterna 4' Z3 / 3' Z4.", estructura: "10' calentamiento + 5x(4' Z3 + 3' Z4) + 5' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo largo", duracion: 55, unidad: "min", desc: "40' a ritmo tempo.", estructura: "10' calentamiento + 40' Z3 + 5' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 55, unidad: "min", desc: "Aumenta cada 7'.", estructura: "10' calentamiento + 7' Z3 + 7' Z4 + 7' Z3 + 7' Z4 + 7' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 50, unidad: "min", desc: "Introduce 6 cambios.", estructura: "10' calentamiento + 30' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo umbral largo", duracion: 60, unidad: "min", desc: "45' a ritmo umbral.", estructura: "10' calentamiento + 45' Z4 + 5' enfriamiento", sensacion: "Muy exigente", tipo: "tempo", zona: "Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo específico", duracion: 70, unidad: "min", desc: "Cambios a ritmo 5k.", estructura: "40' Z2 + 4x5' Z4 + 10' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 75, unidad: "min", desc: "Progresión constante.", estructura: "45' Z2 + 30' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo con series", duracion: 80, unidad: "min", desc: "Incluye series largas.", estructura: "50' Z2 + 3x1000m Z4 + 15' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo progresivo", duracion: 85, unidad: "min", desc: "Aumenta ritmo cada 25'.", estructura: "35' Z2 + 25' Z3 + 25' Z2", sensacion: "Controlado", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo fondo", duracion: 90, unidad: "min", desc: "Fondo largo continuo.", estructura: "90' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo resistencia", duracion: 95, unidad: "min", desc: "Fondo largo con cambios.", estructura: "65' Z2 + 30' Z3", sensacion: "Resistencia", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo ultradistancia", duracion: 100, unidad: "min", desc: "Preparación para 5k.", estructura: "70' Z2 + 30' Z3", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z3" }
+                ]
+              }
+            },
+            "10k": {
+              principiante: {
+                rodaje: [
+                  { nombre: "Rodaje 10k", duracion: 40, unidad: "min", desc: "Rodaje suave 10k.", estructura: "10' calentamiento + 25' Z2 + 5' enfriamiento", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Fondo 10k", duracion: 45, unidad: "min", desc: "Fondo aeróbico.", estructura: "45' Z2 continuo", sensacion: "Constante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 45, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "10' calentamiento + 25' progresivo + 10' enfriamiento", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 35, unidad: "min", desc: "Sesión muy suave.", estructura: "35' Z1-Z2", sensacion: "Muy fácil", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje matinal", duracion: 40, unidad: "min", desc: "Despertar suave.", estructura: "40' Z2", sensacion: "Refrescante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con cambios", duracion: 45, unidad: "min", desc: "Introduce cambios de ritmo.", estructura: "10' calentamiento + 25' con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje base", duracion: 50, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "50' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje regenerativo", duracion: 35, unidad: "min", desc: "Después de sesión dura.", estructura: "35' Z1", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" }
+                ],
+                series: [
+                  { nombre: "Series 400m", duracion: 40, unidad: "min", desc: "8x400m con recuperación.", estructura: "15' calentamiento + 8x400m + 10' enfriamiento", sensacion: "Controladas", tipo: "series", zona: "Z4" },
+                  { nombre: "Fartlek 10k", duracion: 40, unidad: "min", desc: "2' rápido + 2' suave.", estructura: "10' calentamiento + 7 repeticiones + 5' enfriamiento", sensacion: "Dinámico", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 300m", duracion: 35, unidad: "min", desc: "10x300m con recuperación 1'.", estructura: "15' calentamiento + 10x300m + 5' enfriamiento", sensacion: "Rápidas", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 500m", duracion: 45, unidad: "min", desc: "6x500m con recuperación 2'.", estructura: "15' calentamiento + 6x500m + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 600m", duracion: 50, unidad: "min", desc: "5x600m con recuperación 2'30.", estructura: "15' calentamiento + 5x600m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Pirámide 10k", duracion: 45, unidad: "min", desc: "400-600-800-600-400m.", estructura: "15' calentamiento + pirámide + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4-Z5" },
+                  { nombre: "Series 800m", duracion: 55, unidad: "min", desc: "4x800m con recuperación 3'.", estructura: "15' calentamiento + 4x800m + 10' enfriamiento", sensacion: "Muy exigente", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo 10k", duracion: 40, unidad: "min", desc: "20' a ritmo tempo.", estructura: "10' calentamiento + 20' Z3 + 10' enfriamiento", sensacion: "Constante", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo corto", duracion: 35, unidad: "min", desc: "15' a ritmo tempo.", estructura: "10' calentamiento + 15' Z3 + 10' enfriamiento", sensacion: "Controlado", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 45, unidad: "min", desc: "Aumenta cada 7'30.", estructura: "10' calentamiento + 7'30 Z3 + 7'30 Z4 + 7'30 Z3 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo umbral", duracion: 45, unidad: "min", desc: "25' a ritmo umbral.", estructura: "10' calentamiento + 25' Z4 + 10' enfriamiento", sensacion: "Fuerte", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo largo", duracion: 50, unidad: "min", desc: "30' a ritmo tempo.", estructura: "10' calentamiento + 30' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 45, unidad: "min", desc: "Alterna 4' Z3 / 2' Z4.", estructura: "10' calentamiento + 5x(4' Z3 + 2' Z4) + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 50, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 30' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" }
+                ],
+                largo: [
+                  { nombre: "Largo 10k", duracion: 60, unidad: "min", desc: "Rodaje largo.", estructura: "60' Z2 continuo", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo con cambios", duracion: 65, unidad: "min", desc: "Últimos 20' más rápido.", estructura: "45' Z2 + 20' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo fondo", duracion: 70, unidad: "min", desc: "Fondo largo.", estructura: "70' Z2 continuo", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 65, unidad: "min", desc: "Aumenta ritmo cada 20'.", estructura: "45' Z2 + 20' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 75, unidad: "min", desc: "Incluye cambios.", estructura: "50' Z2 + 4x3' Z4 + 10' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 80, unidad: "min", desc: "Progresión constante.", estructura: "50' Z2 + 30' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 85, unidad: "min", desc: "Fondo largo.", estructura: "85' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              },
+              intermedio: {
+                rodaje: [
+                  { nombre: "Rodaje activo 10k", duracion: 45, unidad: "min", desc: "Ritmo vivo Z2.", estructura: "45' Z2 vivo", sensacion: "Eficiente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje calidad", duracion: 50, unidad: "min", desc: "Ritmo exigente.", estructura: "50' Z2 alto", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje aeróbico", duracion: 55, unidad: "min", desc: "Fondo aeróbico.", estructura: "55' Z2 constante", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 40, unidad: "min", desc: "Sesión para mantener forma.", estructura: "40' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 50, unidad: "min", desc: "Introduce 4 cambios.", estructura: "10' calentamiento + 4x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 35, unidad: "min", desc: "Después de sesión intensa.", estructura: "35' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 60, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "60' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 55, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 20' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Series 800m", duracion: 50, unidad: "min", desc: "6x800m con recuperación.", estructura: "15' calentamiento + 6x800m + 10' enfriamiento", sensacion: "Intensidad", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 1000m", duracion: 55, unidad: "min", desc: "5x1000m con recuperación 2'30.", estructura: "15' calentamiento + 5x1000m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Pirámide 10k", duracion: 55, unidad: "min", desc: "400-800-1200-800-400m.", estructura: "15' calentamiento + pirámide + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4-Z5" },
+                  { nombre: "Series 1200m", duracion: 60, unidad: "min", desc: "4x1200m con recuperación 3'.", estructura: "15' calentamiento + 4x1200m + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 600m", duracion: 50, unidad: "min", desc: "8x600m con recuperación 1'30.", estructura: "15' calentamiento + 8x600m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
+                  { nombre: "Fartlek avanzado", duracion: 50, unidad: "min", desc: "Juega con ritmos.", estructura: "10' calentamiento + 25' fartlek + 15' enfriamiento", sensacion: "Divertido", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 400m", duracion: 55, unidad: "min", desc: "10x400m con recuperación 1'30.", estructura: "15' calentamiento + 10x400m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" }
+                ],
+                tempo: [
+                  { nombre: "Tempo umbral", duracion: 45, unidad: "min", desc: "25' a ritmo umbral.", estructura: "10' calentamiento + 25' umbral + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo 10k", duracion: 50, unidad: "min", desc: "30' a ritmo umbral.", estructura: "10' calentamiento + 30' Z4 + 10' enfriamiento", sensacion: "Sostenido", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo variable", duracion: 50, unidad: "min", desc: "Alterna 6' Z3 / 3' Z4.", estructura: "10' calentamiento + 4x(6' Z3 + 3' Z4) + 5' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo largo", duracion: 55, unidad: "min", desc: "35' a ritmo tempo.", estructura: "10' calentamiento + 35' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 55, unidad: "min", desc: "Aumenta cada 8'.", estructura: "10' calentamiento + 8' Z3 + 8' Z4 + 8' Z3 + 8' Z4 + 8' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 50, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 30' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral largo", duracion: 60, unidad: "min", desc: "40' a ritmo umbral.", estructura: "10' calentamiento + 40' Z4 + 10' enfriamiento", sensacion: "Muy exigente", tipo: "tempo", zona: "Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo calidad", duracion: 75, unidad: "min", desc: "Progresión últimos 25'.", estructura: "50' Z2 + 25' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo con cambios", duracion: 80, unidad: "min", desc: "Incluye series.", estructura: "55' Z2 + 5x3' Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo progresivo", duracion: 85, unidad: "min", desc: "Aumenta ritmo cada 25'.", estructura: "35' Z2 + 25' Z3 + 25' Z2", sensacion: "Controlado", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 90, unidad: "min", desc: "Incluye cambios.", estructura: "60' Z2 + 6x3' Z4 + 12' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo fondo", duracion: 95, unidad: "min", desc: "Fondo largo continuo.", estructura: "95' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo resistencia", duracion: 100, unidad: "min", desc: "Fondo largo con cambios.", estructura: "70' Z2 + 30' Z3", sensacion: "Resistencia", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo con series", duracion: 105, unidad: "min", desc: "Incluye series largas.", estructura: "70' Z2 + 5x800m Z4 + 15' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" }
+                ]
+              },
+              avanzado: {
+                rodaje: [
+                  { nombre: "Rodaje alto", duracion: 50, unidad: "min", desc: "Ritmo exigente Z2.", estructura: "50' Z2 alto", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje activo", duracion: 55, unidad: "min", desc: "Ritmo vivo.", estructura: "55' Z2 vivo", sensacion: "Sostenible", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje técnico", duracion: 60, unidad: "min", desc: "Enfoque técnico.", estructura: "60' Z2 cadencia alta", sensacion: "Eficiente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 45, unidad: "min", desc: "Sesión para mantener forma.", estructura: "45' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 55, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 5x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 40, unidad: "min", desc: "Después de sesión intensa.", estructura: "40' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 65, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "65' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 60, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 25' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Series 1600m", duracion: 55, unidad: "min", desc: "4x1600m con recuperación.", estructura: "15' calentamiento + 4x1600m + 10' enfriamiento", sensacion: "Muy intenso", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 2000m", duracion: 60, unidad: "min", desc: "3x2000m con recuperación 4'.", estructura: "15' calentamiento + 3x2000m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 3000m", duracion: 65, unidad: "min", desc: "2x3000m con recuperación 5'.", estructura: "15' calentamiento + 2x3000m + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 1000m", duracion: 55, unidad: "min", desc: "5x1000m con recuperación 2'.", estructura: "15' calentamiento + 5x1000m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z5" },
+                  { nombre: "Pirámide larga", duracion: 65, unidad: "min", desc: "800-1600-2400-1600-800m.", estructura: "15' calentamiento + pirámide + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z5" },
+                  { nombre: "Fartlek avanzado", duracion: 55, unidad: "min", desc: "Juega con ritmos intensos.", estructura: "10' calentamiento + 30' fartlek + 15' enfriamiento", sensacion: "Divertido", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 800m", duracion: 60, unidad: "min", desc: "8x800m con recuperación 1'30.", estructura: "15' calentamiento + 8x800m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo 10k", duracion: 50, unidad: "min", desc: "35' a ritmo 10k.", estructura: "10' calentamiento + 35' Z4 + 5' enfriamiento", sensacion: "Ritmo carrera", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo umbral", duracion: 55, unidad: "min", desc: "40' a ritmo umbral.", estructura: "10' calentamiento + 40' Z4 + 5' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo variable", duracion: 55, unidad: "min", desc: "Alterna 5' Z3 / 3' Z4.", estructura: "10' calentamiento + 5x(5' Z3 + 3' Z4) + 5' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo largo", duracion: 60, unidad: "min", desc: "45' a ritmo tempo.", estructura: "10' calentamiento + 45' Z3 + 5' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 60, unidad: "min", desc: "Aumenta cada 6'.", estructura: "10' calentamiento + 6' Z3 + 6' Z4 + 6' Z3 + 6' Z4 + 6' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 55, unidad: "min", desc: "Introduce 6 cambios.", estructura: "10' calentamiento + 35' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo umbral largo", duracion: 65, unidad: "min", desc: "50' a ritmo umbral.", estructura: "10' calentamiento + 50' Z4 + 5' enfriamiento", sensacion: "Muy exigente", tipo: "tempo", zona: "Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo específico", duracion: 85, unidad: "min", desc: "Cambios a ritmo 10k.", estructura: "45' Z2 + 5x5' Z4 + 15' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 90, unidad: "min", desc: "Progresión constante.", estructura: "50' Z2 + 40' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo con series", duracion: 95, unidad: "min", desc: "Series largas.", estructura: "55' Z2 + 4x1000m Z4 + 20' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo progresivo", duracion: 100, unidad: "min", desc: "Aumenta ritmo cada 30'.", estructura: "40' Z2 + 30' Z3 + 30' Z2", sensacion: "Controlado", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo fondo", duracion: 105, unidad: "min", desc: "Fondo largo continuo.", estructura: "105' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo resistencia", duracion: 110, unidad: "min", desc: "Fondo largo con cambios.", estructura: "70' Z2 + 40' Z3", sensacion: "Resistencia", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo ultradistancia", duracion: 115, unidad: "min", desc: "Preparación para 10k.", estructura: "75' Z2 + 40' Z3", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z3" }
+                ]
+              }
+            },
+            "medio": {
+              principiante: {
+                rodaje: [
+                  { nombre: "Rodaje media", duracion: 45, unidad: "min", desc: "Rodaje suave media.", estructura: "10' calentamiento + 30' Z2 + 5' enfriamiento", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Fondo media", duracion: 50, unidad: "min", desc: "Fondo aeróbico.", estructura: "50' Z2 continuo", sensacion: "Constante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 50, unidad: "min", desc: "Aumenta cada 15'.", estructura: "10' calentamiento + 30' progresivo + 10' enfriamiento", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 40, unidad: "min", desc: "Sesión muy suave.", estructura: "40' Z1-Z2", sensacion: "Muy fácil", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje matinal", duracion: 45, unidad: "min", desc: "Despertar suave.", estructura: "45' Z2", sensacion: "Refrescante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con cambios", duracion: 50, unidad: "min", desc: "Introduce cambios de ritmo.", estructura: "10' calentamiento + 30' con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje base", duracion: 55, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "55' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje regenerativo", duracion: 40, unidad: "min", desc: "Después de sesión dura.", estructura: "40' Z1", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" }
+                ],
+                series: [
+                  { nombre: "Series 500m", duracion: 45, unidad: "min", desc: "8x500m con recuperación.", estructura: "15' calentamiento + 8x500m + 10' enfriamiento", sensacion: "Controladas", tipo: "series", zona: "Z4" },
+                  { nombre: "Fartlek media", duracion: 45, unidad: "min", desc: "2' rápido + 2' suave.", estructura: "10' calentamiento + 8 repeticiones + 7' enfriamiento", sensacion: "Dinámico", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 400m", duracion: 40, unidad: "min", desc: "10x400m con recuperación 1'15.", estructura: "15' calentamiento + 10x400m + 5' enfriamiento", sensacion: "Rápidas", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 600m", duracion: 50, unidad: "min", desc: "6x600m con recuperación 2'.", estructura: "15' calentamiento + 6x600m + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 800m", duracion: 55, unidad: "min", desc: "5x800m con recuperación 2'30.", estructura: "15' calentamiento + 5x800m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Pirámide media", duracion: 50, unidad: "min", desc: "400-600-800-600-400m.", estructura: "15' calentamiento + pirámide + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4-Z5" },
+                  { nombre: "Series 1000m", duracion: 60, unidad: "min", desc: "4x1000m con recuperación 3'.", estructura: "15' calentamiento + 4x1000m + 10' enfriamiento", sensacion: "Muy exigente", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo media", duracion: 45, unidad: "min", desc: "25' a ritmo tempo.", estructura: "10' calentamiento + 25' Z3 + 10' enfriamiento", sensacion: "Constante", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 50, unidad: "min", desc: "Aumenta cada 8'.", estructura: "10' calentamiento + 8' Z3 + 8' Z4 + 8' Z3 + 6' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo corto", duracion: 40, unidad: "min", desc: "20' a ritmo tempo.", estructura: "10' calentamiento + 20' Z3 + 10' enfriamiento", sensacion: "Controlado", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral", duracion: 50, unidad: "min", desc: "30' a ritmo umbral.", estructura: "10' calentamiento + 30' Z4 + 10' enfriamiento", sensacion: "Fuerte", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo largo", duracion: 55, unidad: "min", desc: "35' a ritmo tempo.", estructura: "10' calentamiento + 35' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 50, unidad: "min", desc: "Alterna 5' Z3 / 2' Z4.", estructura: "10' calentamiento + 5x(5' Z3 + 2' Z4) + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 55, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 35' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" }
+                ],
+                largo: [
+                  { nombre: "Largo media", duracion: 75, unidad: "min", desc: "Rodaje largo.", estructura: "75' Z2 continuo", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo con cambios", duracion: 80, unidad: "min", desc: "Últimos 25' más rápido.", estructura: "55' Z2 + 25' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo fondo", duracion: 85, unidad: "min", desc: "Fondo largo.", estructura: "85' Z2 continuo", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 80, unidad: "min", desc: "Aumenta ritmo cada 20'.", estructura: "60' Z2 + 20' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 90, unidad: "min", desc: "Incluye cambios.", estructura: "60' Z2 + 5x3' Z4 + 15' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 95, unidad: "min", desc: "Progresión constante.", estructura: "60' Z2 + 35' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 100, unidad: "min", desc: "Fondo largo.", estructura: "100' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              },
+              intermedio: {
+                rodaje: [
+                  { nombre: "Rodaje activo media", duracion: 50, unidad: "min", desc: "Ritmo vivo Z2.", estructura: "50' Z2 vivo", sensacion: "Eficiente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje calidad", duracion: 55, unidad: "min", desc: "Ritmo exigente.", estructura: "55' Z2 alto", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje aeróbico", duracion: 60, unidad: "min", desc: "Fondo aeróbico.", estructura: "60' Z2 constante", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 45, unidad: "min", desc: "Sesión para mantener forma.", estructura: "45' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 55, unidad: "min", desc: "Introduce 4 cambios.", estructura: "10' calentamiento + 4x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 40, unidad: "min", desc: "Después de sesión intensa.", estructura: "40' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 65, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "65' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 60, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 25' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Series 1000m", duracion: 55, unidad: "min", desc: "6x1000m con recuperación.", estructura: "15' calentamiento + 6x1000m + 10' enfriamiento", sensacion: "Intensidad", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 1200m", duracion: 60, unidad: "min", desc: "5x1200m con recuperación 3'.", estructura: "15' calentamiento + 5x1200m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Pirámide media", duracion: 60, unidad: "min", desc: "400-800-1200-1600-1200-800-400m.", estructura: "15' calentamiento + pirámide + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4-Z5" },
+                  { nombre: "Series 800m", duracion: 55, unidad: "min", desc: "8x800m con recuperación 2'.", estructura: "15' calentamiento + 8x800m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 1600m", duracion: 65, unidad: "min", desc: "4x1600m con recuperación 3'30.", estructura: "15' calentamiento + 4x1600m + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z5" },
+                  { nombre: "Fartlek avanzado", duracion: 55, unidad: "min", desc: "Juega con ritmos.", estructura: "10' calentamiento + 30' fartlek + 15' enfriamiento", sensacion: "Divertido", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 600m", duracion: 60, unidad: "min", desc: "10x600m con recuperación 1'30.", estructura: "15' calentamiento + 10x600m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" }
+                ],
+                tempo: [
+                  { nombre: "Tempo umbral media", duracion: 50, unidad: "min", desc: "30' a ritmo umbral.", estructura: "10' calentamiento + 30' umbral + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo media", duracion: 55, unidad: "min", desc: "35' a ritmo umbral.", estructura: "10' calentamiento + 35' Z4 + 10' enfriamiento", sensacion: "Sostenido", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo variable", duracion: 55, unidad: "min", desc: "Alterna 7' Z3 / 3' Z4.", estructura: "10' calentamiento + 4x(7' Z3 + 3' Z4) + 5' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo largo", duracion: 60, unidad: "min", desc: "40' a ritmo tempo.", estructura: "10' calentamiento + 40' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 60, unidad: "min", desc: "Aumenta cada 7'.", estructura: "10' calentamiento + 7' Z3 + 7' Z4 + 7' Z3 + 7' Z4 + 7' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 55, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 35' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral largo", duracion: 65, unidad: "min", desc: "45' a ritmo umbral.", estructura: "10' calentamiento + 45' Z4 + 10' enfriamiento", sensacion: "Muy exigente", tipo: "tempo", zona: "Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo calidad media", duracion: 90, unidad: "min", desc: "Progresión últimos 30'.", estructura: "60' Z2 + 30' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo con cambios", duracion: 95, unidad: "min", desc: "Incluye series.", estructura: "65' Z2 + 6x3' Z4 + 12' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo progresivo", duracion: 100, unidad: "min", desc: "Aumenta ritmo cada 30'.", estructura: "40' Z2 + 30' Z3 + 30' Z2", sensacion: "Controlado", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 105, unidad: "min", desc: "Incluye cambios.", estructura: "70' Z2 + 6x3' Z4 + 15' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo fondo", duracion: 110, unidad: "min", desc: "Fondo largo continuo.", estructura: "110' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo resistencia", duracion: 115, unidad: "min", desc: "Fondo largo con cambios.", estructura: "80' Z2 + 35' Z3", sensacion: "Resistencia", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo con series", duracion: 120, unidad: "min", desc: "Incluye series largas.", estructura: "80' Z2 + 6x800m Z4 + 15' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" }
+                ]
+              },
+              avanzado: {
+                rodaje: [
+                  { nombre: "Rodaje alto media", duracion: 55, unidad: "min", desc: "Ritmo exigente Z2.", estructura: "55' Z2 alto", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje activo", duracion: 60, unidad: "min", desc: "Ritmo vivo.", estructura: "60' Z2 vivo", sensacion: "Sostenible", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje técnico", duracion: 65, unidad: "min", desc: "Enfoque técnico.", estructura: "65' Z2 cadencia alta", sensacion: "Eficiente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 50, unidad: "min", desc: "Sesión para mantener forma.", estructura: "50' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 60, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 5x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 45, unidad: "min", desc: "Después de sesión intensa.", estructura: "45' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 70, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "70' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 65, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 30' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Series 2000m", duracion: 60, unidad: "min", desc: "4x2000m con recuperación.", estructura: "15' calentamiento + 4x2000m + 10' enfriamiento", sensacion: "Muy intenso", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 3000m", duracion: 65, unidad: "min", desc: "3x3000m con recuperación 4'30.", estructura: "15' calentamiento + 3x3000m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 5000m", duracion: 70, unidad: "min", desc: "2x5000m con recuperación 5'.", estructura: "15' calentamiento + 2x5000m + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 1000m", duracion: 60, unidad: "min", desc: "6x1000m con recuperación 2'.", estructura: "15' calentamiento + 6x1000m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z5" },
+                  { nombre: "Pirámide larga", duracion: 70, unidad: "min", desc: "1000-2000-3000-2000-1000m.", estructura: "15' calentamiento + pirámide + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z5" },
+                  { nombre: "Fartlek avanzado", duracion: 60, unidad: "min", desc: "Juega con ritmos intensos.", estructura: "10' calentamiento + 35' fartlek + 15' enfriamiento", sensacion: "Divertido", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 800m", duracion: 65, unidad: "min", desc: "10x800m con recuperación 1'30.", estructura: "15' calentamiento + 10x800m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo media avanzado", duracion: 55, unidad: "min", desc: "40' a ritmo media.", estructura: "10' calentamiento + 40' Z4 + 5' enfriamiento", sensacion: "Ritmo carrera", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo umbral", duracion: 60, unidad: "min", desc: "45' a ritmo umbral.", estructura: "10' calentamiento + 45' Z4 + 5' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo variable", duracion: 60, unidad: "min", desc: "Alterna 6' Z3 / 3' Z4.", estructura: "10' calentamiento + 5x(6' Z3 + 3' Z4) + 5' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo largo", duracion: 65, unidad: "min", desc: "50' a ritmo tempo.", estructura: "10' calentamiento + 50' Z3 + 5' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 65, unidad: "min", desc: "Aumenta cada 5'.", estructura: "10' calentamiento + 5' Z3 + 5' Z4 + 5' Z3 + 5' Z4 + 5' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 60, unidad: "min", desc: "Introduce 6 cambios.", estructura: "10' calentamiento + 40' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo umbral largo", duracion: 70, unidad: "min", desc: "55' a ritmo umbral.", estructura: "10' calentamiento + 55' Z4 + 5' enfriamiento", sensacion: "Muy exigente", tipo: "tempo", zona: "Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo específico media", duracion: 105, unidad: "min", desc: "Cambios a ritmo media.", estructura: "60' Z2 + 6x5' Z4 + 15' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 110, unidad: "min", desc: "Progresión constante.", estructura: "70' Z2 + 40' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo con series", duracion: 115, unidad: "min", desc: "Series largas.", estructura: "75' Z2 + 5x1000m Z4 + 20' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo progresivo", duracion: 120, unidad: "min", desc: "Aumenta ritmo cada 30'.", estructura: "50' Z2 + 35' Z3 + 35' Z2", sensacion: "Controlado", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo fondo", duracion: 125, unidad: "min", desc: "Fondo largo continuo.", estructura: "125' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo resistencia", duracion: 130, unidad: "min", desc: "Fondo largo con cambios.", estructura: "85' Z2 + 45' Z3", sensacion: "Resistencia", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo ultradistancia", duracion: 135, unidad: "min", desc: "Preparación para media.", estructura: "90' Z2 + 45' Z3", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z3" }
+                ]
+              }
+            },
+            "maraton": {
+              principiante: {
+                rodaje: [
+                  { nombre: "Rodaje maratón", duracion: 50, unidad: "min", desc: "Rodaje suave maratón.", estructura: "10' calentamiento + 35' Z2 + 5' enfriamiento", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Fondo maratón", duracion: 55, unidad: "min", desc: "Fondo aeróbico.", estructura: "55' Z2 continuo", sensacion: "Constante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 55, unidad: "min", desc: "Aumenta cada 15'.", estructura: "10' calentamiento + 35' progresivo + 10' enfriamiento", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 45, unidad: "min", desc: "Sesión muy suave.", estructura: "45' Z1-Z2", sensacion: "Muy fácil", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje matinal", duracion: 50, unidad: "min", desc: "Despertar suave.", estructura: "50' Z2", sensacion: "Refrescante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con cambios", duracion: 55, unidad: "min", desc: "Introduce cambios de ritmo.", estructura: "10' calentamiento + 35' con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje base", duracion: 60, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "60' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje regenerativo", duracion: 45, unidad: "min", desc: "Después de sesión dura.", estructura: "45' Z1", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" }
+                ],
+                series: [
+                  { nombre: "Series 800m", duracion: 50, unidad: "min", desc: "6x800m con recuperación.", estructura: "15' calentamiento + 6x800m + 10' enfriamiento", sensacion: "Controladas", tipo: "series", zona: "Z4" },
+                  { nombre: "Fartlek maratón", duracion: 50, unidad: "min", desc: "3' rápido + 3' suave.", estructura: "10' calentamiento + 6 repeticiones + 8' enfriamiento", sensacion: "Dinámico", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 1000m", duracion: 55, unidad: "min", desc: "5x1000m con recuperación 2'.", estructura: "15' calentamiento + 5x1000m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 1200m", duracion: 60, unidad: "min", desc: "4x1200m con recuperación 2'30.", estructura: "15' calentamiento + 4x1200m + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 1500m", duracion: 65, unidad: "min", desc: "3x1500m con recuperación 3'.", estructura: "15' calentamiento + 3x1500m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Pirámide maratón", duracion: 60, unidad: "min", desc: "800-1200-1600-1200-800m.", estructura: "15' calentamiento + pirámide + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4-Z5" },
+                  { nombre: "Series 2000m", duracion: 70, unidad: "min", desc: "3x2000m con recuperación 3'30.", estructura: "15' calentamiento + 3x2000m + 10' enfriamiento", sensacion: "Muy exigente", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo maratón", duracion: 50, unidad: "min", desc: "30' a ritmo tempo.", estructura: "10' calentamiento + 30' Z3 + 10' enfriamiento", sensacion: "Constante", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 55, unidad: "min", desc: "Aumenta cada 10'.", estructura: "10' calentamiento + 10' Z3 + 10' Z4 + 10' Z3 + 15' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo largo", duracion: 60, unidad: "min", desc: "35' a ritmo tempo.", estructura: "10' calentamiento + 35' Z3 + 15' enfriamiento", sensacion: "Sostenido", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral", duracion: 55, unidad: "min", desc: "30' a ritmo umbral.", estructura: "10' calentamiento + 30' Z4 + 15' enfriamiento", sensacion: "Fuerte", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo variable", duracion: 60, unidad: "min", desc: "Alterna 5' Z3 / 3' Z4.", estructura: "10' calentamiento + 5x(5' Z3 + 3' Z4) + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 60, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 40' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo largo umbral", duracion: 65, unidad: "min", desc: "40' a ritmo umbral.", estructura: "10' calentamiento + 40' Z4 + 15' enfriamiento", sensacion: "Muy exigente", tipo: "tempo", zona: "Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo maratón", duracion: 90, unidad: "min", desc: "Rodaje largo.", estructura: "90' Z2 continuo", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo con cambios", duracion: 100, unidad: "min", desc: "Últimos 30' más rápido.", estructura: "70' Z2 + 30' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo fondo", duracion: 110, unidad: "min", desc: "Fondo largo.", estructura: "110' Z2 continuo", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 100, unidad: "min", desc: "Aumenta ritmo cada 25'.", estructura: "75' Z2 + 25' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 115, unidad: "min", desc: "Incluye cambios.", estructura: "80' Z2 + 5x3' Z4 + 20' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 120, unidad: "min", desc: "Progresión constante.", estructura: "80' Z2 + 40' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 125, unidad: "min", desc: "Fondo largo.", estructura: "125' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              },
+              intermedio: {
+                rodaje: [
+                  { nombre: "Rodaje activo maratón", duracion: 55, unidad: "min", desc: "Ritmo vivo Z2.", estructura: "55' Z2 vivo", sensacion: "Eficiente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje calidad", duracion: 60, unidad: "min", desc: "Ritmo exigente.", estructura: "60' Z2 alto", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje aeróbico", duracion: 65, unidad: "min", desc: "Fondo aeróbico.", estructura: "65' Z2 constante", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 50, unidad: "min", desc: "Sesión para mantener forma.", estructura: "50' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 60, unidad: "min", desc: "Introduce 4 cambios.", estructura: "10' calentamiento + 4x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 45, unidad: "min", desc: "Después de sesión intensa.", estructura: "45' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 70, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "70' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 65, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 30' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Series 1600m", duracion: 60, unidad: "min", desc: "5x1600m con recuperación.", estructura: "15' calentamiento + 5x1600m + 10' enfriamiento", sensacion: "Intensidad", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 2000m", duracion: 65, unidad: "min", desc: "4x2000m con recuperación 3'30.", estructura: "15' calentamiento + 4x2000m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Pirámide maratón", duracion: 70, unidad: "min", desc: "800-1600-2400-3200-2400-1600-800m.", estructura: "15' calentamiento + pirámide + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4-Z5" },
+                  { nombre: "Series 3000m", duracion: 75, unidad: "min", desc: "3x3000m con recuperación 4'.", estructura: "15' calentamiento + 3x3000m + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 1000m", duracion: 65, unidad: "min", desc: "8x1000m con recuperación 2'.", estructura: "15' calentamiento + 8x1000m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
+                  { nombre: "Fartlek avanzado", duracion: 60, unidad: "min", desc: "Juega con ritmos.", estructura: "10' calentamiento + 35' fartlek + 15' enfriamiento", sensacion: "Divertido", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 800m", duracion: 70, unidad: "min", desc: "12x800m con recuperación 1'30.", estructura: "15' calentamiento + 12x800m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" }
+                ],
+                tempo: [
+                  { nombre: "Tempo umbral maratón", duracion: 55, unidad: "min", desc: "35' a ritmo umbral.", estructura: "10' calentamiento + 35' umbral + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo maratón", duracion: 60, unidad: "min", desc: "40' a ritmo umbral.", estructura: "10' calentamiento + 40' Z4 + 10' enfriamiento", sensacion: "Sostenido", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo variable", duracion: 60, unidad: "min", desc: "Alterna 8' Z3 / 3' Z4.", estructura: "10' calentamiento + 4x(8' Z3 + 3' Z4) + 5' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo largo", duracion: 65, unidad: "min", desc: "45' a ritmo tempo.", estructura: "10' calentamiento + 45' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 65, unidad: "min", desc: "Aumenta cada 6'.", estructura: "10' calentamiento + 6' Z3 + 6' Z4 + 6' Z3 + 6' Z4 + 6' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 60, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 40' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral largo", duracion: 70, unidad: "min", desc: "50' a ritmo umbral.", estructura: "10' calentamiento + 50' Z4 + 10' enfriamiento", sensacion: "Muy exigente", tipo: "tempo", zona: "Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo calidad maratón", duracion: 120, unidad: "min", desc: "Progresión últimos 40'.", estructura: "80' Z2 + 40' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo con cambios", duracion: 130, unidad: "min", desc: "Incluye series.", estructura: "90' Z2 + 8x3' Z4 + 16' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo progresivo", duracion: 140, unidad: "min", desc: "Aumenta ritmo cada 40'.", estructura: "60' Z2 + 40' Z3 + 40' Z2", sensacion: "Controlado", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 150, unidad: "min", desc: "Incluye cambios.", estructura: "100' Z2 + 8x3' Z4 + 20' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo fondo", duracion: 160, unidad: "min", desc: "Fondo largo continuo.", estructura: "160' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo resistencia", duracion: 170, unidad: "min", desc: "Fondo largo con cambios.", estructura: "120' Z2 + 50' Z3", sensacion: "Resistencia", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo con series", duracion: 180, unidad: "min", desc: "Incluye series largas.", estructura: "120' Z2 + 8x1000m Z4 + 20' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" }
+                ]
+              },
+              avanzado: {
+                rodaje: [
+                  { nombre: "Rodaje alto maratón", duracion: 60, unidad: "min", desc: "Ritmo exigente Z2.", estructura: "60' Z2 alto", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje activo", duracion: 65, unidad: "min", desc: "Ritmo vivo.", estructura: "65' Z2 vivo", sensacion: "Sostenible", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje técnico", duracion: 70, unidad: "min", desc: "Enfoque técnico.", estructura: "70' Z2 cadencia alta", sensacion: "Eficiente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 55, unidad: "min", desc: "Sesión para mantener forma.", estructura: "55' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 65, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 5x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 50, unidad: "min", desc: "Después de sesión intensa.", estructura: "50' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 75, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "75' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 70, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 35' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Series 3000m", duracion: 70, unidad: "min", desc: "4x3000m con recuperación.", estructura: "15' calentamiento + 4x3000m + 10' enfriamiento", sensacion: "Muy intenso", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 5000m", duracion: 75, unidad: "min", desc: "3x5000m con recuperación 5'.", estructura: "15' calentamiento + 3x5000m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 10000m", duracion: 80, unidad: "min", desc: "2x10000m con recuperación 6'.", estructura: "15' calentamiento + 2x10000m + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 2000m", duracion: 70, unidad: "min", desc: "6x2000m con recuperación 2'30.", estructura: "15' calentamiento + 6x2000m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z5" },
+                  { nombre: "Pirámide larga", duracion: 80, unidad: "min", desc: "2000-3000-5000-3000-2000m.", estructura: "15' calentamiento + pirámide + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z5" },
+                  { nombre: "Fartlek avanzado", duracion: 70, unidad: "min", desc: "Juega con ritmos intensos.", estructura: "10' calentamiento + 45' fartlek + 15' enfriamiento", sensacion: "Divertido", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 1600m", duracion: 75, unidad: "min", desc: "10x1600m con recuperación 2'.", estructura: "15' calentamiento + 10x1600m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo maratón avanzado", duracion: 60, unidad: "min", desc: "45' a ritmo maratón.", estructura: "10' calentamiento + 45' Z4 + 5' enfriamiento", sensacion: "Ritmo carrera", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo umbral", duracion: 65, unidad: "min", desc: "50' a ritmo umbral.", estructura: "10' calentamiento + 50' Z4 + 5' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo variable", duracion: 65, unidad: "min", desc: "Alterna 7' Z3 / 3' Z4.", estructura: "10' calentamiento + 5x(7' Z3 + 3' Z4) + 5' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo largo", duracion: 70, unidad: "min", desc: "55' a ritmo tempo.", estructura: "10' calentamiento + 55' Z3 + 5' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 70, unidad: "min", desc: "Aumenta cada 5'.", estructura: "10' calentamiento + 5' Z3 + 5' Z4 + 5' Z3 + 5' Z4 + 5' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 65, unidad: "min", desc: "Introduce 6 cambios.", estructura: "10' calentamiento + 45' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo umbral largo", duracion: 75, unidad: "min", desc: "60' a ritmo umbral.", estructura: "10' calentamiento + 60' Z4 + 5' enfriamiento", sensacion: "Muy exigente", tipo: "tempo", zona: "Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo específico maratón", duracion: 150, unidad: "min", desc: "Cambios a ritmo maratón.", estructura: "90' Z2 + 8x5' Z4 + 20' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 160, unidad: "min", desc: "Progresión constante.", estructura: "100' Z2 + 60' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo con series", duracion: 170, unidad: "min", desc: "Series largas.", estructura: "110' Z2 + 6x1000m Z4 + 20' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo progresivo", duracion: 180, unidad: "min", desc: "Aumenta ritmo cada 40'.", estructura: "80' Z2 + 50' Z3 + 50' Z2", sensacion: "Controlado", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo fondo", duracion: 190, unidad: "min", desc: "Fondo largo continuo.", estructura: "190' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo resistencia", duracion: 200, unidad: "min", desc: "Fondo largo con cambios.", estructura: "140' Z2 + 60' Z3", sensacion: "Resistencia", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo ultradistancia", duracion: 210, unidad: "min", desc: "Preparación para maratón.", estructura: "150' Z2 + 60' Z3", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z3" }
+                ]
+              }
+            }
           },
-          trail: { /* Similar, ampliado */ }
+          trail: {
+            "2k": {
+              principiante: {
+                rodaje: [
+                  { nombre: "Rodaje sendero", duracion: 30, unidad: "min", desc: "Terreno irregular suave.", estructura: "10' calentamiento + 15' Z2 + 5' enfriamiento", sensacion: "Adaptación", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero suave", duracion: 35, unidad: "min", desc: "Terreno variado suave.", estructura: "35' sendero continuo", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero progresivo", duracion: 35, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "10' calentamiento + 20' progresivo + 5' enfriamiento", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero de recuperación", duracion: 25, unidad: "min", desc: "Sesión muy suave en sendero.", estructura: "25' Z1-Z2", sensacion: "Muy fácil", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Sendero matinal", duracion: 30, unidad: "min", desc: "Despertar suave en sendero.", estructura: "30' Z2", sensacion: "Refrescante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero con cambios", duracion: 35, unidad: "min", desc: "Introduce cambios de ritmo.", estructura: "10' calentamiento + 20' con cambios + 5' enfriamiento", sensacion: "Dinámico", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero base", duracion: 40, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "40' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero regenerativo", duracion: 25, unidad: "min", desc: "Después de sesión dura.", estructura: "25' Z1", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" }
+                ],
+                series: [
+                  { nombre: "Cuestas suaves", duracion: 35, unidad: "min", desc: "4x60m cuesta suave.", estructura: "15' calentamiento + 4 cuestas + 10' enfriamiento", sensacion: "Potencia", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas cortas", duracion: 30, unidad: "min", desc: "5x50m cuesta suave.", estructura: "15' calentamiento + 5 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas medias", duracion: 40, unidad: "min", desc: "4x80m cuesta media.", estructura: "15' calentamiento + 4 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas largas", duracion: 45, unidad: "min", desc: "3x100m cuesta media.", estructura: "15' calentamiento + 3 cuestas + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas repetidas", duracion: 40, unidad: "min", desc: "6x50m cuesta suave.", estructura: "15' calentamiento + 6 cuestas + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas variadas", duracion: 45, unidad: "min", desc: "4x(50m + 70m) cuesta media.", estructura: "15' calentamiento + 4 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas explosivas", duracion: 35, unidad: "min", desc: "8x40m cuesta suave.", estructura: "15' calentamiento + 8 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo sendero", duracion: 35, unidad: "min", desc: "Ritmo sostenido sendero.", estructura: "10' calentamiento + 15' Z3 + 10' enfriamiento", sensacion: "Controlado", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo desnivel suave", duracion: 40, unidad: "min", desc: "Con desnivel suave.", estructura: "10' calentamiento + 20' Z3 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 40, unidad: "min", desc: "Aumenta en llano.", estructura: "10' calentamiento + 20' progresivo + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero largo", duracion: 45, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 25' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 40, unidad: "min", desc: "Alterna llano y cuestas.", estructura: "10' calentamiento + 20' con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo con cambios", duracion: 45, unidad: "min", desc: "Introduce 4 cambios.", estructura: "10' calentamiento + 25' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero umbral", duracion: 50, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 30' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo sendero", duracion: 50, unidad: "min", desc: "Toma contacto trail.", estructura: "50' Z2 sendero", sensacion: "Adaptación", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo montaña suave", duracion: 55, unidad: "min", desc: "Sendero continuo.", estructura: "55' sendero", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo con desnivel", duracion: 60, unidad: "min", desc: "Incluye subidas suaves.", estructura: "60' sendero con desnivel", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 55, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "40' Z2 + 15' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 65, unidad: "min", desc: "Incluye cambios.", estructura: "45' Z2 + 4x3' Z4 + 8' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 60, unidad: "min", desc: "Progresión constante.", estructura: "40' Z2 + 20' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 70, unidad: "min", desc: "Fondo largo en sendero.", estructura: "70' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              },
+              intermedio: {
+                rodaje: [
+                  { nombre: "Rodaje técnico", duracion: 40, unidad: "min", desc: "Técnica en sendero.", estructura: "40' Z2 técnico", sensacion: "Coordinación", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero técnico", duracion: 45, unidad: "min", desc: "Técnica avanzada.", estructura: "45' técnico", sensacion: "Maestría", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje montaña", duracion: 50, unidad: "min", desc: "Terreno variado.", estructura: "50' sendero variado", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 35, unidad: "min", desc: "Sesión para mantener forma.", estructura: "35' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 45, unidad: "min", desc: "Introduce 4 cambios.", estructura: "10' calentamiento + 4x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 30, unidad: "min", desc: "Después de sesión intensa.", estructura: "30' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 55, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "55' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 50, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 15' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Cuestas medias", duracion: 40, unidad: "min", desc: "6x80m cuesta media.", estructura: "15' calentamiento + 6 cuestas + 10' enfriamiento", sensacion: "Potencia", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas largas", duracion: 45, unidad: "min", desc: "5x100m cuesta media.", estructura: "15' calentamiento + 5 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas variables", duracion: 45, unidad: "min", desc: "4x(60m + 80m + 100m)", estructura: "15' calentamiento + 4 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas repetidas", duracion: 50, unidad: "min", desc: "8x80m cuesta media.", estructura: "15' calentamiento + 8 cuestas + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas largas medias", duracion: 55, unidad: "min", desc: "4x120m cuesta media.", estructura: "15' calentamiento + 4 cuestas + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas variadas intensas", duracion: 50, unidad: "min", desc: "5x(80m + 100m) cuesta media.", estructura: "15' calentamiento + 5 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas explosivas", duracion: 45, unidad: "min", desc: "10x60m cuesta media.", estructura: "15' calentamiento + 10 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo desnivel", duracion: 40, unidad: "min", desc: "Incluye subidas.", estructura: "40' con desnivel", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo montaña", duracion: 45, unidad: "min", desc: "Ritmo fuerte.", estructura: "45' desnivel continuo", sensacion: "Muy exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 45, unidad: "min", desc: "Alterna llano y cuestas.", estructura: "45' con cambios", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero largo", duracion: 50, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 30' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 50, unidad: "min", desc: "Aumenta ritmo cada 10'.", estructura: "10' calentamiento + 10' Z3 + 10' Z4 + 10' Z3 + 10' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 45, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 25' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral sendero", duracion: 55, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 35' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo montaña", duracion: 70, unidad: "min", desc: "Mixto subidas/bajadas.", estructura: "70' trail", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo técnico", duracion: 75, unidad: "min", desc: "Alta dificultad técnica.", estructura: "75' trail técnico", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo con desnivel", duracion: 80, unidad: "min", desc: "Acumulación desnivel.", estructura: "80' trail con desnivel", sensacion: "Preparación", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 75, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "50' Z2 + 25' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 85, unidad: "min", desc: "Incluye cambios.", estructura: "55' Z2 + 5x3' Z4 + 15' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 90, unidad: "min", desc: "Progresión constante.", estructura: "60' Z2 + 30' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 95, unidad: "min", desc: "Fondo largo en sendero.", estructura: "95' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              },
+              avanzado: {
+                rodaje: [
+                  { nombre: "Rodaje montaña", duracion: 45, unidad: "min", desc: "Alta dificultad técnica.", estructura: "45' Z2 técnico", sensacion: "Maestría", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero avanzado", duracion: 50, unidad: "min", desc: "Máxima técnica.", estructura: "50' técnico", sensacion: "Dominio", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje desnivel", duracion: 55, unidad: "min", desc: "Acumulación desnivel.", estructura: "55' con desnivel", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 40, unidad: "min", desc: "Sesión para mantener forma.", estructura: "40' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 50, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 5x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 35, unidad: "min", desc: "Después de sesión intensa.", estructura: "35' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 60, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "60' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 55, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 20' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Cuestas fuertes", duracion: 45, unidad: "min", desc: "8x100m cuesta fuerte.", estructura: "15' calentamiento + 8 cuestas + 10' enfriamiento", sensacion: "Máxima potencia", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas muy fuertes", duracion: 50, unidad: "min", desc: "6x120m cuesta fuerte.", estructura: "15' calentamiento + 6 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas largas fuertes", duracion: 55, unidad: "min", desc: "5x150m cuesta fuerte.", estructura: "15' calentamiento + 5 cuestas + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas explosivas", duracion: 50, unidad: "min", desc: "10x80m cuesta fuerte.", estructura: "15' calentamiento + 10 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas variadas fuertes", duracion: 55, unidad: "min", desc: "6x(80m + 100m) cuesta fuerte.", estructura: "15' calentamiento + 6 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas en escalera", duracion: 60, unidad: "min", desc: "4x(60m + 80m + 100m + 120m)", estructura: "15' calentamiento + 4 series + 10' enfriamiento", sensacion: "Muy exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas máximas", duracion: 65, unidad: "min", desc: "3x200m cuesta fuerte.", estructura: "15' calentamiento + 3 cuestas + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo montaña", duracion: 45, unidad: "min", desc: "Ritmo fuerte desnivel.", estructura: "45' desnivel continuo", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo fuerte", duracion: 50, unidad: "min", desc: "Máxima intensidad.", estructura: "50' desnivel intenso", sensacion: "Muy exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 50, unidad: "min", desc: "Alterna ritmos.", estructura: "50' cambios de ritmo", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero largo", duracion: 55, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 35' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 55, unidad: "min", desc: "Aumenta ritmo cada 10'.", estructura: "10' calentamiento + 10' Z3 + 10' Z4 + 10' Z3 + 10' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 50, unidad: "min", desc: "Introduce 6 cambios.", estructura: "10' calentamiento + 30' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral sendero", duracion: 60, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 40' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo trail", duracion: 90, unidad: "min", desc: "Simulación competición.", estructura: "90' trail cambios", sensacion: "Preparación", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo avanzado", duracion: 100, unidad: "min", desc: "Alto volumen técnico.", estructura: "100' trail técnico", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo ultra", duracion: 110, unidad: "min", desc: "Preparación ultra.", estructura: "110' trail", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 95, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "65' Z2 + 30' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 105, unidad: "min", desc: "Incluye cambios.", estructura: "70' Z2 + 6x3' Z4 + 15' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 115, unidad: "min", desc: "Progresión constante.", estructura: "75' Z2 + 40' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 120, unidad: "min", desc: "Fondo largo en sendero.", estructura: "120' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              }
+            },
+            "5k": {
+              principiante: {
+                rodaje: [
+                  { nombre: "Rodaje 5k trail", duracion: 35, unidad: "min", desc: "Terreno irregular.", estructura: "35' Z2 sendero", sensacion: "Adaptación", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero 5k", duracion: 40, unidad: "min", desc: "Sendero continuo.", estructura: "40' sendero", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero progresivo", duracion: 40, unidad: "min", desc: "Aumenta ritmo.", estructura: "40' progresivo", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero de recuperación", duracion: 30, unidad: "min", desc: "Sesión muy suave en sendero.", estructura: "30' Z1-Z2", sensacion: "Muy fácil", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Sendero matinal", duracion: 35, unidad: "min", desc: "Despertar suave en sendero.", estructura: "35' Z2", sensacion: "Refrescante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero con cambios", duracion: 40, unidad: "min", desc: "Introduce cambios de ritmo.", estructura: "10' calentamiento + 25' con cambios + 5' enfriamiento", sensacion: "Dinámico", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero base", duracion: 45, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "45' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero regenerativo", duracion: 30, unidad: "min", desc: "Después de sesión dura.", estructura: "30' Z1", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" }
+                ],
+                series: [
+                  { nombre: "Cuestas 5k", duracion: 40, unidad: "min", desc: "5x80m cuesta suave.", estructura: "15' calentamiento + 5 cuestas + 10' enfriamiento", sensacion: "Potencia", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas cortas", duracion: 35, unidad: "min", desc: "6x60m cuesta suave.", estructura: "15' calentamiento + 6 cuestas + 5' enfriamiento", sensacion: "Rápidas", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas medias", duracion: 45, unidad: "min", desc: "5x100m cuesta media.", estructura: "15' calentamiento + 5 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas largas", duracion: 50, unidad: "min", desc: "4x120m cuesta media.", estructura: "15' calentamiento + 4 cuestas + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas repetidas", duracion: 45, unidad: "min", desc: "8x70m cuesta suave.", estructura: "15' calentamiento + 8 cuestas + 5' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas variadas", duracion: 50, unidad: "min", desc: "5x(60m + 80m) cuesta media.", estructura: "15' calentamiento + 5 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas explosivas", duracion: 40, unidad: "min", desc: "10x50m cuesta suave.", estructura: "15' calentamiento + 10 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo sendero", duracion: 40, unidad: "min", desc: "Ritmo sostenido.", estructura: "40' Z3 sendero", sensacion: "Control", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo desnivel", duracion: 45, unidad: "min", desc: "Con desnivel suave.", estructura: "45' Z3 con desnivel", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 45, unidad: "min", desc: "Aumenta ritmo.", estructura: "45' progresivo", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero largo", duracion: 50, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 30' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 45, unidad: "min", desc: "Alterna llano y cuestas.", estructura: "10' calentamiento + 25' con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo con cambios", duracion: 50, unidad: "min", desc: "Introduce 4 cambios.", estructura: "10' calentamiento + 30' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero umbral", duracion: 55, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 35' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo sendero", duracion: 60, unidad: "min", desc: "Resistencia sendero.", estructura: "60' Z2 sendero", sensacion: "Base", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo montaña suave", duracion: 65, unidad: "min", desc: "Sendero continuo.", estructura: "65' sendero", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo con desnivel", duracion: 70, unidad: "min", desc: "Incluye desnivel.", estructura: "70' con desnivel", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 65, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "45' Z2 + 20' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 75, unidad: "min", desc: "Incluye cambios.", estructura: "50' Z2 + 4x3' Z4 + 10' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 80, unidad: "min", desc: "Progresión constante.", estructura: "50' Z2 + 30' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 85, unidad: "min", desc: "Fondo largo en sendero.", estructura: "85' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              },
+              intermedio: {
+                rodaje: [
+                  { nombre: "Rodaje técnico", duracion: 40, unidad: "min", desc: "Técnica continua.", estructura: "40' técnico", sensacion: "Coordinación", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero técnico", duracion: 45, unidad: "min", desc: "Técnica avanzada.", estructura: "45' técnico", sensacion: "Maestría", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje montaña", duracion: 50, unidad: "min", desc: "Terreno variado.", estructura: "50' sendero variado", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 35, unidad: "min", desc: "Sesión para mantener forma.", estructura: "35' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 45, unidad: "min", desc: "Introduce 4 cambios.", estructura: "10' calentamiento + 4x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 30, unidad: "min", desc: "Después de sesión intensa.", estructura: "30' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 55, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "55' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 50, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 15' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Cuestas medias", duracion: 45, unidad: "min", desc: "7x100m cuesta media.", estructura: "15' calentamiento + 7 cuestas + 10' enfriamiento", sensacion: "Potencia", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas largas", duracion: 50, unidad: "min", desc: "6x120m cuesta media.", estructura: "15' calentamiento + 6 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas variables", duracion: 50, unidad: "min", desc: "5x(80m + 100m + 120m)", estructura: "15' calentamiento + 5 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas repetidas", duracion: 55, unidad: "min", desc: "10x80m cuesta media.", estructura: "15' calentamiento + 10 cuestas + 5' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas largas medias", duracion: 60, unidad: "min", desc: "5x150m cuesta media.", estructura: "15' calentamiento + 5 cuestas + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas variadas intensas", duracion: 55, unidad: "min", desc: "6x(80m + 100m) cuesta media.", estructura: "15' calentamiento + 6 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas explosivas", duracion: 50, unidad: "min", desc: "12x70m cuesta media.", estructura: "15' calentamiento + 12 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo desnivel", duracion: 45, unidad: "min", desc: "Desnivel continuo.", estructura: "45' con desnivel", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo montaña", duracion: 50, unidad: "min", desc: "Ritmo fuerte.", estructura: "50' desnivel", sensacion: "Muy exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 50, unidad: "min", desc: "Alterna ritmos.", estructura: "50' cambios", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero largo", duracion: 55, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 35' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 55, unidad: "min", desc: "Aumenta ritmo cada 10'.", estructura: "10' calentamiento + 10' Z3 + 10' Z4 + 10' Z3 + 10' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 50, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 30' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral sendero", duracion: 60, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 40' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo montaña", duracion: 75, unidad: "min", desc: "Mixto con cambios.", estructura: "75' trail", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo técnico", duracion: 80, unidad: "min", desc: "Alta técnica.", estructura: "80' trail técnico", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo con desnivel", duracion: 85, unidad: "min", desc: "Acumulación.", estructura: "85' con desnivel", sensacion: "Preparación", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 80, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "55' Z2 + 25' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 90, unidad: "min", desc: "Incluye cambios.", estructura: "60' Z2 + 5x3' Z4 + 15' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 95, unidad: "min", desc: "Progresión constante.", estructura: "65' Z2 + 30' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 100, unidad: "min", desc: "Fondo largo en sendero.", estructura: "100' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              },
+              avanzado: {
+                rodaje: [
+                  { nombre: "Rodaje técnico", duracion: 45, unidad: "min", desc: "Alta técnica.", estructura: "45' técnico", sensacion: "Maestría", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero avanzado", duracion: 50, unidad: "min", desc: "Máxima técnica.", estructura: "50' técnico", sensacion: "Dominio", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje desnivel", duracion: 55, unidad: "min", desc: "Acumulación.", estructura: "55' con desnivel", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 40, unidad: "min", desc: "Sesión para mantener forma.", estructura: "40' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 50, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 5x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 35, unidad: "min", desc: "Después de sesión intensa.", estructura: "35' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 60, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "60' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 55, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 20' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Cuestas fuertes", duracion: 50, unidad: "min", desc: "9x120m cuesta fuerte.", estructura: "15' calentamiento + 9 cuestas + 10' enfriamiento", sensacion: "Máxima potencia", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas muy fuertes", duracion: 55, unidad: "min", desc: "7x150m cuesta fuerte.", estructura: "15' calentamiento + 7 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas largas fuertes", duracion: 60, unidad: "min", desc: "6x180m cuesta fuerte.", estructura: "15' calentamiento + 6 cuestas + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas explosivas", duracion: 55, unidad: "min", desc: "12x100m cuesta fuerte.", estructura: "15' calentamiento + 12 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas variadas fuertes", duracion: 60, unidad: "min", desc: "8x(100m + 120m) cuesta fuerte.", estructura: "15' calentamiento + 8 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas en escalera", duracion: 65, unidad: "min", desc: "5x(80m + 100m + 120m + 150m)", estructura: "15' calentamiento + 5 series + 10' enfriamiento", sensacion: "Muy exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas máximas", duracion: 70, unidad: "min", desc: "4x250m cuesta fuerte.", estructura: "15' calentamiento + 4 cuestas + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo montaña", duracion: 50, unidad: "min", desc: "Ritmo fuerte.", estructura: "50' desnivel intenso", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo fuerte", duracion: 55, unidad: "min", desc: "Máxima intensidad.", estructura: "55' desnivel intenso", sensacion: "Muy exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 55, unidad: "min", desc: "Cambios constantes.", estructura: "55' cambios", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero largo", duracion: 60, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 40' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 60, unidad: "min", desc: "Aumenta ritmo cada 8'.", estructura: "10' calentamiento + 8' Z3 + 8' Z4 + 8' Z3 + 8' Z4 + 8' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 55, unidad: "min", desc: "Introduce 6 cambios.", estructura: "10' calentamiento + 35' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral sendero", duracion: 65, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 45' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo trail", duracion: 100, unidad: "min", desc: "Simulación carrera.", estructura: "100' trail", sensacion: "Preparación", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo avanzado", duracion: 110, unidad: "min", desc: "Alto volumen.", estructura: "110' trail técnico", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo ultra", duracion: 120, unidad: "min", desc: "Preparación ultra.", estructura: "120' trail", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 105, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "75' Z2 + 30' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 115, unidad: "min", desc: "Incluye cambios.", estructura: "80' Z2 + 6x3' Z4 + 15' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 125, unidad: "min", desc: "Progresión constante.", estructura: "85' Z2 + 40' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 130, unidad: "min", desc: "Fondo largo en sendero.", estructura: "130' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              }
+            },
+            "10k": {
+              principiante: {
+                rodaje: [
+                  { nombre: "Rodaje 10k trail", duracion: 40, unidad: "min", desc: "Terreno irregular.", estructura: "40' Z2 sendero", sensacion: "Adaptación", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero 10k", duracion: 45, unidad: "min", desc: "Sendero continuo.", estructura: "45' sendero", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero progresivo", duracion: 45, unidad: "min", desc: "Aumenta ritmo.", estructura: "45' progresivo", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero de recuperación", duracion: 35, unidad: "min", desc: "Sesión muy suave en sendero.", estructura: "35' Z1-Z2", sensacion: "Muy fácil", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Sendero matinal", duracion: 40, unidad: "min", desc: "Despertar suave en sendero.", estructura: "40' Z2", sensacion: "Refrescante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero con cambios", duracion: 45, unidad: "min", desc: "Introduce cambios de ritmo.", estructura: "10' calentamiento + 30' con cambios + 5' enfriamiento", sensacion: "Dinámico", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero base", duracion: 50, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "50' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero regenerativo", duracion: 35, unidad: "min", desc: "Después de sesión dura.", estructura: "35' Z1", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" }
+                ],
+                series: [
+                  { nombre: "Cuestas 10k", duracion: 45, unidad: "min", desc: "6x80m cuesta suave.", estructura: "15' calentamiento + 6 cuestas + 10' enfriamiento", sensacion: "Potencia", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas cortas", duracion: 40, unidad: "min", desc: "7x60m cuesta suave.", estructura: "15' calentamiento + 7 cuestas + 5' enfriamiento", sensacion: "Rápidas", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas medias", duracion: 50, unidad: "min", desc: "6x100m cuesta media.", estructura: "15' calentamiento + 6 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas largas", duracion: 55, unidad: "min", desc: "5x120m cuesta media.", estructura: "15' calentamiento + 5 cuestas + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas repetidas", duracion: 50, unidad: "min", desc: "9x80m cuesta suave.", estructura: "15' calentamiento + 9 cuestas + 5' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas variadas", duracion: 55, unidad: "min", desc: "6x(70m + 90m) cuesta media.", estructura: "15' calentamiento + 6 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas explosivas", duracion: 45, unidad: "min", desc: "12x60m cuesta suave.", estructura: "15' calentamiento + 12 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo sendero", duracion: 45, unidad: "min", desc: "Ritmo sostenido.", estructura: "45' Z3 sendero", sensacion: "Control", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo desnivel", duracion: 50, unidad: "min", desc: "Con desnivel suave.", estructura: "50' Z3 con desnivel", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 50, unidad: "min", desc: "Aumenta ritmo.", estructura: "50' progresivo", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero largo", duracion: 55, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 35' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 50, unidad: "min", desc: "Alterna llano y cuestas.", estructura: "10' calentamiento + 30' con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo con cambios", duracion: 55, unidad: "min", desc: "Introduce 4 cambios.", estructura: "10' calentamiento + 35' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero umbral", duracion: 60, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 40' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo sendero", duracion: 70, unidad: "min", desc: "Resistencia.", estructura: "70' Z2 sendero", sensacion: "Base", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo montaña suave", duracion: 75, unidad: "min", desc: "Sendero continuo.", estructura: "75' sendero", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo con desnivel", duracion: 80, unidad: "min", desc: "Incluye desnivel.", estructura: "80' con desnivel", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 75, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "50' Z2 + 25' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 85, unidad: "min", desc: "Incluye cambios.", estructura: "55' Z2 + 5x3' Z4 + 10' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 90, unidad: "min", desc: "Progresión constante.", estructura: "60' Z2 + 30' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 95, unidad: "min", desc: "Fondo largo en sendero.", estructura: "95' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              },
+              intermedio: {
+                rodaje: [
+                  { nombre: "Rodaje técnico", duracion: 45, unidad: "min", desc: "Técnica sendero.", estructura: "45' técnico", sensacion: "Coordinación", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero técnico", duracion: 50, unidad: "min", desc: "Técnica avanzada.", estructura: "50' técnico", sensacion: "Maestría", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje montaña", duracion: 55, unidad: "min", desc: "Terreno variado.", estructura: "55' sendero variado", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 40, unidad: "min", desc: "Sesión para mantener forma.", estructura: "40' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 50, unidad: "min", desc: "Introduce 4 cambios.", estructura: "10' calentamiento + 4x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 35, unidad: "min", desc: "Después de sesión intensa.", estructura: "35' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 60, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "60' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 55, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 20' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Cuestas medias", duracion: 50, unidad: "min", desc: "8x100m cuesta media.", estructura: "15' calentamiento + 8 cuestas + 10' enfriamiento", sensacion: "Potencia", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas largas", duracion: 55, unidad: "min", desc: "7x120m cuesta media.", estructura: "15' calentamiento + 7 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas variables", duracion: 55, unidad: "min", desc: "6x(80m + 100m + 120m)", estructura: "15' calentamiento + 6 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas repetidas", duracion: 60, unidad: "min", desc: "12x80m cuesta media.", estructura: "15' calentamiento + 12 cuestas + 5' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas largas medias", duracion: 65, unidad: "min", desc: "6x150m cuesta media.", estructura: "15' calentamiento + 6 cuestas + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas variadas intensas", duracion: 60, unidad: "min", desc: "7x(90m + 110m) cuesta media.", estructura: "15' calentamiento + 7 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas explosivas", duracion: 55, unidad: "min", desc: "14x70m cuesta media.", estructura: "15' calentamiento + 14 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo desnivel", duracion: 50, unidad: "min", desc: "Desnivel continuo.", estructura: "50' con desnivel", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo montaña", duracion: 55, unidad: "min", desc: "Ritmo fuerte.", estructura: "55' desnivel", sensacion: "Muy exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 55, unidad: "min", desc: "Alterna ritmos.", estructura: "55' cambios", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero largo", duracion: 60, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 40' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 60, unidad: "min", desc: "Aumenta ritmo cada 8'.", estructura: "10' calentamiento + 8' Z3 + 8' Z4 + 8' Z3 + 8' Z4 + 8' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 55, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 35' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral sendero", duracion: 65, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 45' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo montaña", duracion: 90, unidad: "min", desc: "Mixto trail.", estructura: "90' trail técnico", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo técnico", duracion: 95, unidad: "min", desc: "Alta técnica.", estructura: "95' trail técnico", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo con desnivel", duracion: 100, unidad: "min", desc: "Acumulación.", estructura: "100' con desnivel", sensacion: "Preparación", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 95, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "65' Z2 + 30' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 105, unidad: "min", desc: "Incluye cambios.", estructura: "70' Z2 + 6x3' Z4 + 15' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 110, unidad: "min", desc: "Progresión constante.", estructura: "75' Z2 + 35' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 115, unidad: "min", desc: "Fondo largo en sendero.", estructura: "115' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              },
+              avanzado: {
+                rodaje: [
+                  { nombre: "Rodaje técnico", duracion: 50, unidad: "min", desc: "Máxima técnica.", estructura: "50' técnico", sensacion: "Maestría", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero avanzado", duracion: 55, unidad: "min", desc: "Técnica superior.", estructura: "55' técnico", sensacion: "Dominio", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje desnivel", duracion: 60, unidad: "min", desc: "Acumulación.", estructura: "60' con desnivel", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 45, unidad: "min", desc: "Sesión para mantener forma.", estructura: "45' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 55, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 5x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 40, unidad: "min", desc: "Después de sesión intensa.", estructura: "40' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 65, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "65' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 60, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 25' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Cuestas fuertes", duracion: 55, unidad: "min", desc: "10x120m cuesta fuerte.", estructura: "15' calentamiento + 10 cuestas + 10' enfriamiento", sensacion: "Máxima potencia", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas muy fuertes", duracion: 60, unidad: "min", desc: "8x150m cuesta fuerte.", estructura: "15' calentamiento + 8 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas largas fuertes", duracion: 65, unidad: "min", desc: "7x200m cuesta fuerte.", estructura: "15' calentamiento + 7 cuestas + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas explosivas", duracion: 60, unidad: "min", desc: "14x100m cuesta fuerte.", estructura: "15' calentamiento + 14 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas variadas fuertes", duracion: 65, unidad: "min", desc: "9x(110m + 130m) cuesta fuerte.", estructura: "15' calentamiento + 9 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas en escalera", duracion: 70, unidad: "min", desc: "6x(100m + 120m + 140m + 160m)", estructura: "15' calentamiento + 6 series + 10' enfriamiento", sensacion: "Muy exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas máximas", duracion: 75, unidad: "min", desc: "5x300m cuesta fuerte.", estructura: "15' calentamiento + 5 cuestas + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo montaña", duracion: 55, unidad: "min", desc: "Ritmo fuerte.", estructura: "55' desnivel intenso", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo fuerte", duracion: 60, unidad: "min", desc: "Máxima intensidad.", estructura: "60' desnivel intenso", sensacion: "Muy exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 60, unidad: "min", desc: "Cambios constantes.", estructura: "60' cambios", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero largo", duracion: 65, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 45' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 65, unidad: "min", desc: "Aumenta ritmo cada 6'.", estructura: "10' calentamiento + 6' Z3 + 6' Z4 + 6' Z3 + 6' Z4 + 6' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 60, unidad: "min", desc: "Introduce 6 cambios.", estructura: "10' calentamiento + 40' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral sendero", duracion: 70, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 50' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo trail", duracion: 120, unidad: "min", desc: "Simulación.", estructura: "120' trail", sensacion: "Preparación", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo avanzado", duracion: 130, unidad: "min", desc: "Alto volumen.", estructura: "130' trail técnico", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo ultra", duracion: 140, unidad: "min", desc: "Preparación.", estructura: "140' trail", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 125, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "85' Z2 + 40' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 135, unidad: "min", desc: "Incluye cambios.", estructura: "90' Z2 + 7x3' Z4 + 20' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 145, unidad: "min", desc: "Progresión constante.", estructura: "95' Z2 + 50' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 150, unidad: "min", desc: "Fondo largo en sendero.", estructura: "150' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              }
+            },
+            "medio": {
+              principiante: {
+                rodaje: [
+                  { nombre: "Rodaje media trail", duracion: 45, unidad: "min", desc: "Terreno irregular.", estructura: "45' Z2 sendero", sensacion: "Adaptación", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero media", duracion: 50, unidad: "min", desc: "Sendero continuo.", estructura: "50' sendero", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero progresivo", duracion: 50, unidad: "min", desc: "Aumenta ritmo.", estructura: "50' progresivo", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero de recuperación", duracion: 40, unidad: "min", desc: "Sesión muy suave en sendero.", estructura: "40' Z1-Z2", sensacion: "Muy fácil", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Sendero matinal", duracion: 45, unidad: "min", desc: "Despertar suave en sendero.", estructura: "45' Z2", sensacion: "Refrescante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero con cambios", duracion: 50, unidad: "min", desc: "Introduce cambios de ritmo.", estructura: "10' calentamiento + 35' con cambios + 5' enfriamiento", sensacion: "Dinámico", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero base", duracion: 55, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "55' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero regenerativo", duracion: 40, unidad: "min", desc: "Después de sesión dura.", estructura: "40' Z1", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" }
+                ],
+                series: [
+                  { nombre: "Cuestas media", duracion: 50, unidad: "min", desc: "7x100m cuesta suave.", estructura: "15' calentamiento + 7 cuestas + 10' enfriamiento", sensacion: "Potencia", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas cortas", duracion: 45, unidad: "min", desc: "8x70m cuesta suave.", estructura: "15' calentamiento + 8 cuestas + 5' enfriamiento", sensacion: "Rápidas", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas medias", duracion: 55, unidad: "min", desc: "6x120m cuesta media.", estructura: "15' calentamiento + 6 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas largas", duracion: 60, unidad: "min", desc: "5x150m cuesta media.", estructura: "15' calentamiento + 5 cuestas + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas repetidas", duracion: 55, unidad: "min", desc: "10x90m cuesta suave.", estructura: "15' calentamiento + 10 cuestas + 5' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas variadas", duracion: 60, unidad: "min", desc: "7x(80m + 100m) cuesta media.", estructura: "15' calentamiento + 7 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas explosivas", duracion: 50, unidad: "min", desc: "14x70m cuesta suave.", estructura: "15' calentamiento + 14 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo sendero", duracion: 50, unidad: "min", desc: "Ritmo sostenido.", estructura: "50' Z3 sendero", sensacion: "Control", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo desnivel", duracion: 55, unidad: "min", desc: "Con desnivel suave.", estructura: "55' Z3 con desnivel", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 55, unidad: "min", desc: "Aumenta ritmo.", estructura: "55' progresivo", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero largo", duracion: 60, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 40' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 55, unidad: "min", desc: "Alterna llano y cuestas.", estructura: "10' calentamiento + 35' con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo con cambios", duracion: 60, unidad: "min", desc: "Introduce 4 cambios.", estructura: "10' calentamiento + 40' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero umbral", duracion: 65, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 45' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo sendero", duracion: 85, unidad: "min", desc: "Resistencia.", estructura: "85' Z2 sendero", sensacion: "Base", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo montaña suave", duracion: 90, unidad: "min", desc: "Sendero continuo.", estructura: "90' sendero", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo con desnivel", duracion: 95, unidad: "min", desc: "Incluye desnivel.", estructura: "95' con desnivel", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 90, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "60' Z2 + 30' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 100, unidad: "min", desc: "Incluye cambios.", estructura: "65' Z2 + 6x3' Z4 + 15' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 105, unidad: "min", desc: "Progresión constante.", estructura: "70' Z2 + 35' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 110, unidad: "min", desc: "Fondo largo en sendero.", estructura: "110' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              },
+              intermedio: {
+                rodaje: [
+                  { nombre: "Rodaje técnico", duracion: 50, unidad: "min", desc: "Técnica avanzada.", estructura: "50' técnico", sensacion: "Coordinación", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero técnico", duracion: 55, unidad: "min", desc: "Técnica superior.", estructura: "55' técnico", sensacion: "Maestría", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje montaña", duracion: 60, unidad: "min", desc: "Terreno variado.", estructura: "60' sendero variado", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 45, unidad: "min", desc: "Sesión para mantener forma.", estructura: "45' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 55, unidad: "min", desc: "Introduce 4 cambios.", estructura: "10' calentamiento + 4x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 40, unidad: "min", desc: "Después de sesión intensa.", estructura: "40' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 65, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "65' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 60, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 25' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Cuestas medias", duracion: 55, unidad: "min", desc: "9x120m cuesta media.", estructura: "15' calentamiento + 9 cuestas + 10' enfriamiento", sensacion: "Potencia", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas largas", duracion: 60, unidad: "min", desc: "8x150m cuesta media.", estructura: "15' calentamiento + 8 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas variables", duracion: 60, unidad: "min", desc: "7x(100m + 120m + 150m)", estructura: "15' calentamiento + 7 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas repetidas", duracion: 65, unidad: "min", desc: "14x90m cuesta media.", estructura: "15' calentamiento + 14 cuestas + 5' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas largas medias", duracion: 70, unidad: "min", desc: "7x180m cuesta media.", estructura: "15' calentamiento + 7 cuestas + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas variadas intensas", duracion: 65, unidad: "min", desc: "8x(110m + 130m) cuesta media.", estructura: "15' calentamiento + 8 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas explosivas", duracion: 60, unidad: "min", desc: "16x80m cuesta media.", estructura: "15' calentamiento + 16 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo desnivel", duracion: 55, unidad: "min", desc: "Desnivel continuo.", estructura: "55' con desnivel", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo montaña", duracion: 60, unidad: "min", desc: "Ritmo fuerte.", estructura: "60' desnivel", sensacion: "Muy exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 60, unidad: "min", desc: "Alterna ritmos.", estructura: "60' cambios", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero largo", duracion: 65, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 45' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 65, unidad: "min", desc: "Aumenta ritmo cada 7'.", estructura: "10' calentamiento + 7' Z3 + 7' Z4 + 7' Z3 + 7' Z4 + 7' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 60, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 40' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral sendero", duracion: 70, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 50' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo montaña", duracion: 105, unidad: "min", desc: "Mixto exigente.", estructura: "105' trail técnico", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo técnico", duracion: 110, unidad: "min", desc: "Alta técnica.", estructura: "110' trail técnico", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo con desnivel", duracion: 115, unidad: "min", desc: "Acumulación.", estructura: "115' con desnivel", sensacion: "Preparación", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 110, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "75' Z2 + 35' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 120, unidad: "min", desc: "Incluye cambios.", estructura: "80' Z2 + 7x3' Z4 + 15' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 125, unidad: "min", desc: "Progresión constante.", estructura: "85' Z2 + 40' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 130, unidad: "min", desc: "Fondo largo en sendero.", estructura: "130' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              },
+              avanzado: {
+                rodaje: [
+                  { nombre: "Rodaje técnico", duracion: 55, unidad: "min", desc: "Máxima técnica.", estructura: "55' técnico", sensacion: "Maestría", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero avanzado", duracion: 60, unidad: "min", desc: "Técnica elite.", estructura: "60' técnico", sensacion: "Dominio", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje desnivel", duracion: 65, unidad: "min", desc: "Acumulación.", estructura: "65' con desnivel", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 50, unidad: "min", desc: "Sesión para mantener forma.", estructura: "50' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 60, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 5x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 45, unidad: "min", desc: "Después de sesión intensa.", estructura: "45' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 70, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "70' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 65, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 30' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Cuestas fuertes", duracion: 60, unidad: "min", desc: "12x150m cuesta fuerte.", estructura: "15' calentamiento + 12 cuestas + 10' enfriamiento", sensacion: "Máxima potencia", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas muy fuertes", duracion: 65, unidad: "min", desc: "10x200m cuesta fuerte.", estructura: "15' calentamiento + 10 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas largas fuertes", duracion: 70, unidad: "min", desc: "8x250m cuesta fuerte.", estructura: "15' calentamiento + 8 cuestas + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas explosivas", duracion: 65, unidad: "min", desc: "16x120m cuesta fuerte.", estructura: "15' calentamiento + 16 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas variadas fuertes", duracion: 70, unidad: "min", desc: "10x(130m + 150m) cuesta fuerte.", estructura: "15' calentamiento + 10 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas en escalera", duracion: 75, unidad: "min", desc: "7x(120m + 150m + 180m + 200m)", estructura: "15' calentamiento + 7 series + 10' enfriamiento", sensacion: "Muy exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas máximas", duracion: 80, unidad: "min", desc: "6x350m cuesta fuerte.", estructura: "15' calentamiento + 6 cuestas + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo montaña", duracion: 60, unidad: "min", desc: "Ritmo fuerte.", estructura: "60' desnivel intenso", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo fuerte", duracion: 65, unidad: "min", desc: "Máxima intensidad.", estructura: "65' desnivel intenso", sensacion: "Muy exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 65, unidad: "min", desc: "Cambios constantes.", estructura: "65' cambios", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero largo", duracion: 70, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 50' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 70, unidad: "min", desc: "Aumenta ritmo cada 5'.", estructura: "10' calentamiento + 5' Z3 + 5' Z4 + 5' Z3 + 5' Z4 + 5' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 65, unidad: "min", desc: "Introduce 6 cambios.", estructura: "10' calentamiento + 45' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral sendero", duracion: 75, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 55' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo trail", duracion: 135, unidad: "min", desc: "Simulación.", estructura: "135' trail", sensacion: "Preparación", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo avanzado", duracion: 145, unidad: "min", desc: "Alto volumen.", estructura: "145' trail técnico", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo ultra", duracion: 155, unidad: "min", desc: "Preparación ultra.", estructura: "155' trail", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 140, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "95' Z2 + 45' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 150, unidad: "min", desc: "Incluye cambios.", estructura: "100' Z2 + 8x3' Z4 + 20' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 160, unidad: "min", desc: "Progresión constante.", estructura: "105' Z2 + 55' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 165, unidad: "min", desc: "Fondo largo en sendero.", estructura: "165' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              }
+            },
+            "maraton": {
+              principiante: {
+                rodaje: [
+                  { nombre: "Rodaje maratón trail", duracion: 50, unidad: "min", desc: "Terreno irregular.", estructura: "50' Z2 sendero", sensacion: "Adaptación", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero maratón", duracion: 55, unidad: "min", desc: "Sendero continuo.", estructura: "55' sendero", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero progresivo", duracion: 55, unidad: "min", desc: "Aumenta ritmo.", estructura: "55' progresivo", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero de recuperación", duracion: 45, unidad: "min", desc: "Sesión muy suave en sendero.", estructura: "45' Z1-Z2", sensacion: "Muy fácil", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Sendero matinal", duracion: 50, unidad: "min", desc: "Despertar suave en sendero.", estructura: "50' Z2", sensacion: "Refrescante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero con cambios", duracion: 55, unidad: "min", desc: "Introduce cambios de ritmo.", estructura: "10' calentamiento + 40' con cambios + 5' enfriamiento", sensacion: "Dinámico", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero base", duracion: 60, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "60' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero regenerativo", duracion: 45, unidad: "min", desc: "Después de sesión dura.", estructura: "45' Z1", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" }
+                ],
+                series: [
+                  { nombre: "Cuestas maratón", duracion: 55, unidad: "min", desc: "8x100m cuesta suave.", estructura: "15' calentamiento + 8 cuestas + 10' enfriamiento", sensacion: "Potencia", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas cortas", duracion: 50, unidad: "min", desc: "9x80m cuesta suave.", estructura: "15' calentamiento + 9 cuestas + 5' enfriamiento", sensacion: "Rápidas", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas medias", duracion: 60, unidad: "min", desc: "7x120m cuesta media.", estructura: "15' calentamiento + 7 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas largas", duracion: 65, unidad: "min", desc: "6x150m cuesta media.", estructura: "15' calentamiento + 6 cuestas + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas repetidas", duracion: 60, unidad: "min", desc: "12x100m cuesta suave.", estructura: "15' calentamiento + 12 cuestas + 5' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas variadas", duracion: 65, unidad: "min", desc: "8x(90m + 110m) cuesta media.", estructura: "15' calentamiento + 8 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas explosivas", duracion: 55, unidad: "min", desc: "16x80m cuesta suave.", estructura: "15' calentamiento + 16 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo sendero", duracion: 55, unidad: "min", desc: "Ritmo sostenido.", estructura: "55' Z3 sendero", sensacion: "Control", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo desnivel", duracion: 60, unidad: "min", desc: "Con desnivel suave.", estructura: "60' Z3 con desnivel", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 60, unidad: "min", desc: "Aumenta ritmo.", estructura: "60' progresivo", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero largo", duracion: 65, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 45' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 60, unidad: "min", desc: "Alterna llano y cuestas.", estructura: "10' calentamiento + 40' con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo con cambios", duracion: 65, unidad: "min", desc: "Introduce 4 cambios.", estructura: "10' calentamiento + 45' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero umbral", duracion: 70, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 50' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo sendero", duracion: 100, unidad: "min", desc: "Resistencia.", estructura: "100' Z2 sendero", sensacion: "Base", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo montaña suave", duracion: 105, unidad: "min", desc: "Sendero continuo.", estructura: "105' sendero", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo con desnivel", duracion: 110, unidad: "min", desc: "Incluye desnivel.", estructura: "110' con desnivel", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 105, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "70' Z2 + 35' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 115, unidad: "min", desc: "Incluye cambios.", estructura: "75' Z2 + 6x3' Z4 + 15' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 120, unidad: "min", desc: "Progresión constante.", estructura: "80' Z2 + 40' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 125, unidad: "min", desc: "Fondo largo en sendero.", estructura: "125' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              },
+              intermedio: {
+                rodaje: [
+                  { nombre: "Rodaje técnico", duracion: 55, unidad: "min", desc: "Técnica avanzada.", estructura: "55' técnico", sensacion: "Coordinación", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero técnico", duracion: 60, unidad: "min", desc: "Técnica superior.", estructura: "60' técnico", sensacion: "Maestría", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje montaña", duracion: 65, unidad: "min", desc: "Terreno variado.", estructura: "65' sendero variado", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 50, unidad: "min", desc: "Sesión para mantener forma.", estructura: "50' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 60, unidad: "min", desc: "Introduce 4 cambios.", estructura: "10' calentamiento + 4x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 45, unidad: "min", desc: "Después de sesión intensa.", estructura: "45' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 70, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "70' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 65, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 30' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Cuestas medias", duracion: 60, unidad: "min", desc: "10x150m cuesta media.", estructura: "15' calentamiento + 10 cuestas + 10' enfriamiento", sensacion: "Potencia", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas largas", duracion: 65, unidad: "min", desc: "9x200m cuesta media.", estructura: "15' calentamiento + 9 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas variables", duracion: 65, unidad: "min", desc: "8x(120m + 150m + 200m)", estructura: "15' calentamiento + 8 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas repetidas", duracion: 70, unidad: "min", desc: "16x100m cuesta media.", estructura: "15' calentamiento + 16 cuestas + 5' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas largas medias", duracion: 75, unidad: "min", desc: "8x220m cuesta media.", estructura: "15' calentamiento + 8 cuestas + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas variadas intensas", duracion: 70, unidad: "min", desc: "9x(130m + 150m) cuesta media.", estructura: "15' calentamiento + 9 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
+                  { nombre: "Cuestas explosivas", duracion: 65, unidad: "min", desc: "18x100m cuesta media.", estructura: "15' calentamiento + 18 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo desnivel", duracion: 60, unidad: "min", desc: "Desnivel continuo.", estructura: "60' con desnivel", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo montaña", duracion: 65, unidad: "min", desc: "Ritmo fuerte.", estructura: "65' desnivel", sensacion: "Muy exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 65, unidad: "min", desc: "Alterna ritmos.", estructura: "65' cambios", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero largo", duracion: 70, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 50' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 70, unidad: "min", desc: "Aumenta ritmo cada 6'.", estructura: "10' calentamiento + 6' Z3 + 6' Z4 + 6' Z3 + 6' Z4 + 6' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 65, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 45' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral sendero", duracion: 75, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 55' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo montaña", duracion: 135, unidad: "min", desc: "Mixto exigente.", estructura: "135' trail técnico", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo técnico", duracion: 140, unidad: "min", desc: "Alta técnica.", estructura: "140' trail técnico", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo con desnivel", duracion: 145, unidad: "min", desc: "Acumulación.", estructura: "145' con desnivel", sensacion: "Preparación", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 140, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "95' Z2 + 45' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 150, unidad: "min", desc: "Incluye cambios.", estructura: "100' Z2 + 8x3' Z4 + 20' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 155, unidad: "min", desc: "Progresión constante.", estructura: "105' Z2 + 50' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 160, unidad: "min", desc: "Fondo largo en sendero.", estructura: "160' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              },
+              avanzado: {
+                rodaje: [
+                  { nombre: "Rodaje técnico", duracion: 60, unidad: "min", desc: "Máxima técnica.", estructura: "60' técnico", sensacion: "Maestría", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Sendero avanzado", duracion: 65, unidad: "min", desc: "Técnica elite.", estructura: "65' técnico", sensacion: "Dominio", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje desnivel", duracion: 70, unidad: "min", desc: "Acumulación.", estructura: "70' con desnivel", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de mantenimiento", duracion: 55, unidad: "min", desc: "Sesión para mantener forma.", estructura: "55' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje con estímulos", duracion: 65, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 5x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje de recuperación", duracion: 50, unidad: "min", desc: "Después de sesión intensa.", estructura: "50' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
+                  { nombre: "Rodaje de base", duracion: 75, unidad: "min", desc: "Fondo para construir resistencia.", estructura: "75' Z2", sensacion: "Resistencia", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje progresivo", duracion: 70, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 35' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
+                ],
+                series: [
+                  { nombre: "Cuestas fuertes", duracion: 70, unidad: "min", desc: "15x200m cuesta fuerte.", estructura: "15' calentamiento + 15 cuestas + 10' enfriamiento", sensacion: "Máxima potencia", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas muy fuertes", duracion: 75, unidad: "min", desc: "12x250m cuesta fuerte.", estructura: "15' calentamiento + 12 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas largas fuertes", duracion: 80, unidad: "min", desc: "10x300m cuesta fuerte.", estructura: "15' calentamiento + 10 cuestas + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas explosivas", duracion: 75, unidad: "min", desc: "20x150m cuesta fuerte.", estructura: "15' calentamiento + 20 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas variadas fuertes", duracion: 80, unidad: "min", desc: "12x(180m + 200m) cuesta fuerte.", estructura: "15' calentamiento + 12 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas en escalera", duracion: 85, unidad: "min", desc: "8x(150m + 200m + 250m + 300m)", estructura: "15' calentamiento + 8 series + 10' enfriamiento", sensacion: "Muy exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Cuestas máximas", duracion: 90, unidad: "min", desc: "7x400m cuesta fuerte.", estructura: "15' calentamiento + 7 cuestas + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" }
+                ],
+                tempo: [
+                  { nombre: "Tempo montaña", duracion: 70, unidad: "min", desc: "Ritmo fuerte.", estructura: "70' desnivel intenso", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo fuerte", duracion: 75, unidad: "min", desc: "Máxima intensidad.", estructura: "75' desnivel intenso", sensacion: "Muy exigente", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo variable", duracion: 75, unidad: "min", desc: "Cambios constantes.", estructura: "75' cambios", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo sendero largo", duracion: 80, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 60' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 80, unidad: "min", desc: "Aumenta ritmo cada 4'.", estructura: "10' calentamiento + 4' Z3 + 4' Z4 + 4' Z3 + 4' Z4 + 4' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 75, unidad: "min", desc: "Introduce 6 cambios.", estructura: "10' calentamiento + 55' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral sendero", duracion: 85, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 65' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                ],
+                largo: [
+                  { nombre: "Largo trail", duracion: 180, unidad: "min", desc: "Simulación ultratrail.", estructura: "180' trail", sensacion: "Preparación", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo avanzado", duracion: 190, unidad: "min", desc: "Alto volumen.", estructura: "190' trail técnico", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo ultra", duracion: 200, unidad: "min", desc: "Preparación ultra.", estructura: "200' trail", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo progresivo", duracion: 185, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "125' Z2 + 60' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo específico", duracion: 195, unidad: "min", desc: "Incluye cambios.", estructura: "130' Z2 + 10x3' Z4 + 25' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 205, unidad: "min", desc: "Progresión constante.", estructura: "135' Z2 + 70' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo resistencia", duracion: 210, unidad: "min", desc: "Fondo largo en sendero.", estructura: "210' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                ]
+              }
+            }
+          }
         },
 
         toggleCuestionario() { if(!AppState.zonasCalculadas) return alert("> CALCULA ZONAS PRIMERO_"); const q=document.getElementById("cuestionarioEntreno"); q.style.display=q.style.display==="block"?"none":"block"; },
         async guardarPlanActual() { if(!AppState.currentUser||!AppState.planGeneradoActual) return; await Storage.setUltimoPlan(AppState.currentUser, AppState.planGeneradoActual); },
-        async mostrarUltimoPlanGuardado() { /* ... (código existente) ... */ },
-        async borrarPlanGuardado() { /* ... (código existente) ... */ },
+        async mostrarUltimoPlanGuardado() { if(!AppState.currentUser) return alert("> NO HAY USUARIO_"); const stored = await Storage.getUltimoPlan(AppState.currentUser); if(!stored) return alert("> NO HAY PLAN GUARDADO_"); AppState.ultimoPlanParams = stored; document.getElementById("modalidad").value = stored.modalidad; document.getElementById("distObjetivo").value = stored.distancia; document.getElementById("duracionPlan").value = stored.macrociclo / 4; const diasGuardados = stored.diasEntreno || [4,6]; for(let i=1;i<=7;i++){ const cb=document.getElementById(`dia${i}`); if(cb) cb.checked = diasGuardados.includes(i); } document.getElementById("nivel").value = stored.nivel; document.getElementById("experienciaDistancia").value = stored.experiencia || "no"; document.getElementById("objetivoPrincipal").value = stored.objetivo || "mejorar"; document.getElementById("diaLargo").value = stored.diaLargo; document.getElementById("fechaInicio").value = stored.fechaInicio || "2025-03-01"; document.getElementById("cuestionarioEntreno").style.display = "none"; document.getElementById("calendarioEntreno").style.display = "block"; this.generarCalendarioEntreno(); },
+        async borrarPlanGuardado() { if(!AppState.currentUser||!confirm("> ¿ELIMINAR PLAN GUARDADO?_")) return; await Storage.removeUltimoPlan(AppState.currentUser); alert("✅ PLAN ELIMINADO"); },
         getRitmoPorZona(z) { if(!AppState.lastRitmoBase) return "Calcula zonas primero"; const f={'Z1':1.35,'Z2':1.25,'Z3':1.15,'Z4':1.05,'Z5':0.95,'Z6':0.85}; if(z.includes('-')){ const [a,b]=z.split('-'); return `${Utils.formatR(AppState.lastRitmoBase*(f[a]||1.15))} – ${Utils.formatR(AppState.lastRitmoBase*(f[b]||1.05))} min/km`; } return Utils.formatR(AppState.lastRitmoBase*(f[z]||1.15))+" min/km"; },
         generarCalendarioEntreno() {
           if(!AppState.zonasCalculadas) return alert("> PRIMERO CALCULA TUS ZONAS_");
