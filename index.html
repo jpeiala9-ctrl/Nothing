@@ -97,57 +97,12 @@
       width: 100%;
       text-align: center;
     }
-
-    /* Animación RGB solo para subrayados */
-    @keyframes rgbMove {
-      0% { filter: hue-rotate(0deg); }
-      100% { filter: hue-rotate(360deg); }
-    }
-
     h1::after, h2::after {
       content: "";
       position: absolute;
       bottom: -5px; left: 0;
-      width: 100%; height: 2px;
-      background: linear-gradient(90deg, #ff0000, #00ff00, #0000ff, #ff0000);
-      background-size: 300% 100%;
-      animation: rgbMove 5s linear infinite;
-    }
-
-    /* Animación RGB para texto */
-    @keyframes rgbText {
-      0% { color: #ff0000; }
-      17% { color: #ff8800; }
-      33% { color: #ffff00; }
-      50% { color: #00ff00; }
-      67% { color: #0000ff; }
-      83% { color: #ff00ff; }
-      100% { color: #ff0000; }
-    }
-
-    /* Animación de pulso para premium */
-    @keyframes premiumPulse {
-      0% { color: #ffd700; text-shadow: 0 0 5px #ffd700; }
-      50% { color: #f0e68c; text-shadow: 0 0 15px #f0e68c; }
-      100% { color: #ffd700; text-shadow: 0 0 5px #ffd700; }
-    }
-
-    .premium {
-      animation: premiumPulse 2s ease-in-out infinite !important;
-    }
-
-    /* Animación de latido para mensajes no leídos */
-    @keyframes latido-texto {
-      0% { opacity: 1; }
-      50% { opacity: 0.5; }
-      100% { opacity: 1; }
-    }
-
-    /* Ajustes de títulos */
-    #tab-entreno h2,
-    #tab-plan h2,
-    #tab-historial h2 {
-      margin-bottom: 30px;
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
     }
 
     .wrapper {
@@ -229,14 +184,11 @@
       font-size: 11px;
       margin-top: 10px;
       display: inline-block;
-      transition: all 0.2s;
-      animation: rgbText 5s linear infinite;
+      transition: color 0.2s;
     }
-
     .logout-link:hover {
-      text-decoration: underline;
-      animation: none;
       color: var(--accent-red);
+      text-decoration: underline;
     }
 
     /* ===== TABS DE LOGIN/REGISTRO ===== */
@@ -270,7 +222,7 @@
     .auth-form { display: none; animation: glyphIn 0.5s ease; }
     .auth-form.active { display: block; }
 
-    /* ===== PESTAÑAS PRINCIPALES (nuevo estilo) ===== */
+    /* ===== PESTAÑAS PRINCIPALES ===== */
     .tabs-container { margin: 30px 0; }
     .tabs-header {
       display: flex;
@@ -290,26 +242,19 @@
       padding: 10px 4px;
       background: transparent;
       border: none;
-      color: var(--text-primary);
+      color: var(--text-secondary);
       font-family: var(--font-dot);
       font-size: 13px;
       letter-spacing: 0.5px;
       cursor: pointer;
       border-radius: 30px;
       white-space: nowrap;
-      transition: all 0.3s ease;
+      transition: color 0.3s ease, background 0.3s ease;
       text-align: center;
     }
     .tab-button.active {
-      animation: rgbText 5s linear infinite;
-    }
-    .tab-button.soporte-unread {
-      color: var(--accent-red) !important;
-      animation: latido-texto 1.5s infinite;
-    }
-    .tab-button.soporte-unread.active {
-      color: var(--accent-red) !important;
-      animation: latido-texto 1.5s infinite;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-primary);
     }
     .tab-content { display: none; animation: glyphIn 0.5s ease; }
     .tab-content.active { display: block; }
@@ -347,23 +292,6 @@
       letter-spacing: 1px;
     }
     input.error { border-color: var(--accent-red); }
-
-    /* Campo nombre de solo lectura */
-    #name[readonly] {
-      background: var(--bg-primary);
-      color: var(--text-secondary);
-      cursor: default;
-      border-color: var(--border-color);
-    }
-
-    .field-hint {
-      color: var(--text-secondary);
-      font-size: 11px;
-      margin-top: -10px;
-      margin-bottom: 10px;
-      text-align: center;
-      opacity: 0.8;
-    }
 
     .fecha-inicio-container {
       text-align: center;
@@ -410,14 +338,6 @@
     .button-main:hover::before { left: 100%; }
     .button-main:hover { box-shadow: 0 0 25px rgba(10, 132, 255, 0.4); }
     .button-main:disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
-
-    /* Contador de cálculos restantes */
-    .calculos-restantes {
-      color: var(--accent-yellow);
-      font-size: 12px;
-      margin-bottom: 10px;
-      text-align: center;
-    }
 
     /* ===== CURIOSIDAD ===== */
     .curiosity {
@@ -489,27 +409,16 @@
     }
 
     .pred-bar {
-      height: 40px;
+      height: 30px;
       border-radius: 40px;
       margin: 8px 0;
-      padding: 0 20px;
+      padding: 0 16px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       background: var(--bg-primary);
       border: 1px solid var(--border-color);
       font-size: 14px;
-      text-align: center;
-      color: var(--text-primary);
-      white-space: nowrap;
-    }
-
-    @media (max-width: 480px) {
-      .pred-bar {
-        font-size: 12px;
-        padding: 0 10px;
-        height: 35px;
-      }
     }
 
     /* ===== CALENDARIO ===== */
@@ -616,7 +525,7 @@
     .btn-plan { border-color: var(--accent-yellow); }
     .btn-view { border-color: var(--accent-purple); }
 
-    /* ===== HISTORIAL (rediseñado) ===== */
+    /* ===== HISTORIAL (con fecha y papelera centrados) ===== */
     .historial-controls {
       display: flex;
       justify-content: flex-end;
@@ -652,7 +561,8 @@
     .historial-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center; /* Centrado horizontal */
+      gap: 10px;
       margin-bottom: 4px;
     }
     .historial-header .fecha {
@@ -1053,9 +963,14 @@
       cursor: pointer;
     }
 
-    /* ===== TÍTULO PREMIUM (con pulso) ===== */
+    /* ===== TÍTULO PREMIUM ===== */
     .premium {
-      animation: premiumPulse 2s ease-in-out infinite !important;
+      color: var(--gold) !important;
+      cursor: pointer;
+      transition: text-shadow 0.3s;
+    }
+    .premium:hover {
+      text-shadow: 0 0 10px var(--gold);
     }
 
     /* ===== MODAL BENEFICIOS PREMIUM ===== */
@@ -1097,7 +1012,7 @@
     }
     #premiumModal button:hover { box-shadow: 0 0 20px var(--gold); }
 
-    /* Modal de detalle de sesión (perfecto) */
+    /* Modal de detalle de sesión (SIN DOBLES FONDOS NI SCROLL) */
     #modalOverlay {
       display: none;
       position: fixed;
@@ -1228,6 +1143,8 @@
     }
     #adminFooter {
       margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border-color);
       text-align: center;
     }
     #loginPage, #mainContent, #adminPage { transition: opacity 0.3s ease; }
@@ -1353,9 +1270,10 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="footer" id="adminFooter">
-      <a href="#" onclick="window.logoutAdmin(); return false;" class="logout-link">[ cerrar sesión admin ]</a>
+      <!-- Footer DENTRO de la tarjeta (tarea 12) -->
+      <div class="footer" id="adminFooter">
+        <a href="#" onclick="window.logoutAdmin(); return false;" class="logout-link">[ cerrar sesión admin ]</a>
+      </div>
     </div>
   </div>
 
@@ -1389,12 +1307,9 @@
         <!-- TAB ENTRENO -->
         <div id="tab-entreno" class="tab-content active">
           <h2>> ZONAS DE ENTRENO_</h2>
-          <input id="name" placeholder="> NOMBRE_" readonly>
-          <div class="field-hint">Nombre de usuario (no editable)</div>
+          <input id="name" placeholder="> NOMBRE_"><div class="error-message" id="nameError"></div>
           <input id="age" type="number" min="14" max="85" placeholder="> EDAD_"><div class="error-message" id="ageError"></div>
-          <input id="time" placeholder="> TIEMPO 6km (MM:SS) - última marca"><div class="error-message" id="timeError"></div>
-          <div class="field-hint">Introduce tu mejor tiempo reciente en 6 km</div>
-          <div id="calculosRestantes" class="calculos-restantes"></div>
+          <input id="time" placeholder="> TIEMPO 6km (MM:SS)"><div class="error-message" id="timeError"></div>
           <button class="button-main" id="calcBtn" disabled onclick="window.startCalc()">[ CALCULAR ]</button>
           <div class="curiosity" id="curiosity" onclick="window.changeConsejo()"><span>> CONSEJO_</span><small>// pulsa para nuevo consejo</small></div>
           <div id="results"></div>
@@ -1558,11 +1473,8 @@
       const Storage = {
         getUsers() { return db.ref('users').once('value').then(s => s.val()||{}); },
         saveUsers(u) { return db.ref('users').set(u); },
-        getUserContadores(username) {
-          return db.ref('users/' + username + '/contadores').once('value').then(s => s.val() || { calculos:0, mes: new Date().getMonth() });
-        },
-        setUserContadores(username, contadores) {
-          return db.ref('users/' + username + '/contadores').set(contadores);
+        getUserData(username) {
+          return db.ref('users/' + username).once('value').then(s => s.val() || {});
         },
         getHistorial(u) { if(!u) return Promise.resolve([]); return db.ref('users/'+u+'/historial').once('value').then(s => s.val()||[]); },
         saveHistorial(u,h) { if(!u) return Promise.reject(); return db.ref('users/'+u+'/historial').set(h); },
@@ -1594,36 +1506,14 @@
         mensajesNoLeidos: 0,
         mensajesNoLeidosAdmin: 0,
         isPremium: false,
-        calculosMes: 0,
-        mesActual: new Date().getMonth(),
         usuariosVistos: JSON.parse(localStorage.getItem('usuariosVistos')||'[]'),
         setLastCalc(d) { this.lastName=d.name; this.lastAge=d.age; this.lastFC=d.fcMax; this.lastUL=d.ul; this.lastZones=d.zones; this.lastPred=d.pred; this.lastRitmoBase=d.ritmoBase; this.zonasCalculadas=true; },
         clearLastCalc() { this.zonasCalculadas=false; this.lastName=""; this.lastAge=0; this.lastFC=0; this.lastUL=0; this.lastZones=[]; this.lastPred=[]; this.lastRitmoBase=0; },
-        async setCurrentUser(u, premium=false) {
+        setCurrentUser(u, premium=false) {
           this.currentUser = u; this.isPremium = premium;
           u?localStorage.setItem('ri5_current_user',u):localStorage.removeItem('ri5_current_user');
           const title = document.getElementById('ri5Title'); if(title){ if(premium) title.classList.add('premium'); else title.classList.remove('premium'); }
           if(u) document.getElementById('name').value = u;
-          if (!premium && u) {
-            const contadores = await Storage.getUserContadores(u);
-            this.mesActual = new Date().getMonth();
-            if (contadores.mes === this.mesActual) {
-              this.calculosMes = contadores.calculos || 0;
-            } else {
-              this.calculosMes = 0;
-              await Storage.setUserContadores(u, { calculos:0, mes: this.mesActual });
-            }
-            UI.actualizarContadorCalculos();
-          } else if (premium) {
-            this.calculosMes = Infinity;
-            UI.actualizarContadorCalculos();
-          }
-        },
-        async incrementarCalculo() {
-          if (!this.currentUser || this.isPremium) return;
-          this.calculosMes++;
-          await Storage.setUserContadores(this.currentUser, { calculos: this.calculosMes, mes: this.mesActual });
-          UI.actualizarContadorCalculos();
         }
       };
 
@@ -1638,16 +1528,15 @@
           const users = await Storage.getUsers();
           if(users[u]) { err.innerText="> EL USUARIO YA EXISTE_"; err.classList.add('visible'); return; }
           const expiry = new Date(); 
-          expiry.setMonth(expiry.getMonth() + 1);
+          expiry.setMonth(expiry.getMonth() + 3);
           users[u] = { 
             password: Utils.hashPassword(p), 
             created: new Date().toISOString(), 
             expires: expiry.toISOString(),
-            premium: true,
-            contadores: { calculos: 0, mes: new Date().getMonth() }
+            premium: true
           };
           await Storage.saveUsers(users);
-          await Storage.enviarMensajeAdminAUsuario(u, "¡Bienvenido a RI5! Disfruta de 1 mes premium gratis.");
+          await Storage.enviarMensajeAdminAUsuario(u, "¡Bienvenido a RI5! Disfruta de 3 meses premium gratis.");
           await AppState.setCurrentUser(u, true);
           document.getElementById("loginPage").style.opacity="0";
           setTimeout(()=>{
@@ -1839,7 +1728,6 @@
       };
 
       window.toggleUsuario = (el)=>el.classList.toggle('abierto');
-      window.Admin = Admin;
       window.extenderUsuario = Admin.extenderUsuario.bind(Admin);
       window.togglePremium = Admin.togglePremium.bind(Admin);
       window.eliminarUsuario = Admin.eliminarUsuario.bind(Admin);
@@ -1861,10 +1749,6 @@
         calculate() {
           const n=document.getElementById("name").value.trim(), a=parseInt(document.getElementById("age").value), t=Utils.parseTime(document.getElementById("time").value);
           if(!n||!a||isNaN(t)) return alert("> COMPLETA TODOS LOS CAMPOS CORRECTAMENTE_");
-          if (!AppState.isPremium && AppState.calculosMes >= 2) {
-            alert("> Has alcanzado el límite de 2 cálculos este mes. Hazte premium para cálculos ilimitados.");
-            return;
-          }
           const r=t/6, fc=220-a, ul=Math.round(fc*0.92*1.03);
           const pred=[
             {dist:2, color:"var(--accent-blue)", ritmo:r*0.98},
@@ -1873,6 +1757,7 @@
             {dist:21,color:"var(--accent-red)", ritmo:r*1.12},
             {dist:42,color:"var(--accent-purple)", ritmo:r*1.20}
           ];
+          // Tarea 4: Descripciones mejoradas de zonas
           const zones=[
             ["Z1","RECUPERACIÓN ACTIVA",0.75,0.80,1.35,"z1",
              "RITMO: "+Utils.formatR(r*1.35)+" min/km<br><br>" +
@@ -1913,7 +1798,6 @@
           ];
           const calc = {name:n, age:a, fcMax:fc, ul:ul, zones, pred, ritmoBase:r};
           AppState.setLastCalc(calc); UI.mostrarResultados(calc); document.getElementById("footer").innerText=`${n} · ${new Date().toLocaleDateString('es-ES')} · RI5`;
-          if (!AppState.isPremium) AppState.incrementarCalculo();
           this.guardarCalculoAutomatico(calc);
         },
         async guardarCalculoAutomatico(calc) {
@@ -1945,17 +1829,6 @@
         changeDailyTip() { const e=document.getElementById("dailyTip"); if(e) setTimeout(()=>{ e.innerHTML='<span>> '+this.consejos[this.consejoIndex]+'</span><small>// pulsa para otro</small>'; this.consejoIndex=(this.consejoIndex+1)%this.consejos.length; },100); },
         changeConsejo() { const e=document.getElementById("curiosity"); if(e) setTimeout(()=>{ e.innerHTML='<span>'+this.consejos[this.consejoIndex]+'</span><small>// pulsa para otro</small>'; this.consejoIndex=(this.consejoIndex+1)%this.consejos.length; },100); },
         startConsejoAutoChange() { setInterval(()=>{ if(document.getElementById("loginPage").style.display!=="none") this.changeDailyTip(); if(document.getElementById("mainContent").style.display!=="none") this.changeConsejo(); },8000); },
-        actualizarContadorCalculos() {
-          const contadorEl = document.getElementById('calculosRestantes');
-          if (contadorEl) {
-            if (AppState.isPremium) {
-              contadorEl.innerText = '✨ Premium: cálculos ilimitados';
-            } else {
-              const restantes = 2 - AppState.calculosMes;
-              contadorEl.innerText = `📊 Te quedan ${restantes} cálculos este mes`;
-            }
-          }
-        },
         marcarCampoTocado(c) { AppState.camposTocados[c]=true; this.validarCampo(c); this.validarTodo(); },
         validarCampo(c) {
           const el=document.getElementById(c), err=document.getElementById(c+'Error');
@@ -1980,15 +1853,10 @@
           if(tab==='historial') this.cargarHistorial();
           if(tab==='soporte'){ this.cargarMensajesRecibidos(); this.cargarMensajesEnviados(); }
         },
-        async cargarHistorial(orden = 'desc') {
+        async cargarHistorial() {
           const cont=document.getElementById("historialContainer");
           if(!AppState.currentUser){ cont.innerHTML='<p style="text-align:center; padding:20px; color: var(--text-secondary);">📭 SIN USUARIO</p>'; return; }
           let hist = await Storage.getHistorial(AppState.currentUser);
-          hist.sort((a,b) => {
-            const fechaA = new Date(a.date.split('/').reverse().join('-'));
-            const fechaB = new Date(b.date.split('/').reverse().join('-'));
-            return orden === 'desc' ? fechaB - fechaA : fechaA - fechaB;
-          });
           const lim = parseInt(document.getElementById('historialLimit').value); if(hist.length>lim) hist = hist.slice(0,lim);
           if(!hist.length){ cont.innerHTML='<p style="text-align:center; padding:20px; color: var(--text-secondary);">📭 SIN HISTORIAL</p>'; return; }
           let html='<div class="historial-list">';
@@ -1996,6 +1864,7 @@
             let zonas=''; if(it.zonasResumen&&Array.isArray(it.zonasResumen)){ zonas='<div class="zonas-pastillas">'; it.zonasResumen.forEach(z=>zonas+=`<span class="zona-pastilla ${z.zona.toLowerCase()}"><span></span> ${z.zona}: ${z.min}-${z.max}</span>`); zonas+='</div>'; }
             const pred = it.predicciones?`<div class="predicciones">📊 ${it.predicciones}</div>`:'';
             const hora = it.hora?`<div class="hora-detalle">🕒 ${it.hora}</div>`:'';
+            // Tarea centrado historial: fecha y papelera en la misma línea centrada
             html+=`<div class="historial-item" onclick="window.toggleHistorialDetalle(this)">
               <div class="historial-header">
                 <span class="fecha">📅 ${it.date}</span>
@@ -2064,6 +1933,7 @@
           m.classList.remove("visible"); o.classList.remove("visible"); 
         },
         cerrarPlan(){ document.getElementById("calendarioEntreno").style.display="none"; AppState.planGeneradoActual=null; },
+        // Tarea 5: Días por defecto (lunes, miércoles, sábado)
         initDiasCheckboxes() {
           const container = document.getElementById('diasSemanaContainer');
           const dias = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
@@ -2094,7 +1964,7 @@
       window.cerrarPlan = UI.cerrarPlan.bind(UI);
       window.exportarHistorialCSV = UI.exportarHistorialCSV.bind(UI);
 
-      // ==================== MÓDULO PLAN GENERATOR (sin matriz - solo pruebas) ====================
+      // ==================== MÓDULO PLAN GENERATOR (simplificado) ====================
       const PlanGenerator = {
         ENTRENAMIENTOS_DB: { runner: {}, trail: {} },
         toggleCuestionario() { if(!AppState.zonasCalculadas) return alert("> CALCULA ZONAS PRIMERO_"); const q=document.getElementById("cuestionarioEntreno"); q.style.display=q.style.display==="block"?"none":"block"; },
@@ -2104,15 +1974,11 @@
         getRitmoPorZona(z) { if(!AppState.lastRitmoBase) return "Calcula zonas primero"; const f={'Z1':1.35,'Z2':1.25,'Z3':1.15,'Z4':1.05,'Z5':0.95,'Z6':0.85}; if(z.includes('-')){ const [a,b]=z.split('-'); return `${Utils.formatR(AppState.lastRitmoBase*(f[a]||1.15))} – ${Utils.formatR(AppState.lastRitmoBase*(f[b]||1.05))} min/km`; } return Utils.formatR(AppState.lastRitmoBase*(f[z]||1.15))+" min/km"; },
         generarCalendarioEntreno() {
           if(!AppState.zonasCalculadas) return alert("> PRIMERO CALCULA TUS ZONAS_");
-          if (!AppState.isPremium) {
-            alert("> Solo los usuarios premium pueden generar planes de entrenamiento. Hazte premium para acceder a esta función.");
-            return;
-          }
           const btn = document.querySelector('[onclick="window.generarCalendarioEntreno()"]');
           if(btn) Utils.showLoading(btn);
           setTimeout(()=>{
             try{
-              alert("> Esta es una versión de prueba sin matriz de entrenamientos. En la versión final se generará el plan.");
+              alert("> Funcionalidad de planes en desarrollo. Próximamente disponible.");
               if(btn) Utils.hideLoading(btn);
             } catch(e){ console.error(e); alert("> ERROR GENERANDO PLAN_"); if(btn) Utils.hideLoading(btn); }
           },300);
