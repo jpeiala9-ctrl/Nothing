@@ -97,12 +97,21 @@
       width: 100%;
       text-align: center;
     }
+
+    /* Animación RGB solo para subrayados */
+    @keyframes rgbMove {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
     h1::after, h2::after {
       content: "";
       position: absolute;
       bottom: -5px; left: 0;
-      width: 100%; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, #ff0000, #00ff00, #0000ff, #ff0000);
+      background-size: 300% 100%;
+      animation: rgbMove 5s linear infinite;
     }
 
     /* Ajustes de títulos */
@@ -167,70 +176,35 @@
       padding-right: 5px;
     }
 
-    /* ===== HEADER CON ICONO DE APAGADO ===== */
+    /* ===== HEADER CON TÍTULO CENTRADO ===== */
     .app-header {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       margin-bottom: 30px;
       flex-wrap: nowrap;
       gap: 10px;
     }
     .app-header h1 {
-      flex: 1;
+      flex: 0 1 auto;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      max-width: 100%;
     }
 
-    /* Botón de usuario verde fijo */
-    #mainContent .logout-icon {
-      flex-shrink: 0;
-      width: 40px;
-      height: 40px;
-      padding: 0;
-      background: transparent;
-      border: 2px solid var(--accent-green);
-      border-radius: 50%;
-      color: var(--accent-green);
-      font-size: 24px;
-      line-height: 1;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* Enlace de cierre de sesión en footer */
+    .logout-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 11px;
+      margin-top: 10px;
+      display: inline-block;
+      transition: color 0.2s;
     }
-
-    #mainContent .logout-icon:hover {
-      background: var(--accent-green);
-      color: var(--bg-primary);
-      border-color: var(--accent-green);
-    }
-
-    /* Botón de admin rojo fijo */
-    #adminPage .logout-icon {
-      flex-shrink: 0;
-      width: 40px;
-      height: 40px;
-      padding: 0;
-      background: transparent;
-      border: 2px solid var(--accent-red);
-      border-radius: 50%;
+    .logout-link:hover {
       color: var(--accent-red);
-      font-size: 24px;
-      line-height: 1;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #adminPage .logout-icon:hover {
-      background: var(--accent-red);
-      color: var(--bg-primary);
-      border-color: var(--accent-red);
+      text-decoration: underline;
     }
 
     /* ===== TABS DE LOGIN/REGISTRO ===== */
@@ -264,7 +238,7 @@
     .auth-form { display: none; animation: glyphIn 0.5s ease; }
     .auth-form.active { display: block; }
 
-    /* ===== PESTAÑAS PRINCIPALES (sin slider) ===== */
+    /* ===== PESTAÑAS PRINCIPALES ===== */
     .tabs-container { margin: 30px 0; }
     .tabs-header {
       display: flex;
@@ -295,7 +269,7 @@
       text-align: center;
     }
     .tab-button.active {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.1) !important;
       color: var(--text-primary);
     }
     /* Pestaña de soporte activa sin mensajes no leídos: naranja */
@@ -316,6 +290,9 @@
     .tab-button.soporte-unread {
       color: var(--accent-red) !important;
       animation: latido-texto 1.5s infinite;
+    }
+    .tab-button.soporte-unread.active {
+      background: rgba(255, 255, 255, 0.1) !important;
     }
     @keyframes latido-texto {
       0% { color: var(--accent-red); }
@@ -352,6 +329,23 @@
       letter-spacing: 1px;
     }
     input.error { border-color: var(--accent-red); }
+
+    /* Campo nombre de solo lectura */
+    #name[readonly] {
+      background: var(--bg-primary);
+      color: var(--text-secondary);
+      cursor: default;
+      border-color: var(--border-color);
+    }
+
+    .field-hint {
+      color: var(--text-secondary);
+      font-size: 11px;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      text-align: center;
+      opacity: 0.8;
+    }
 
     .fecha-inicio-container {
       text-align: center;
@@ -398,6 +392,14 @@
     .button-main:hover::before { left: 100%; }
     .button-main:hover { box-shadow: 0 0 25px rgba(10, 132, 255, 0.4); }
     .button-main:disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+
+    /* Contador de cálculos restantes */
+    .calculos-restantes {
+      color: var(--accent-yellow);
+      font-size: 12px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
 
     /* ===== CURIOSIDAD ===== */
     .curiosity {
@@ -615,6 +617,9 @@
       cursor: pointer;
       transition: all 0.2s ease;
       min-height: 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .historial-item:hover {
       background: var(--bg-card);
@@ -625,17 +630,20 @@
       font-size: 14px;
       margin-bottom: 4px;
       text-align: center;
+      width: 100%;
     }
     .historial-item .resumen {
       color: var(--text-secondary);
       font-size: 12px;
       text-align: center;
       word-break: break-word;
+      width: 100%;
     }
     .historial-item .delete-icon {
       position: absolute;
-      top: 12px;
+      top: 50%;
       right: 12px;
+      transform: translateY(-50%);
       background: transparent;
       border: none;
       color: var(--accent-red);
@@ -654,12 +662,13 @@
     .historial-item .detalle {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.4s ease, margin 0.3s ease;
+      transition: max-height 0.4s ease, margin 0.3s ease, padding 0.3s ease;
       margin-top: 0;
       color: var(--text-secondary);
       font-size: 13px;
       border-top: 1px solid transparent;
       text-align: center;
+      width: 100%;
     }
     .historial-item.abierto .detalle {
       max-height: 400px;
@@ -828,7 +837,7 @@
     /* ===== ADMIN PANEL ===== */
     .admin-panel { margin: 30px 0; padding: 20px; background: var(--bg-secondary); border-radius: 24px; }
 
-    /* Estadísticas */
+    /* Estadísticas clickeables */
     .admin-stats {
       display: flex;
       gap: 12px;
@@ -845,30 +854,18 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .stat-badge:hover {
+      background: var(--bg-card);
     }
     .stat-badge .number {
       color: var(--accent-blue);
       font-weight: bold;
     }
 
-    /* Botón para abrir modal de usuarios */
-    .btn-ver-usuarios {
-      width: 100%;
-      padding: 16px;
-      background: var(--accent-blue);
-      border: none;
-      border-radius: 40px;
-      color: var(--bg-primary);
-      font-weight: bold;
-      cursor: pointer;
-      margin-bottom: 20px;
-      font-size: 16px;
-    }
-    .btn-ver-usuarios:hover {
-      background: var(--accent-purple);
-    }
-
-    /* Modal de usuarios - CENTRADO CORRECTAMENTE */
+    /* Modal de usuarios */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -921,8 +918,18 @@
       margin-bottom: 0;
       padding: 12px;
     }
+    .modal-user-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .modal-empty {
+      text-align: center;
+      padding: 30px;
+      color: var(--text-secondary);
+    }
 
-    /* Estilo expandible para usuarios (similar al historial) */
+    /* Estilo expandible para usuarios */
     .usuario-item {
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
@@ -1070,7 +1077,7 @@
     }
     #premiumModal button:hover { box-shadow: 0 0 20px var(--gold); }
 
-    /* Overlay y modal de detalle de sesión (SIN SCROLL) */
+    /* Overlay y modal de detalle de sesión */
     #modalOverlay {
       display: none;
       position: fixed;
@@ -1123,7 +1130,6 @@
       line-height: 1.7;
       font-size: 14px;
       margin-bottom: 30px;
-      /* SIN SCROLL */
     }
 
     .close-btn {
@@ -1183,8 +1189,13 @@
     }
     #results { margin-top: 30px; }
     .footer {
-      margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color);
-      text-align: center; color: var(--text-secondary); font-size: 11px; letter-spacing: 1px;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 11px;
+      letter-spacing: 1px;
     }
     #loginPage, #mainContent, #adminPage { transition: opacity 0.3s ease; }
     .loading { position: relative; pointer-events: none; opacity: 0.7; }
@@ -1239,9 +1250,9 @@
   <div id="premiumOverlay" onclick="window.cerrarPremiumModal()"></div>
   <div id="premiumModal">
     <h2>✨ RI5 PREMIUM</h2>
-    <p>✔ Planes de entrenamiento de hasta 3 meses</p>
+    <p>✔ Planes de entrenamiento ilimitados</p>
+    <p>✔ Cálculos de zonas sin límite</p>
     <p>✔ Prioridad en soporte</p>
-    <p>✔ Acceso a contenido exclusivo</p>
     <p>✔ Historial ampliado hasta 25 entradas</p>
     <p>✔ Y mucho más...</p>
     <p>🔗 Para hacerte premium, contacta por Instagram <strong>@navegacionpro</strong></p>
@@ -1280,7 +1291,6 @@
     <div class="card admin-card">
       <div class="app-header">
         <h1>RI5·ADMIN</h1>
-        <button class="logout-icon" onclick="window.logoutAdmin()" title="Cerrar sesión">⏻</button>
       </div>
       <p style="color: var(--accent-green); margin:20px 0; text-align:center;" id="adminWelcome"></p>
       <div class="tabs-container">
@@ -1289,11 +1299,9 @@
           <button class="tab-button" onclick="window.switchAdminTab('soporte')" id="adminSoporteTab">SOPORTE</button>
         </div>
         <div id="admin-tab-usuarios" class="tab-content active">
-          <!-- Estadísticas -->
+          <!-- Estadísticas clickeables -->
           <div class="admin-stats" id="adminStats"></div>
-          <div class="admin-panel">
-            <button class="btn-ver-usuarios" onclick="window.abrirModalUsuarios()">👥 VER USUARIOS</button>
-          </div>
+          <!-- Ya no hay botón VER USUARIOS -->
           <button class="admin-btn admin-export-btn" onclick="window.exportarUsuariosCSV()" style="width:100%; margin:10px 0;">📥 EXPORTAR USUARIOS CSV</button>
           <button class="admin-btn" onclick="window.renovarExpirados()" style="width:100%;">🔄 RENOVAR EXPIRADOS</button>
         </div>
@@ -1316,11 +1324,11 @@
     </div>
   </div>
 
-  <!-- MODAL DE USUARIOS PARA ADMIN (con diseño expandible y centrado) -->
+  <!-- MODAL DE USUARIOS PARA ADMIN -->
   <div class="modal-overlay" id="modalUsuarios">
     <div class="modal-content">
       <button class="modal-close" onclick="document.getElementById('modalUsuarios').classList.remove('active')">✕</button>
-      <h2>👥 USUARIOS REGISTRADOS</h2>
+      <h2 id="modalUsuariosTitulo">👥 USUARIOS</h2>
       <div class="modal-search">
         <input type="text" id="modalBuscarUsuario" placeholder="🔍 Buscar por nombre...">
       </div>
@@ -1333,7 +1341,6 @@
     <div class="card">
       <div class="app-header">
         <h1 id="ri5Title" onclick="window.showPremiumBenefits()">RI5</h1>
-        <button class="logout-icon" onclick="window.logoutUser()" title="Cerrar sesión">⏻</button>
       </div>
       <p style="color: var(--text-secondary); margin:20px 0; text-align:center;" id="userWelcome"></p>
       <div class="tabs-container">
@@ -1347,9 +1354,12 @@
         <!-- TAB ENTRENO -->
         <div id="tab-entreno" class="tab-content active">
           <h2>> ZONAS DE ENTRENO_</h2>
-          <input id="name" placeholder="> NOMBRE_"><div class="error-message" id="nameError"></div>
+          <input id="name" placeholder="> NOMBRE_" readonly>
+          <div class="field-hint">Nombre de usuario (no editable)</div>
           <input id="age" type="number" min="14" max="85" placeholder="> EDAD_"><div class="error-message" id="ageError"></div>
-          <input id="time" placeholder="> TIEMPO 6km_ (MM:SS)"><div class="error-message" id="timeError"></div>
+          <input id="time" placeholder="> TIEMPO 6km (MM:SS) - última marca"><div class="error-message" id="timeError"></div>
+          <div class="field-hint">Introduce tu mejor tiempo reciente en 6 km</div>
+          <div id="calculosRestantes" class="calculos-restantes"></div>
           <button class="button-main" id="calcBtn" disabled onclick="window.startCalc()">[ CALCULAR ]</button>
           <div class="curiosity" id="curiosity" onclick="window.changeConsejo()"><span>> CONSEJO_</span><small>// pulsa para nuevo consejo</small></div>
           <div id="results"></div>
@@ -1447,6 +1457,7 @@
               <option value="10">10 entradas</option>
               <option value="25">25 entradas</option>
             </select>
+            <button class="action-button btn-copy" onclick="window.exportarHistorialCSV()" style="width:auto; margin:0;">📥 CSV</button>
           </div>
           <div id="historialContainer"></div>
           <button class="action-button btn-delete" onclick="window.borrarHistorial()" style="margin-top:16px;">🗑️ LIMPIAR TODO EL HISTORIAL</button>
@@ -1476,13 +1487,14 @@
         </div>
       </div>
 
-      <div class="footer" id="footer"></div>
+      <div class="footer" id="footer">
+        <a href="#" onclick="window.logoutUser(); return false;" class="logout-link">[ cerrar sesión ]</a>
+      </div>
     </div>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
   <script>
     (function() {
@@ -1513,6 +1525,15 @@
       const Storage = {
         getUsers() { return db.ref('users').once('value').then(s => s.val()||{}); },
         saveUsers(u) { return db.ref('users').set(u); },
+        getUserData(username) {
+          return db.ref('users/' + username).once('value').then(s => s.val() || {});
+        },
+        getUserContadores(username) {
+          return db.ref('users/' + username + '/contadores').once('value').then(s => s.val() || { calculos:0, mes: new Date().getMonth() });
+        },
+        setUserContadores(username, contadores) {
+          return db.ref('users/' + username + '/contadores').set(contadores);
+        },
         getHistorial(u) { if(!u) return Promise.resolve([]); return db.ref('users/'+u+'/historial').once('value').then(s => s.val()||[]); },
         saveHistorial(u,h) { if(!u) return Promise.reject(); return db.ref('users/'+u+'/historial').set(h); },
         getUltimoPlan(u) { if(!u) return Promise.resolve(null); return db.ref('users/'+u+'/ultimoPlan').once('value').then(s => s.val()||null); },
@@ -1543,15 +1564,39 @@
         mensajesNoLeidos: 0,
         mensajesNoLeidosAdmin: 0,
         isPremium: false,
+        calculosMes: 0,
+        mesActual: new Date().getMonth(),
         usuariosVistos: JSON.parse(localStorage.getItem('usuariosVistos')||'[]'),
         setLastCalc(d) { this.lastName=d.name; this.lastAge=d.age; this.lastFC=d.fcMax; this.lastUL=d.ul; this.lastZones=d.zones; this.lastPred=d.pred; this.lastRitmoBase=d.ritmoBase; this.zonasCalculadas=true; },
         clearLastCalc() { this.zonasCalculadas=false; this.lastName=""; this.lastAge=0; this.lastFC=0; this.lastUL=0; this.lastZones=[]; this.lastPred=[]; this.lastRitmoBase=0; },
-        setCurrentUser(u, premium=false) {
+        async setCurrentUser(u, premium=false) {
           this.currentUser = u; this.isPremium = premium;
           u?localStorage.setItem('ri5_current_user',u):localStorage.removeItem('ri5_current_user');
-          const t = document.getElementById('ri5Title'); if(t){ if(premium) t.classList.add('premium'); else t.classList.remove('premium'); }
+          const title = document.getElementById('ri5Title'); if(title){ if(premium) title.classList.add('premium'); else title.classList.remove('premium'); }
           // Autocompletar campo nombre
           if(u) document.getElementById('name').value = u;
+          
+          // Cargar contadores si no es premium
+          if (!premium && u) {
+            const contadores = await Storage.getUserContadores(u);
+            this.mesActual = new Date().getMonth();
+            if (contadores.mes === this.mesActual) {
+              this.calculosMes = contadores.calculos || 0;
+            } else {
+              this.calculosMes = 0;
+              await Storage.setUserContadores(u, { calculos:0, mes: this.mesActual });
+            }
+            UI.actualizarContadorCalculos();
+          } else if (premium) {
+            this.calculosMes = Infinity;
+            UI.actualizarContadorCalculos();
+          }
+        },
+        async incrementarCalculo() {
+          if (!this.currentUser || this.isPremium) return;
+          this.calculosMes++;
+          await Storage.setUserContadores(this.currentUser, { calculos: this.calculosMes, mes: this.mesActual });
+          UI.actualizarContadorCalculos();
         }
       };
 
@@ -1565,11 +1610,18 @@
           if(p.length<4) { err.innerText="> MÍNIMO 4 CARACTERES_"; err.classList.add('visible'); return; }
           const users = await Storage.getUsers();
           if(users[u]) { err.innerText="> EL USUARIO YA EXISTE_"; err.classList.add('visible'); return; }
-          const expiry = new Date(); expiry.setMonth(expiry.getMonth()+3);
-          users[u] = { password: Utils.hashPassword(p), created: new Date().toISOString(), expires: expiry.toISOString(), premium: true };
+          const expiry = new Date(); 
+          expiry.setMonth(expiry.getMonth() + 1); // 1 mes de prueba premium
+          users[u] = { 
+            password: Utils.hashPassword(p), 
+            created: new Date().toISOString(), 
+            expires: expiry.toISOString(),
+            premium: true,
+            contadores: { calculos: 0, mes: new Date().getMonth() }
+          };
           await Storage.saveUsers(users);
-          await Storage.enviarMensajeAdminAUsuario(u, "¡Bienvenido a RI5! Disfruta de 3 meses premium.");
-          AppState.setCurrentUser(u, true);
+          await Storage.enviarMensajeAdminAUsuario(u, "¡Bienvenido a RI5! Disfruta de 1 mes premium gratis.");
+          await AppState.setCurrentUser(u, true);
           document.getElementById("loginPage").style.opacity="0";
           setTimeout(()=>{
             document.getElementById("loginPage").style.display="none";
@@ -1587,7 +1639,7 @@
           if(!user || user.password !== Utils.hashPassword(p)) { err.innerText="> INCORRECTO_"; err.classList.add('visible'); return; }
           const now = new Date(), expiry = new Date(user.expires);
           if(now>expiry){ if(user.premium) alert("> Tu período premium ha expirado."); else { err.innerText="> ACCESO EXPIRADO_"; err.classList.add('visible'); return; } }
-          AppState.setCurrentUser(u, user.premium||false);
+          await AppState.setCurrentUser(u, user.premium||false);
           const msgs = await Storage.getMensajesUsuario(u);
           AppState.mensajesNoLeidos = msgs.filter(m=>!m.leido).length;
           UI.actualizarBadgeMensajes();
@@ -1610,7 +1662,7 @@
           if(!user){ localStorage.removeItem('ri5_current_user'); return false; }
           const now = new Date(), expiry = new Date(user.expires);
           if(now>expiry && !user.premium){ localStorage.removeItem('ri5_current_user'); return false; }
-          AppState.currentUser = s; AppState.isPremium = user.premium||false;
+          await AppState.setCurrentUser(s, user.premium||false);
           document.getElementById("loginPage").style.display="none";
           document.getElementById("mainContent").style.display="flex";
           document.getElementById("userWelcome").innerText = `> BIENVENIDO, ${s.toUpperCase()}_ · ${user.premium?'PREMIUM':'ACCESO'} HASTA ${expiry.toLocaleDateString()}`;
@@ -1636,64 +1688,101 @@
           const users = await Storage.getUsers();
           const total = Object.keys(users).length, ahora = new Date();
           const activos = Object.values(users).filter(u=>new Date(u.expires)>ahora).length, expirados = total-activos;
-          document.getElementById("adminStats").innerHTML = `<span class="stat-badge">📊 TOTAL <span class="number">${total}</span></span><span class="stat-badge">✅ ACTIVOS <span class="number">${activos}</span></span><span class="stat-badge">⏳ EXPIRADOS <span class="number">${expirados}</span></span>`;
+          document.getElementById("adminStats").innerHTML = `
+            <span class="stat-badge" onclick="Admin.abrirModalUsuariosPorTipo('todos')">📊 TOTAL <span class="number">${total}</span></span>
+            <span class="stat-badge" onclick="Admin.abrirModalUsuariosPorTipo('activos')">✅ ACTIVOS <span class="number">${activos}</span></span>
+            <span class="stat-badge" onclick="Admin.abrirModalUsuariosPorTipo('expirados')">⏳ EXPIRADOS <span class="number">${expirados}</span></span>
+          `;
           document.getElementById("adminWelcome").innerText = `> ADMIN · ${new Date().toLocaleString()}`;
           this.cargarMensajesAdmin();
         },
-        async abrirModalUsuarios() {
+        async abrirModalUsuariosPorTipo(tipo) {
           const users = await Storage.getUsers();
+          const ahora = new Date();
+          let usuariosFiltrados = {};
+          let titulo = "👥 TODOS LOS USUARIOS";
+          
+          if (tipo === 'activos') {
+            usuariosFiltrados = Object.fromEntries(Object.entries(users).filter(([u,d]) => new Date(d.expires) > ahora));
+            titulo = "✅ USUARIOS ACTIVOS";
+          } else if (tipo === 'expirados') {
+            usuariosFiltrados = Object.fromEntries(Object.entries(users).filter(([u,d]) => new Date(d.expires) <= ahora));
+            titulo = "⏳ USUARIOS EXPIRADOS";
+          } else {
+            usuariosFiltrados = users;
+            titulo = "👥 TODOS LOS USUARIOS";
+          }
+          
+          document.getElementById('modalUsuariosTitulo').innerText = titulo;
           const modal = document.getElementById('modalUsuarios');
           const listEl = document.getElementById('modalUserList');
-          this.renderizarListaUsuarios(users, listEl);
+          
+          if (Object.keys(usuariosFiltrados).length === 0) {
+            listEl.innerHTML = '<div class="modal-empty">📭 No hay usuarios en esta categoría</div>';
+          } else {
+            this.renderizarListaUsuarios(usuariosFiltrados, listEl);
+          }
+          
           modal.classList.add('active');
-          document.getElementById('modalBuscarUsuario').oninput = (e)=>this.filtrarUsuariosModal(e.target.value);
+          document.getElementById('modalBuscarUsuario').oninput = (e) => {
+            this.filtrarUsuariosModal(e.target.value, usuariosFiltrados);
+          };
         },
         renderizarListaUsuarios(users, container, filtro='') {
           const ahora = new Date();
-          const items = Object.entries(users).filter(([u])=>u.toLowerCase().includes(filtro.toLowerCase())).map(([u,d])=>{
-            const creado = new Date(d.created).toLocaleDateString();
-            const expiry = new Date(d.expires).toLocaleDateString();
-            const premium = d.premium ? '✅ PREMIUM' : '❌ NO PREMIUM';
-            return `
-              <div class="usuario-item" onclick="window.toggleUsuario(this)">
-                <div class="usuario-header">
-                  <span>${u}</span>
-                  <span class="flecha">▼</span>
-                </div>
-                <div class="usuario-detalle">
-                  <div class="user-details">
-                    <span>📅 ${creado}</span>
-                    <span>⏳ ${expiry}</span>
-                    <span>${premium}</span>
+          const items = Object.entries(users)
+            .filter(([u]) => u.toLowerCase().includes(filtro.toLowerCase()))
+            .map(([u,d]) => {
+              const creado = new Date(d.created).toLocaleDateString();
+              const expiry = new Date(d.expires).toLocaleDateString();
+              const premium = d.premium ? '✅ PREMIUM' : '❌ NO PREMIUM';
+              return `
+                <div class="usuario-item" onclick="window.toggleUsuario(this)">
+                  <div class="usuario-header">
+                    <span>${u}</span>
+                    <span class="flecha">▼</span>
                   </div>
-                  <div class="modal-user-actions">
-                    <button onclick="event.stopPropagation(); window.extenderUsuario('${u}',1)">+1 MES</button>
-                    <button onclick="event.stopPropagation(); window.extenderUsuario('${u}',3)">+3 MESES</button>
-                    <button onclick="event.stopPropagation(); window.togglePremium('${u}')">👑 PREMIUM</button>
-                    <button onclick="event.stopPropagation(); window.enviarMensajeAUsuario('${u}')">📨 MENSAJE</button>
-                    <button onclick="event.stopPropagation(); window.eliminarUsuario('${u}')">ELIMINAR</button>
+                  <div class="usuario-detalle">
+                    <div class="user-details">
+                      <span>📅 ${creado}</span>
+                      <span>⏳ ${expiry}</span>
+                      <span>${premium}</span>
+                    </div>
+                    <div class="modal-user-actions">
+                      <button onclick="event.stopPropagation(); window.extenderUsuario('${u}',1)">+1 MES</button>
+                      <button onclick="event.stopPropagation(); window.extenderUsuario('${u}',3)">+3 MESES</button>
+                      <button onclick="event.stopPropagation(); window.togglePremium('${u}')">👑 PREMIUM</button>
+                      <button onclick="event.stopPropagation(); window.enviarMensajeAUsuario('${u}')">📨 MENSAJE</button>
+                      <button onclick="event.stopPropagation(); window.eliminarUsuario('${u}')">ELIMINAR</button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            `;
-          }).join('');
-          container.innerHTML = items || '<p style="text-align:center; padding:20px;">📭 NO HAY USUARIOS</p>';
+              `;
+            }).join('');
+          container.innerHTML = items;
         },
-        filtrarUsuariosModal(filtro) { Storage.getUsers().then(u=>{ const l=document.getElementById('modalUserList'); this.renderizarListaUsuarios(u,l,filtro); }); },
+        filtrarUsuariosModal(filtro, baseUsers) {
+          const listEl = document.getElementById('modalUserList');
+          if (Object.keys(baseUsers).length === 0) {
+            listEl.innerHTML = '<div class="modal-empty">📭 No hay usuarios en esta categoría</div>';
+          } else {
+            this.renderizarListaUsuarios(baseUsers, listEl, filtro);
+          }
+        },
         async extenderUsuario(u,m) {
           const users = await Storage.getUsers();
-          if(users[u]){ const e=new Date(users[u].expires); e.setMonth(e.getMonth()+m); users[u].expires=e.toISOString(); await Storage.saveUsers(users); this.actualizarAdminPanel(); alert(`✅ ${u} extendido ${m} mes`); this.abrirModalUsuarios(); }
+          if(users[u]){ const e=new Date(users[u].expires); e.setMonth(e.getMonth()+m); users[u].expires=e.toISOString(); await Storage.saveUsers(users); this.actualizarAdminPanel(); alert(`✅ ${u} extendido ${m} mes`); this.abrirModalUsuariosPorTipo('todos'); }
         },
         async togglePremium(u) {
           const users = await Storage.getUsers();
-          if(users[u]){ users[u].premium = !users[u].premium; await Storage.saveUsers(users); this.actualizarAdminPanel(); alert(`✅ Premium de ${u} cambiado`); this.abrirModalUsuarios(); }
+          if(users[u]){ users[u].premium = !users[u].premium; await Storage.saveUsers(users); this.actualizarAdminPanel(); alert(`✅ Premium de ${u} cambiado`); this.abrirModalUsuariosPorTipo('todos'); }
         },
         async eliminarUsuario(u) {
           if(!confirm(`> ¿ELIMINAR "${u}"?`)) return;
           const users = await Storage.getUsers();
           delete users[u]; await Storage.saveUsers(users);
           if(AppState.currentUser===u) AppState.setCurrentUser(null);
-          this.actualizarAdminPanel(); alert(`✅ ${u} eliminado`); this.abrirModalUsuarios();
+          this.actualizarAdminPanel(); alert(`✅ ${u} eliminado`); this.abrirModalUsuariosPorTipo('todos');
         },
         exportarUsuariosCSV() { Storage.getUsers().then(u=>{ let csv="Usuario,Creado,Expira,Premium,Estado\n"; Object.entries(u).forEach(([u,d])=>csv+=`${u},${new Date(d.created).toLocaleDateString()},${new Date(d.expires).toLocaleDateString()},${d.premium?'SI':'NO'},${new Date()<=new Date(d.expires)?'ACTIVO':'EXPIRADO'}\n`); const b=new Blob([csv],{type:'text/csv'}), a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=`usuarios_${new Date().toISOString().split('T')[0]}.csv`; a.click(); URL.revokeObjectURL(a.href); }); },
         async renovarExpirados() {
@@ -1728,7 +1817,6 @@
       };
 
       window.toggleUsuario = (el)=>el.classList.toggle('abierto');
-      window.abrirModalUsuarios = Admin.abrirModalUsuarios.bind(Admin);
       window.extenderUsuario = Admin.extenderUsuario.bind(Admin);
       window.togglePremium = Admin.togglePremium.bind(Admin);
       window.eliminarUsuario = Admin.eliminarUsuario.bind(Admin);
@@ -1736,6 +1824,7 @@
       window.exportarUsuariosCSV = Admin.exportarUsuariosCSV.bind(Admin);
       window.renovarExpirados = Admin.renovarExpirados.bind(Admin);
       window.borrarMensajeAdmin = (k,i)=>Storage.borrarMensaje(k,i).then(()=>Admin.cargarMensajesAdmin());
+      window.Admin = Admin;
       window.switchAdminTab = function(tab) {
         document.querySelectorAll('#adminPage .tab-button').forEach(b=>b.classList.remove('active'));
         document.querySelectorAll('#adminPage .tab-content').forEach(c=>c.classList.remove('active'));
@@ -1750,18 +1839,57 @@
         calculate() {
           const n=document.getElementById("name").value.trim(), a=parseInt(document.getElementById("age").value), t=Utils.parseTime(document.getElementById("time").value);
           if(!n||!a||isNaN(t)) return alert("> COMPLETA TODOS LOS CAMPOS CORRECTAMENTE_");
+          
+          // Verificar límite de cálculos para no premium
+          if (!AppState.isPremium) {
+            if (AppState.calculosMes >= 2) {
+              alert("> Has alcanzado el límite de 2 cálculos este mes. Hazte premium para cálculos ilimitados.");
+              return;
+            }
+          }
+          
           const r=t/6, fc=220-a, ul=Math.round(fc*0.92*1.03);
-          const pred=[{dist:2,color:"var(--accent-blue)",ritmo:r*0.98},{dist:6,color:"var(--accent-green)",ritmo:r},{dist:10,color:"var(--accent-yellow)",ritmo:r*1.05},{dist:21,color:"var(--accent-red)",ritmo:r*1.12},{dist:42,color:"var(--accent-purple)",ritmo:r*1.20}];
+          const pred=[
+            {dist:2, color:"var(--accent-blue)", ritmo:r*0.98},
+            {dist:6, color:"var(--accent-green)", ritmo:r},
+            {dist:10,color:"var(--accent-yellow)", ritmo:r*1.05},
+            {dist:21,color:"var(--accent-red)", ritmo:r*1.12},
+            {dist:42,color:"var(--accent-purple)", ritmo:r*1.20}
+          ];
           const zones=[
-            ["Z1","RECUPERACIÓN",0.75,0.80,1.35,"z1","RITMO: "+Utils.formatR(r*1.35)+"<br><br>🔹 Recuperación activa."],
-            ["Z2","BASE",0.80,0.90,1.25,"z2","RITMO: "+Utils.formatR(r*1.25)+"<br><br>🔹 Mejora eficiencia metabólica."],
-            ["Z3","TEMPO",0.90,0.95,1.15,"z3","RITMO: "+Utils.formatR(r*1.15)+"<br><br>🔹 Tolerancia al lactato."],
-            ["Z4","UMBRAL",0.95,1.02,1.05,"z4","RITMO: "+Utils.formatR(r*1.05)+"<br><br>🔹 Limpieza de lactato."],
-            ["Z5","VO₂MÁX",1.02,1.06,0.95,"z5","RITMO: "+Utils.formatR(r*0.95)+"<br><br>🔹 Potencia aeróbica máxima."],
-            ["Z6","VELOCIDAD",1.06,1.12,0.85,"z6","RITMO: "+Utils.formatR(r*0.85)+"<br><br>🔹 Potencia neuromuscular."]
+            ["Z1","RECUPERACIÓN ACTIVA",0.75,0.80,1.35,"z1",
+             "RITMO: "+Utils.formatR(r*1.35)+" min/km<br><br>" +
+             "🔹 **QUÉ GANAS:** Mejora la circulación sanguínea, acelera la eliminación de toxinas y prepara el cuerpo para sesiones más intensas. Ideal para días post-entreno duro o calentamiento.<br><br>" +
+             "🔹 **SENSACIÓN:** Muy suave, puedes mantener una conversación sin esfuerzo. Respiración completamente controlada."],
+            ["Z2","BASE AERÓBICA",0.80,0.90,1.25,"z2",
+             "RITMO: "+Utils.formatR(r*1.25)+" min/km<br><br>" +
+             "🔹 **QUÉ GANAS:** Desarrolla la capilarización muscular, aumenta la densidad mitocondrial y mejora la eficiencia del corazón. Es la base de todo entrenamiento de resistencia.<br><br>" +
+             "🔹 **SENSACIÓN:** Cómodo pero constante. Puedes hablar con frases cortas. El 'ritmo de conversación' por excelencia."],
+            ["Z3","RITMO TEMPO",0.90,0.95,1.15,"z3",
+             "RITMO: "+Utils.formatR(r*1.15)+" min/km<br><br>" +
+             "🔹 **QUÉ GANAS:** Mejora la tolerancia al lactato y la capacidad de mantener un ritmo rápido durante más tiempo. Puente entre el entrenamiento aeróbico y el umbral.<br><br>" +
+             "🔹 **SENSACIÓN:** 'Cómodamente duro'. Puedes decir algunas palabras, pero prefieres no hacerlo. Notas el esfuerzo pero es sostenible."],
+            ["Z4","UMBRAL LÁCTICO",0.95,1.02,1.05,"z4",
+             "RITMO: "+Utils.formatR(r*1.05)+" min/km<br><br>" +
+             "🔹 **QUÉ GANAS:** Aumenta la velocidad a la que puedes correr sin acumular lactato en exceso. Clave para mejorar en carreras de 10k, media y maratón.<br><br>" +
+             "🔹 **SENSACIÓN:** Duro pero controlado. Hablar es muy difícil. Es el ritmo que podrías mantener aproximadamente una hora en competición."],
+            ["Z5","VO₂MÁX",1.02,1.06,0.95,"z5",
+             "RITMO: "+Utils.formatR(r*0.95)+" min/km<br><br>" +
+             "🔹 **QUÉ GANAS:** Mejora la potencia aeróbica máxima y la capacidad de transportar oxígeno a los músculos. Esencial para distancias cortas (5k/10k) y para aumentar la velocidad.<br><br>" +
+             "🔹 **SENSACIÓN:** Muy duro. Solo puedes mantenerlo de 3 a 8 minutos. La respiración es agitada y las piernas queman."],
+            ["Z6","VELOCIDAD / POTENCIA",1.06,1.12,0.85,"z6",
+             "RITMO: "+Utils.formatR(r*0.85)+" min/km<br><br>" +
+             "🔹 **QUÉ GANAS:** Desarrolla la potencia neuromuscular, recluta fibras rápidas y mejora la economía de carrera. Útil para sprints finales y terrenos explosivos.<br><br>" +
+             "🔹 **SENSACIÓN:** Máximo esfuerzo, apenas sostenible más de 30-60 segundos. Zancada rápida y potente."]
           ];
           const calc = {name:n, age:a, fcMax:fc, ul:ul, zones, pred, ritmoBase:r};
           AppState.setLastCalc(calc); UI.mostrarResultados(calc); document.getElementById("footer").innerText=`${n} · ${new Date().toLocaleDateString('es-ES')} · RI5`;
+          
+          // Incrementar contador si no es premium
+          if (!AppState.isPremium) {
+            AppState.incrementarCalculo();
+          }
+          
           this.guardarCalculoAutomatico(calc);
         },
         async guardarCalculoAutomatico(calc) {
@@ -1793,6 +1921,17 @@
         changeDailyTip() { const e=document.getElementById("dailyTip"); if(e) setTimeout(()=>{ e.innerHTML='<span>> '+this.consejos[this.consejoIndex]+'</span><small>// pulsa para otro</small>'; this.consejoIndex=(this.consejoIndex+1)%this.consejos.length; },100); },
         changeConsejo() { const e=document.getElementById("curiosity"); if(e) setTimeout(()=>{ e.innerHTML='<span>'+this.consejos[this.consejoIndex]+'</span><small>// pulsa para otro</small>'; this.consejoIndex=(this.consejoIndex+1)%this.consejos.length; },100); },
         startConsejoAutoChange() { setInterval(()=>{ if(document.getElementById("loginPage").style.display!=="none") this.changeDailyTip(); if(document.getElementById("mainContent").style.display!=="none") this.changeConsejo(); },8000); },
+        actualizarContadorCalculos() {
+          const contadorEl = document.getElementById('calculosRestantes');
+          if (contadorEl) {
+            if (AppState.isPremium) {
+              contadorEl.innerText = '✨ Premium: cálculos ilimitados';
+            } else {
+              const restantes = 2 - AppState.calculosMes;
+              contadorEl.innerText = `📊 Te quedan ${restantes} cálculos este mes`;
+            }
+          }
+        },
         marcarCampoTocado(c) { AppState.camposTocados[c]=true; this.validarCampo(c); this.validarTodo(); },
         validarCampo(c) {
           const el=document.getElementById(c), err=document.getElementById(c+'Error');
@@ -1817,10 +1956,16 @@
           if(tab==='historial') this.cargarHistorial();
           if(tab==='soporte'){ this.cargarMensajesRecibidos(); this.cargarMensajesEnviados(); }
         },
-        async cargarHistorial() {
+        async cargarHistorial(orden = 'desc') {
           const cont=document.getElementById("historialContainer");
           if(!AppState.currentUser){ cont.innerHTML='<p style="text-align:center; padding:20px; color: var(--text-secondary);">📭 SIN USUARIO</p>'; return; }
           let hist = await Storage.getHistorial(AppState.currentUser);
+          // Ordenar
+          hist.sort((a,b) => {
+            const fechaA = new Date(a.date.split('/').reverse().join('-'));
+            const fechaB = new Date(b.date.split('/').reverse().join('-'));
+            return orden === 'desc' ? fechaB - fechaA : fechaA - fechaB;
+          });
           const lim = parseInt(document.getElementById('historialLimit').value); if(hist.length>lim) hist = hist.slice(0,lim);
           if(!hist.length){ cont.innerHTML='<p style="text-align:center; padding:20px; color: var(--text-secondary);">📭 SIN HISTORIAL</p>'; return; }
           let html='<div class="historial-list">';
@@ -1839,12 +1984,28 @@
         },
         toggleHistorialDetalle(el){ el.classList.toggle('abierto'); },
         async borrarEntradaHistorial(i){
-          if(!AppState.currentUser||!confirm("> ¿ELIMINAR ESTA ENTRADA?_")) return;
+          if(!AppState.currentUser) return;
+          if(!confirm("> ¿ELIMINAR ESTA ENTRADA?")) return;
           let hist=await Storage.getHistorial(AppState.currentUser); hist.splice(i,1); await Storage.saveHistorial(AppState.currentUser,hist); this.cargarHistorial(); alert("✅ ELIMINADA");
         },
         async borrarHistorial(){
-          if(!AppState.currentUser||!confirm("> ¿ELIMINAR TODO EL HISTORIAL?_")) return;
+          if(!AppState.currentUser||!confirm("> ¿ELIMINAR TODO EL HISTORIAL?")) return;
           await Storage.saveHistorial(AppState.currentUser,[]); this.cargarHistorial(); alert("✅ HISTORIAL LIMPIO");
+        },
+        exportarHistorialCSV() {
+          if (!AppState.currentUser) return alert("> No hay usuario");
+          Storage.getHistorial(AppState.currentUser).then(hist => {
+            let csv = "Fecha,Hora,Nombre,Edad,FC Máx,Umbral,Ritmo 6km,Predicciones,Resumen\n";
+            hist.forEach(it => {
+              csv += `${it.date},${it.hora || ''},${it.nombre || ''},${it.edad || ''},${it.fcMax || ''},${it.umbral || ''},${it.ritmo6k || ''},${it.predicciones || ''},${it.resumen || ''}\n`;
+            });
+            const b = new Blob([csv], {type:'text/csv'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(b);
+            a.download = `historial_${AppState.currentUser}_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            URL.revokeObjectURL(a.href);
+          });
         },
         async cargarMensajesRecibidos(){
           if(!AppState.currentUser) return;
@@ -1880,32 +2041,16 @@
       window.toggleMensajeRecibido = UI.toggleMensajeRecibido.bind(UI);
       window.enviarMensajeUsuario = UI.enviarMensajeUsuario.bind(UI);
       window.cambiarSoporteTab = UI.cambiarSoporteTab.bind(UI);
-      window.cargarHistorial = UI.cargarHistorial.bind(UI);
+      window.cargarHistorial = (orden) => UI.cargarHistorial(orden);
       window.borrarEntradaHistorial = UI.borrarEntradaHistorial.bind(UI);
       window.borrarHistorial = UI.borrarHistorial.bind(UI);
       window.cerrarModalSesion = UI.cerrarModalSesion.bind(UI);
       window.cerrarPlan = UI.cerrarPlan.bind(UI);
+      window.exportarHistorialCSV = UI.exportarHistorialCSV.bind(UI);
 
-      // ==================== MÓDULO PLAN GENERATOR (con matriz completa y sin repeticiones) ====================
+      // ==================== MÓDULO PLAN GENERATOR (sin matriz - solo estructura) ====================
       const PlanGenerator = {
-        // Matriz de entrenamientos COMPLETA (runner y trail para todas las distancias y niveles)
-        ENTRENAMIENTOS_DB: {
-          runner: {
-            "2k": { /* ... matriz completa ... */ },
-            "5k": { /* ... matriz completa ... */ },
-            "10k": { /* ... matriz completa ... */ },
-            "medio": { /* ... matriz completa ... */ },
-            "maraton": { /* ... matriz completa ... */ }
-          },
-          trail: {
-            "2k": { /* ... matriz completa ... */ },
-            "5k": { /* ... matriz completa ... */ },
-            "10k": { /* ... matriz completa ... */ },
-            "medio": { /* ... matriz completa ... */ },
-            "maraton": { /* ... matriz completa ... */ }
-          }
-        },
-
+        ENTRENAMIENTOS_DB: { runner: {}, trail: {} }, // Vacío hasta la versión final
         toggleCuestionario() { if(!AppState.zonasCalculadas) return alert("> CALCULA ZONAS PRIMERO_"); const q=document.getElementById("cuestionarioEntreno"); q.style.display=q.style.display==="block"?"none":"block"; },
         async guardarPlanActual() { if(!AppState.currentUser||!AppState.planGeneradoActual) return; await Storage.setUltimoPlan(AppState.currentUser, AppState.planGeneradoActual); },
         async mostrarUltimoPlanGuardado() { if(!AppState.currentUser) return alert("> NO HAY USUARIO_"); const stored = await Storage.getUltimoPlan(AppState.currentUser); if(!stored) return alert("> NO HAY PLAN GUARDADO_"); AppState.ultimoPlanParams = stored; document.getElementById("modalidad").value = stored.modalidad; document.getElementById("distObjetivo").value = stored.distancia; document.getElementById("duracionPlan").value = stored.macrociclo / 4; const diasGuardados = stored.diasEntreno || [4,6]; for(let i=1;i<=7;i++){ const cb=document.getElementById(`dia${i}`); if(cb) cb.checked = diasGuardados.includes(i); } document.getElementById("nivel").value = stored.nivel; document.getElementById("experienciaDistancia").value = stored.experiencia || "no"; document.getElementById("objetivoPrincipal").value = stored.objetivo || "mejorar"; document.getElementById("diaLargo").value = stored.diaLargo; document.getElementById("fechaInicio").value = stored.fechaInicio || "2025-03-01"; document.getElementById("cuestionarioEntreno").style.display = "none"; document.getElementById("calendarioEntreno").style.display = "block"; this.generarCalendarioEntreno(); },
@@ -1913,141 +2058,18 @@
         getRitmoPorZona(z) { if(!AppState.lastRitmoBase) return "Calcula zonas primero"; const f={'Z1':1.35,'Z2':1.25,'Z3':1.15,'Z4':1.05,'Z5':0.95,'Z6':0.85}; if(z.includes('-')){ const [a,b]=z.split('-'); return `${Utils.formatR(AppState.lastRitmoBase*(f[a]||1.15))} – ${Utils.formatR(AppState.lastRitmoBase*(f[b]||1.05))} min/km`; } return Utils.formatR(AppState.lastRitmoBase*(f[z]||1.15))+" min/km"; },
         generarCalendarioEntreno() {
           if(!AppState.zonasCalculadas) return alert("> PRIMERO CALCULA TUS ZONAS_");
+          
+          // Bloquear para no premium
+          if (!AppState.isPremium) {
+            alert("> Solo los usuarios premium pueden generar planes de entrenamiento. Hazte premium para acceder a esta función.");
+            return;
+          }
+          
           const btn = document.querySelector('[onclick="window.generarCalendarioEntreno()"]');
           if(btn) Utils.showLoading(btn);
           setTimeout(()=>{
             try{
-              const modalidad = document.getElementById("modalidad").value;
-              const distancia = document.getElementById("distObjetivo").value;
-              const meses = parseInt(document.getElementById("duracionPlan").value);
-              const nivel = document.getElementById("nivel").value;
-              const exp = document.getElementById("experienciaDistancia").value;
-              const obj = document.getElementById("objetivoPrincipal").value;
-              const diaLargo = parseInt(document.getElementById("diaLargo").value);
-              const fechaInicio = document.getElementById("fechaInicio").value;
-              if(!fechaInicio) return alert("> SELECCIONA UNA FECHA DE INICIO_");
-              
-              const diasEntreno = [];
-              for(let i=1;i<=7;i++){ const cb=document.getElementById(`dia${i}`); if(cb&&cb.checked) diasEntreno.push(i); }
-              if(diasEntreno.length===0) return alert("> SELECCIONA AL MENOS UN DÍA DE ENTRENO_");
-              if(!diasEntreno.includes(diaLargo)){
-                if(confirm("> El día de tirada larga no está seleccionado. ¿Añadirlo automáticamente?")){
-                  diasEntreno.push(diaLargo); document.getElementById(`dia${diaLargo}`).checked = true;
-                } else return;
-              }
-              diasEntreno.sort((a,b)=>a-b);
-              const fecha = new Date(fechaInicio+"T00:00:00");
-              const macrociclo = meses*4;
-              const mapa = { "2k":"2 km","5k":"5 km","10k":"10 km","medio":"MEDIA","maraton":"MARATÓN" };
-              const diaNombre = ["","LUN","MAR","MIÉ","JUE","VIE","SÁB","DOM"][diaLargo];
-              document.getElementById("resumenObjetivo").innerText = `${mapa[distancia]} · ${diasEntreno.length} DÍAS/SEM · ${nivel.toUpperCase()} · ${exp==='si'?'CON EXPERIENCIA':'PRIMERA VEZ'} · ${obj==='acabar'?'OBJ: TERMINAR':obj==='mejorar'?'OBJ: MEJORAR':'OBJ: COMPETIR'} · LARGO: ${diaNombre} · ${modalidad==='runner'?'ASFALTO':'MONTAÑA'} · ${meses} MES(ES) · INICIO: ${fecha.toLocaleDateString()}`;
-
-              const grid = document.getElementById("calendarioGrid");
-              grid.innerHTML = "";
-              const totalDias = macrociclo * 7;
-
-              const tipoPorDia = {};
-              tipoPorDia[diaLargo] = 'largo';
-              
-              const otrosDias = diasEntreno.filter(d=>d!==diaLargo);
-              const posiblesTipos = ['series', 'tempo', 'rodaje'];
-              otrosDias.forEach((dia,index)=> tipoPorDia[dia] = posiblesTipos[index%posiblesTipos.length]);
-
-              // Historial para evitar repeticiones recientes
-              const ultimosUsados = { rodaje: [], series: [], tempo: [], largo: [] };
-              const MAX_HISTORIAL = 2;
-
-              const usados = { rodaje: 0, series: 0, tempo: 0, largo: 0 };
-              const fragment = document.createDocumentFragment();
-
-              for(let dia=1; dia<=totalDias; dia++){
-                const semana = Math.floor((dia-1)/7);
-                const diaSem = (dia-1)%7+1;
-                let color = "sesion-descanso", breve = "D", detalle = null;
-
-                if(diasEntreno.includes(diaSem)){
-                  let tipo = tipoPorDia[diaSem];
-                  
-                  const esDescarga = (semana+1)%4===0;
-                  let factorPersonal = 1.0;
-                  if(AppState.lastRitmoBase){
-                    const ritmoRef = 5.0;
-                    factorPersonal = Math.min(1.2, Math.max(0.8, ritmoRef/AppState.lastRitmoBase));
-                  }
-                  if(esDescarga) factorPersonal *= 0.8;
-
-                  let opts = [];
-                  if(tipo==='largo') opts = this.ENTRENAMIENTOS_DB[modalidad]?.[distancia]?.[nivel]?.largo || [];
-                  else if(tipo==='series') opts = this.ENTRENAMIENTOS_DB[modalidad]?.[distancia]?.[nivel]?.series || [];
-                  else if(tipo==='tempo') opts = this.ENTRENAMIENTOS_DB[modalidad]?.[distancia]?.[nivel]?.tempo || [];
-                  else opts = this.ENTRENAMIENTOS_DB[modalidad]?.[distancia]?.[nivel]?.rodaje || [];
-
-                  if(opts.length){
-                    // Filtrar opciones excluyendo las usadas recientemente
-                    let opcionesDisponibles = opts.filter((opt, idx) => !ultimosUsados[tipo].includes(idx));
-                    
-                    if(opcionesDisponibles.length === 0){
-                      opcionesDisponibles = opts;
-                      ultimosUsados[tipo] = [];
-                    }
-                    
-                    const idxAleatorio = Math.floor(Math.random() * opcionesDisponibles.length);
-                    const optOriginal = opcionesDisponibles[idxAleatorio];
-                    const idxOriginal = opts.findIndex(opt => opt.nombre === optOriginal.nombre);
-                    
-                    ultimosUsados[tipo].push(idxOriginal);
-                    if(ultimosUsados[tipo].length > MAX_HISTORIAL){
-                      ultimosUsados[tipo].shift();
-                    }
-                    
-                    detalle = { ...optOriginal, tipo };
-                    detalle.duracion = Math.round(detalle.duracion * factorPersonal);
-                    
-                    if(tipo==='largo'){ color="sesion-largo"; breve="L"; usados.largo++; }
-                    else if(tipo==='series'){ color="sesion-series"; breve="S"; usados.series++; }
-                    else if(tipo==='tempo'){ color="sesion-tempo"; breve="T"; usados.tempo++; }
-                    else{ color="sesion-rodaje"; breve="R"; usados.rodaje++; }
-                  }
-                }
-
-                const div = document.createElement("div");
-                div.className = `calendario-dia ${color}`;
-                if(detalle) div.dataset.detalle = JSON.stringify(detalle);
-                div.innerHTML = `<div style="font-size:10px;">S${semana+1}</div><strong>${breve}</strong>${detalle?`<div style="font-size:8px;">${detalle.duracion}${detalle.unidad}</div>`:''}`;
-                div.dataset.letra = breve;
-                div.dataset.semana = semana+1;
-                div.dataset.colorClass = color;
-
-                div.onclick = function() {
-                  const modal = document.getElementById("detalleSesion"), overlay = document.getElementById("modalOverlay"), wrapper = document.getElementById("modalColorWrapper");
-                  wrapper.className = "modal-content"; wrapper.classList.add(this.dataset.colorClass);
-                  const det = this.dataset.detalle ? JSON.parse(this.dataset.detalle) : null;
-                  AppState.currentSesionDetalle = det;
-                  let tit = "", cont = "";
-                  if(this.dataset.letra === "D"){
-                    tit = "DÍA DE DESCANSO";
-                    cont = "<strong>OBJETIVO:</strong> Recuperación completa<br><br><strong>RECOMENDADO:</strong><br>• No correr<br>• Estiramientos suaves<br>• Buena nutrición";
-                  } else if(det){
-                    tit = det.nombre || `${this.dataset.letra} · Semana ${this.dataset.semana}`;
-                    const ritmo = PlanGenerator.getRitmoPorZona(det.zona);
-                    let extras = '';
-                    if(det.tipo==='rodaje') extras = '<br><br><strong>🎯 OBJETIVO:</strong> Mejorar la eficiencia aeróbica. Debes sentir que puedes mantener una conversación sin esfuerzo.<br><br><strong>💡 CLAVES:</strong> Mantén un ritmo cómodo y constante. No te exijas.<br><br><strong>🧘 RECUPERACIÓN:</strong> Estiramientos suaves e hidratación.';
-                    else if(det.tipo==='series') extras = '<br><br><strong>🎯 OBJETIVO:</strong> Mejorar velocidad y tolerancia al lactato. Cada repetición debe ser rápida pero controlada.<br><br><strong>💡 CLAVES:</strong> La recuperación entre repeticiones es clave.<br><br><strong>🧘 RECUPERACIÓN:</strong> Al terminar, trota suave y estira.';
-                    else if(det.tipo==='tempo') extras = '<br><br><strong>🎯 OBJETIVO:</strong> Aumentar la capacidad de mantener un ritmo rápido. Sensación "cómodamente duro".<br><br><strong>💡 CLAVES:</strong> Concéntrate en la respiración y la zancada.<br><br><strong>🧘 RECUPERACIÓN:</strong> Enfriamiento prolongado y buena hidratación.';
-                    else if(det.tipo==='largo') extras = '<br><br><strong>🎯 OBJETIVO:</strong> Desarrollar resistencia y confianza. Ritmo suave, prioriza el tiempo de pie.<br><br><strong>💡 CLAVES:</strong> Lleva nutrición e hidratación.<br><br><strong>🧘 RECUPERACIÓN:</strong> Descanso activo al día siguiente. Duerme bien.';
-                    cont = `<strong>🏃 ${det.nombre}</strong><br><br><strong>⏱️ DURACIÓN:</strong> ${det.duracion} ${det.unidad}<br><strong>📊 ZONA:</strong> ${det.zona}<br><strong>⚡ RITMO:</strong> ${ritmo}<br><br><strong>📋 ESTRUCTURA:</strong><br>${det.estructura}<br><br><strong>💬 DESCRIPCIÓN:</strong><br>${det.desc}<br><br><strong>😌 SENSACIÓN:</strong> ${det.sensacion}${extras}`;
-                  } else cont = "> SELECCIONA UN DÍA PARA VER DETALLES_";
-                  document.getElementById("tituloSesion").innerText = tit;
-                  document.getElementById("descripcionSesion").innerHTML = cont;
-                  modal.classList.add("visible"); overlay.classList.add("visible");
-                };
-                fragment.appendChild(div);
-              }
-              grid.appendChild(fragment);
-              AppState.planGeneradoActual = { modalidad, distancia, macrociclo, diasPorSemana:diasEntreno.length, nivel, experiencia:exp, objetivo:obj, diaLargo, fechaInicio, diasEntreno };
-              document.getElementById("calendarioEntreno").style.display = "block";
-              setTimeout(()=>document.getElementById("calendarioEntreno").scrollIntoView({ behavior:'smooth', block:'center' }),100);
-              this.guardarPlanActual();
+              alert("> Esta es una versión de prueba sin matriz de entrenamientos. En la versión final se generará el plan.");
               if(btn) Utils.hideLoading(btn);
             } catch(e){ console.error(e); alert("> ERROR GENERANDO PLAN_"); if(btn) Utils.hideLoading(btn); }
           },300);
@@ -2073,8 +2095,7 @@
           AppState.deferredPrompt.prompt();
           AppState.deferredPrompt.userChoice.then(c=>{ if(c.outcome==='accepted') localStorage.setItem('pwa_installed','true'); AppState.deferredPrompt=null; document.getElementById('pwa-banner').style.display='none'; });
         },
-        cerrarBannerPWA() { document.getElementById('pwa-banner').style.display='none'; },
-        registerServiceWorker() { if('serviceWorker' in navigator){ const sw=`const CACHE='ri5-cache-v1'; const urls=['.','https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js']; self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(urls)))); self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))); self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.map(k=>k!==CACHE?caches.delete(k):null)))));`; const b=new Blob([sw],{type:'application/javascript'}); navigator.serviceWorker.register(URL.createObjectURL(b)).catch(console.log); } }
+        cerrarBannerPWA() { document.getElementById('pwa-banner').style.display='none'; }
       };
 
       // ==================== INICIALIZACIÓN ====================
@@ -2089,7 +2110,7 @@
         UI.validarTodo();
         UI.initDiasCheckboxes();
         if(localStorage.getItem('pwa_installed')==='true') document.getElementById('pwa-banner').style.display='none';
-        PWA.init(); PWA.registerServiceWorker();
+        PWA.init();
         setTimeout(()=>{ if(AppState.deferredPrompt && localStorage.getItem('pwa_installed')!=='true') document.getElementById('pwa-banner').style.display='flex'; },3000);
       });
 
