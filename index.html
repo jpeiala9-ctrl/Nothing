@@ -176,14 +176,15 @@
       padding-right: 5px;
     }
 
-    /* ===== HEADER CON BOTÓN CERRAR SESIÓN ===== */
+    /* ===== HEADER CON BOTÓN CERRAR SESIÓN EN LA PARTE BAJA ===== */
     .app-header {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       margin-bottom: 30px;
       flex-wrap: nowrap;
       gap: 10px;
+      position: relative;
     }
     .app-header h1 {
       flex: 1;
@@ -191,6 +192,15 @@
       overflow: hidden;
       text-overflow: ellipsis;
       text-align: center;
+      margin: 0;
+    }
+
+    .logout-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
     }
 
     .logout-button {
@@ -198,11 +208,14 @@
       border: 1px solid var(--accent-red);
       border-radius: 40px;
       color: var(--accent-red);
-      font-size: 12px;
-      padding: 8px 12px;
+      font-size: 14px;
+      padding: 12px 24px;
       cursor: pointer;
       transition: all 0.3s ease;
       white-space: nowrap;
+      width: auto;
+      min-width: 150px;
+      margin: 0 auto;
     }
     .logout-button:hover {
       background: var(--accent-red);
@@ -239,6 +252,25 @@
     }
     .auth-form { display: none; animation: glyphIn 0.5s ease; }
     .auth-form.active { display: block; }
+
+    /* Botón eliminar cuenta */
+    .delete-account-btn {
+      background: transparent;
+      border: 1px solid var(--accent-red);
+      color: var(--accent-red);
+      padding: 12px;
+      border-radius: 40px;
+      width: 100%;
+      margin-top: 20px;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    .delete-account-btn:hover {
+      background: var(--accent-red);
+      color: var(--bg-primary);
+    }
 
     /* ===== PESTAÑAS PRINCIPALES (sin slider) ===== */
     .tabs-container { margin: 30px 0; }
@@ -312,6 +344,10 @@
       margin-bottom: 16px;
       transition: all 0.3s ease;
       outline: none;
+    }
+    input:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
     textarea {
       border-radius: 24px;
@@ -403,7 +439,7 @@
     .curiosity span { font-size: 18px; line-height: 1.5; position: relative; z-index: 1; }
     .curiosity small { display: block; color: var(--text-secondary); margin-top: 12px; font-size: 12px; }
 
-    /* ===== ZONAS DE ENTRENAMIENTO (simplificadas) ===== */
+    /* ===== ZONAS DE ENTRENAMIENTO (con explicación mejorada) ===== */
     .zone-card {
       margin: 16px 0;
       padding: 20px;
@@ -555,6 +591,11 @@
       border-color: var(--accent-blue);
       box-shadow: 0 0 20px rgba(10, 132, 255, 0.3);
     }
+    .action-button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
     .btn-copy { border-color: var(--accent-blue); }
     .btn-save { border-color: var(--accent-green); }
     .btn-delete { border-color: var(--accent-red); }
@@ -583,7 +624,7 @@
     .historial-list { display: flex; flex-direction: column; gap: 12px; }
     .historial-item {
       position: relative;
-      padding: 12px 12px 12px 12px; /* Quitamos espacio a la derecha */
+      padding: 12px 12px 12px 12px;
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
       border-radius: 16px;
@@ -610,8 +651,8 @@
     }
     .historial-item .delete-icon {
       position: absolute;
-      top: 12px; /* Fijo en la parte superior */
-      right: 12px; /* Fijo en la derecha */
+      top: 12px;
+      right: 12px;
       background: transparent;
       border: none;
       color: var(--accent-red);
@@ -620,7 +661,7 @@
       width: auto;
       padding: 5px;
       margin: 0;
-      z-index: 5; /* Siempre por encima */
+      z-index: 5;
       opacity: 0.7;
       transition: opacity 0.2s;
       line-height: 1;
@@ -837,33 +878,17 @@
       font-size: 20px;
     }
 
-    .btn-ver-usuarios {
-      width: 100%;
-      padding: 16px;
-      background: var(--accent-blue);
-      border: none;
-      border-radius: 40px;
-      color: var(--bg-primary);
-      font-weight: bold;
-      cursor: pointer;
-      margin-bottom: 20px;
-      font-size: 16px;
-    }
-    .btn-ver-usuarios:hover {
-      background: var(--accent-purple);
-    }
-
-    /* Modal de usuarios - DISEÑO EXPANDIBLE */
+    /* Modal de usuarios - DISEÑO EXPANDIBLE Y CENTRADO */
     #modalUsuarios {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
       z-index: 20000;
+      align-items: center;
+      justify-content: center;
     }
     #modalUsuarios.active {
       display: flex;
-      align-items: center;
-      justify-content: center;
     }
     #modalUsuarios .modal-overlay {
       position: absolute;
@@ -883,6 +908,7 @@
       max-height: 80vh;
       overflow-y: auto;
       box-shadow: 0 20px 40px rgba(0,0,0,0.9);
+      margin: auto;
     }
     #modalUsuarios .modal-content h2 {
       margin-bottom: 20px;
@@ -1188,6 +1214,17 @@
     .btn-success { background: var(--accent-green) !important; color: var(--bg-primary) !important; }
     .btn-error { background: var(--accent-red) !important; color: var(--text-primary) !important; }
 
+    /* Aviso de límite de cálculos */
+    .calculo-limit-msg {
+      text-align: center;
+      color: var(--accent-yellow);
+      font-size: 12px;
+      margin: 10px 0;
+      padding: 8px;
+      background: rgba(255, 214, 10, 0.1);
+      border-radius: 40px;
+    }
+
     @media (max-width: 480px) {
       .card { padding: 20px; }
       .tabs-header { flex-wrap: wrap; height: auto; }
@@ -1205,8 +1242,8 @@
         min-width: 40px;
       }
       .logout-button {
-        font-size: 10px;
-        padding: 6px 8px;
+        font-size: 12px;
+        padding: 10px 20px;
       }
     }
   </style>
@@ -1263,6 +1300,7 @@
         <input type="password" id="regPassword" placeholder="> NUEVA CONTRASEÑA_">
         <div class="error-message" id="registerError"></div>
         <button class="button-main" onclick="window.registerUser()">[ REGISTRARSE ]</button>
+        <button class="delete-account-btn" onclick="window.eliminarMiCuenta()">🗑️ ELIMINAR MI CUENTA</button>
       </div>
       <div id="dailyTip" class="curiosity" onclick="window.changeDailyTip()">
         <span>> CONSEJO DEL DÍA_</span><small>// pulsa para nuevo consejo</small>
@@ -1275,7 +1313,6 @@
     <div class="card admin-card">
       <div class="app-header">
         <h1>RI5·ADMIN</h1>
-        <button class="logout-button" onclick="window.logoutAdmin()">CERRAR SESIÓN</button>
       </div>
       <p style="color: var(--accent-green); margin:20px 0; text-align:center;" id="adminWelcome"></p>
       <div class="tabs-container">
@@ -1310,20 +1347,23 @@
           </div>
         </div>
       </div>
+      <!-- Botón de cerrar sesión en la parte baja -->
+      <div class="logout-container">
+        <button class="logout-button" onclick="window.logoutAdmin()">CERRAR SESIÓN</button>
+      </div>
     </div>
   </div>
 
-  <!-- MODAL DE USUARIOS PARA ADMIN (con diseño expandible) -->
+  <!-- MODAL DE USUARIOS PARA ADMIN (con diseño expandible y centrado) -->
   <div id="modalUsuarios">
-    <div class="modal-overlay" onclick="if(event.target===this) document.getElementById('modalUsuarios').classList.remove('active')">
-      <div class="modal-content">
-        <button class="modal-close" onclick="document.getElementById('modalUsuarios').classList.remove('active')">✕</button>
-        <h2 id="modalUsuariosTitulo">👥 USUARIOS</h2>
-        <div class="modal-search">
-          <input type="text" id="modalBuscarUsuario" placeholder="🔍 Buscar por nombre...">
-        </div>
-        <div class="modal-user-list" id="modalUserList"></div>
+    <div class="modal-overlay" onclick="if(event.target===this) document.getElementById('modalUsuarios').classList.remove('active')"></div>
+    <div class="modal-content">
+      <button class="modal-close" onclick="document.getElementById('modalUsuarios').classList.remove('active')">✕</button>
+      <h2 id="modalUsuariosTitulo">👥 USUARIOS</h2>
+      <div class="modal-search">
+        <input type="text" id="modalBuscarUsuario" placeholder="🔍 Buscar por nombre...">
       </div>
+      <div class="modal-user-list" id="modalUserList"></div>
     </div>
   </div>
 
@@ -1332,9 +1372,11 @@
     <div class="card">
       <div class="app-header">
         <h1 id="ri5Title" onclick="window.showPremiumBenefits()">RI5</h1>
-        <button class="logout-button" onclick="window.logoutUser()">CERRAR SESIÓN</button>
       </div>
       <p style="color: var(--text-secondary); margin:20px 0; text-align:center;" id="userWelcome"></p>
+      <!-- Contador de cálculos para no premium -->
+      <div id="calculoCounter" class="calculo-limit-msg" style="display:none;"></div>
+      
       <div class="tabs-container">
         <div class="tabs-header">
           <button class="tab-button active" onclick="window.switchTab('entreno')">ENTRENO</button>
@@ -1346,7 +1388,7 @@
         <!-- TAB ENTRENO -->
         <div id="tab-entreno" class="tab-content active">
           <h2>> ZONAS DE ENTRENO_</h2>
-          <input id="name" placeholder="> NOMBRE_"><div class="error-message" id="nameError"></div>
+          <input id="name" placeholder="> NOMBRE_" readonly disabled><div class="error-message" id="nameError"></div>
           <input id="age" type="number" min="14" max="85" placeholder="> EDAD_"><div class="error-message" id="ageError"></div>
           <input id="time" placeholder="> TIEMPO 6km_ (MM:SS)"><div class="error-message" id="timeError"></div>
           <button class="button-main" id="calcBtn" disabled onclick="window.startCalc()">[ CALCULAR ]</button>
@@ -1357,9 +1399,9 @@
         <!-- TAB PLAN -->
         <div id="tab-plan" class="tab-content">
           <h2>> CREADOR DE PLANES_</h2>
-          <button class="action-button btn-plan" onclick="window.toggleCuestionario()">+ NUEVO PLAN</button>
-          <button class="action-button btn-view" onclick="window.mostrarUltimoPlanGuardado()">📂 CARGAR ÚLTIMO PLAN</button>
-          <button class="action-button btn-delete" onclick="window.borrarPlanGuardado()">🗑️ ELIMINAR PLAN</button>
+          <button class="action-button btn-plan" onclick="window.toggleCuestionario()" id="nuevoPlanBtn">+ NUEVO PLAN</button>
+          <button class="action-button btn-view" onclick="window.mostrarUltimoPlanGuardado()" id="cargarPlanBtn">📂 CARGAR ÚLTIMO PLAN</button>
+          <button class="action-button btn-delete" onclick="window.borrarPlanGuardado()" id="borrarPlanBtn">🗑️ ELIMINAR PLAN</button>
           
           <div id="cuestionarioEntreno" style="display:none;">
             <h3>> CONFIGURACIÓN_</h3>
@@ -1418,7 +1460,7 @@
               <input type="date" id="fechaInicio" value="2025-03-01" min="2025-01-01" max="2026-12-31">
             </div>
 
-            <button class="action-button btn-save" onclick="window.generarCalendarioEntreno()" style="margin-top:16px;">[ GENERAR PLAN ]</button>
+            <button class="action-button btn-save" onclick="window.generarCalendarioEntreno()" style="margin-top:16px;" id="generarPlanBtn">[ GENERAR PLAN ]</button>
             <button class="action-button btn-delete" onclick="window.toggleCuestionario()">[ CANCELAR ]</button>
           </div>
 
@@ -1476,6 +1518,11 @@
       </div>
 
       <div class="footer" id="footer"></div>
+      
+      <!-- Botón de cerrar sesión en la parte baja -->
+      <div class="logout-container">
+        <button class="logout-button" onclick="window.logoutUser()">CERRAR SESIÓN</button>
+      </div>
     </div>
   </div>
 
@@ -1542,15 +1589,74 @@
         mensajesNoLeidos: 0,
         mensajesNoLeidosAdmin: 0,
         isPremium: false,
+        calculosMes: 0,
+        mesActual: '',
         usuariosVistos: JSON.parse(localStorage.getItem('usuariosVistos')||'[]'),
         setLastCalc(d) { this.lastName=d.name; this.lastAge=d.age; this.lastFC=d.fcMax; this.lastUL=d.ul; this.lastZones=d.zones; this.lastPred=d.pred; this.lastRitmoBase=d.ritmoBase; this.zonasCalculadas=true; },
         clearLastCalc() { this.zonasCalculadas=false; this.lastName=""; this.lastAge=0; this.lastFC=0; this.lastUL=0; this.lastZones=[]; this.lastPred=[]; this.lastRitmoBase=0; },
-        setCurrentUser(u, premium=false) {
-          this.currentUser = u; this.isPremium = premium;
+        setCurrentUser(u, premium=false, calculosMes=0, mesActual='') {
+          this.currentUser = u; this.isPremium = premium; this.calculosMes = calculosMes; this.mesActual = mesActual;
           u?localStorage.setItem('ri5_current_user',u):localStorage.removeItem('ri5_current_user');
           const t = document.getElementById('ri5Title'); if(t){ if(premium) t.classList.add('premium'); else t.classList.remove('premium'); }
-          // Autocompletar campo nombre
-          if(u) document.getElementById('name').value = u;
+          // Autocompletar campo nombre (fijo, no editable)
+          if(u) {
+            const nameField = document.getElementById('name');
+            if(nameField) nameField.value = u;
+          }
+          this.actualizarInterfazPremium();
+        },
+        actualizarInterfazPremium() {
+          const planBtns = ['nuevoPlanBtn', 'cargarPlanBtn', 'borrarPlanBtn', 'generarPlanBtn'];
+          if(!this.isPremium) {
+            planBtns.forEach(id => {
+              const btn = document.getElementById(id);
+              if(btn) btn.disabled = true;
+            });
+            // Mostrar contador de cálculos
+            const counterDiv = document.getElementById('calculoCounter');
+            if(counterDiv) {
+              counterDiv.style.display = 'block';
+              counterDiv.innerHTML = `📊 Cálculos este mes: ${this.calculosMes}/2`;
+            }
+          } else {
+            planBtns.forEach(id => {
+              const btn = document.getElementById(id);
+              if(btn) btn.disabled = false;
+            });
+            const counterDiv = document.getElementById('calculoCounter');
+            if(counterDiv) counterDiv.style.display = 'none';
+          }
+        },
+        async incrementarCalculo() {
+          if(!this.currentUser) return false;
+          if(this.isPremium) return true; // Premium no tiene límite
+          
+          const ahora = new Date();
+          const mesActualKey = `${ahora.getFullYear()}-${ahora.getMonth()+1}`;
+          
+          // Si cambió de mes, resetear contador
+          if(this.mesActual !== mesActualKey) {
+            this.calculosMes = 0;
+            this.mesActual = mesActualKey;
+          }
+          
+          if(this.calculosMes >= 2) {
+            alert('❌ Has alcanzado el límite de 2 cálculos mensuales. Hazte premium para cálculos ilimitados.');
+            return false;
+          }
+          
+          this.calculosMes++;
+          
+          // Guardar en Firebase
+          const users = await Storage.getUsers();
+          if(users[this.currentUser]) {
+            users[this.currentUser].calculosMes = this.calculosMes;
+            users[this.currentUser].mesActual = this.mesActual;
+            await Storage.saveUsers(users);
+          }
+          
+          this.actualizarInterfazPremium();
+          return true;
         }
       };
 
@@ -1564,11 +1670,20 @@
           if(p.length<4) { err.innerText="> MÍNIMO 4 CARACTERES_"; err.classList.add('visible'); return; }
           const users = await Storage.getUsers();
           if(users[u]) { err.innerText="> EL USUARIO YA EXISTE_"; err.classList.add('visible'); return; }
-          const expiry = new Date(); expiry.setMonth(expiry.getMonth()+3);
-          users[u] = { password: Utils.hashPassword(p), created: new Date().toISOString(), expires: expiry.toISOString(), premium: true };
+          const expiry = new Date(); expiry.setMonth(expiry.getMonth()+1); // 1 mes de premium
+          const ahora = new Date();
+          const mesActual = `${ahora.getFullYear()}-${ahora.getMonth()+1}`;
+          users[u] = { 
+            password: Utils.hashPassword(p), 
+            created: new Date().toISOString(), 
+            expires: expiry.toISOString(), 
+            premium: true,
+            calculosMes: 0,
+            mesActual: mesActual
+          };
           await Storage.saveUsers(users);
-          await Storage.enviarMensajeAdminAUsuario(u, "¡Bienvenido a RI5! Disfruta de 3 meses premium.");
-          AppState.setCurrentUser(u, true);
+          await Storage.enviarMensajeAdminAUsuario(u, "¡Bienvenido a RI5! Disfruta de 1 mes premium.");
+          AppState.setCurrentUser(u, true, 0, mesActual);
           document.getElementById("loginPage").style.opacity="0";
           setTimeout(()=>{
             document.getElementById("loginPage").style.display="none";
@@ -1586,7 +1701,23 @@
           if(!user || user.password !== Utils.hashPassword(p)) { err.innerText="> INCORRECTO_"; err.classList.add('visible'); return; }
           const now = new Date(), expiry = new Date(user.expires);
           if(now>expiry){ if(user.premium) alert("> Tu período premium ha expirado."); else { err.innerText="> ACCESO EXPIRADO_"; err.classList.add('visible'); return; } }
-          AppState.setCurrentUser(u, user.premium||false);
+          
+          // Comprobar si cambió de mes para resetear contador
+          const ahora = new Date();
+          const mesActual = `${ahora.getFullYear()}-${ahora.getMonth()+1}`;
+          let calculosMes = user.calculosMes || 0;
+          let mesActualUsuario = user.mesActual || '';
+          
+          if(mesActualUsuario !== mesActual) {
+            calculosMes = 0;
+            mesActualUsuario = mesActual;
+            // Actualizar en Firebase
+            users[u].calculosMes = 0;
+            users[u].mesActual = mesActual;
+            await Storage.saveUsers(users);
+          }
+          
+          AppState.setCurrentUser(u, user.premium||false, calculosMes, mesActualUsuario);
           const msgs = await Storage.getMensajesUsuario(u);
           AppState.mensajesNoLeidos = msgs.filter(m=>!m.leido).length;
           UI.actualizarBadgeMensajes();
@@ -1600,6 +1731,40 @@
             Storage.getUltimoCalculo(u).then(c=>{ if(c){ AppState.setLastCalc(c); UI.mostrarResultadosGuardados(c); } });
           },300);
         },
+        async eliminarMiCuenta() {
+          const u = document.getElementById('regUsername').value.trim();
+          const p = document.getElementById('regPassword').value.trim();
+          if(!u || !p) {
+            alert('> PARA ELIMINAR LA CUENTA, INTRODUCE USUARIO Y CONTRASEÑA EN EL FORMULARIO DE REGISTRO_');
+            return;
+          }
+          if(u === 'admin') {
+            alert('> NO SE PUEDE ELIMINAR LA CUENTA ADMIN_');
+            return;
+          }
+          if(!confirm(`> ¿ESTÁS SEGURO DE ELIMINAR LA CUENTA "${u}"? ESTA ACCIÓN ES IRREVERSIBLE_`)) return;
+          
+          const users = await Storage.getUsers();
+          const user = users[u];
+          if(!user || user.password !== Utils.hashPassword(p)) {
+            alert('> CONTRASEÑA INCORRECTA_');
+            return;
+          }
+          
+          delete users[u];
+          await Storage.saveUsers(users);
+          
+          // Si el usuario eliminado era el que tenía sesión activa, cerrar sesión
+          if(AppState.currentUser === u) {
+            AppState.setCurrentUser(null);
+            document.getElementById("mainContent").style.display="none";
+            document.getElementById("loginPage").style.display="flex";
+          }
+          
+          alert(`✅ CUENTA "${u}" ELIMINADA`);
+          document.getElementById('regUsername').value = '';
+          document.getElementById('regPassword').value = '';
+        },
         mostrarAdminPanel() { document.getElementById("loginPage").style.display="none"; document.getElementById("mainContent").style.display="none"; document.getElementById("adminPage").style.display="flex"; Admin.actualizarAdminPanel(); },
         logoutUser() { if(!confirm("> ¿CERRAR SESIÓN?_")) return; AppState.setCurrentUser(null); document.getElementById("mainContent").style.display="none"; document.getElementById("loginPage").style.display="flex"; document.getElementById("loginUsername").value=''; document.getElementById("loginPassword").value=''; document.getElementById("results").innerHTML=''; document.getElementById("calendarioEntreno").style.display="none"; AppState.clearLastCalc(); },
         logoutAdmin() { document.getElementById("adminPage").style.display="none"; document.getElementById("loginPage").style.display="flex"; },
@@ -1609,13 +1774,34 @@
           if(!user){ localStorage.removeItem('ri5_current_user'); return false; }
           const now = new Date(), expiry = new Date(user.expires);
           if(now>expiry && !user.premium){ localStorage.removeItem('ri5_current_user'); return false; }
+          
+          // Comprobar mes para contador
+          const ahora = new Date();
+          const mesActual = `${ahora.getFullYear()}-${ahora.getMonth()+1}`;
+          let calculosMes = user.calculosMes || 0;
+          let mesActualUsuario = user.mesActual || '';
+          
+          if(mesActualUsuario !== mesActual) {
+            calculosMes = 0;
+            mesActualUsuario = mesActual;
+            // Actualizar en Firebase
+            users[s].calculosMes = 0;
+            users[s].mesActual = mesActual;
+            await Storage.saveUsers(users);
+          }
+          
           AppState.currentUser = s; AppState.isPremium = user.premium||false;
+          AppState.calculosMes = calculosMes;
+          AppState.mesActual = mesActualUsuario;
+          
           document.getElementById("loginPage").style.display="none";
           document.getElementById("mainContent").style.display="flex";
           document.getElementById("userWelcome").innerText = `> BIENVENIDO, ${s.toUpperCase()}_ · ${user.premium?'PREMIUM':'ACCESO'} HASTA ${expiry.toLocaleDateString()}`;
           if(now>expiry && user.premium) setTimeout(()=>alert("> Tu período premium ha expirado."),500);
-          document.getElementById('name').value = s; // autocompletar
+          const nameField = document.getElementById('name');
+          if(nameField) nameField.value = s; // autocompletar (fijo)
           UI.changeDailyTip(); UI.startConsejoAutoChange();
+          AppState.actualizarInterfazPremium();
           const calc = await Storage.getUltimoCalculo(s); if(calc){ AppState.setLastCalc(calc); UI.mostrarResultadosGuardados(calc); }
           return true;
         },
@@ -1673,6 +1859,7 @@
             const expiry = new Date(d.expires).toLocaleDateString();
             const premium = d.premium ? '✅ PREMIUM' : '❌ NO PREMIUM';
             const estado = new Date(d.expires) > ahora ? '🟢 ACTIVO' : '🔴 EXPIRADO';
+            const calculos = d.calculosMes || 0;
             return `
               <div class="usuario-item" onclick="window.toggleUsuario(this)">
                 <div class="usuario-header">
@@ -1681,10 +1868,11 @@
                 </div>
                 <div class="usuario-detalle">
                   <div class="user-details">
-                    <span>📅 ${creado}</span>
-                    <span>⏳ ${expiry}</span>
+                    <span>📅 Creado: ${creado}</span>
+                    <span>⏳ Expira: ${expiry}</span>
                     <span>${premium}</span>
                     <span>${estado}</span>
+                    <span>📊 Cálculos mes: ${calculos}/2</span>
                   </div>
                   <div class="modal-user-actions">
                     <button onclick="event.stopPropagation(); window.extenderUsuario('${u}',1)">+1 MES</button>
@@ -1720,7 +1908,7 @@
           if(AppState.currentUser===u) AppState.setCurrentUser(null);
           this.actualizarAdminPanel(); alert(`✅ ${u} eliminado`); this.abrirModalUsuarios();
         },
-        exportarUsuariosCSV() { Storage.getUsers().then(u=>{ let csv="Usuario,Creado,Expira,Premium,Estado\n"; Object.entries(u).forEach(([u,d])=>csv+=`${u},${new Date(d.created).toLocaleDateString()},${new Date(d.expires).toLocaleDateString()},${d.premium?'SI':'NO'},${new Date()<=new Date(d.expires)?'ACTIVO':'EXPIRADO'}\n`); const b=new Blob([csv],{type:'text/csv'}), a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=`usuarios_${new Date().toISOString().split('T')[0]}.csv`; a.click(); URL.revokeObjectURL(a.href); }); },
+        exportarUsuariosCSV() { Storage.getUsers().then(u=>{ let csv="Usuario,Creado,Expira,Premium,Estado,Cálculos Mes\n"; Object.entries(u).forEach(([u,d])=>csv+=`${u},${new Date(d.created).toLocaleDateString()},${new Date(d.expires).toLocaleDateString()},${d.premium?'SI':'NO'},${new Date()<=new Date(d.expires)?'ACTIVO':'EXPIRADO'},${d.calculosMes||0}\n`); const b=new Blob([csv],{type:'text/csv'}), a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=`usuarios_${new Date().toISOString().split('T')[0]}.csv`; a.click(); URL.revokeObjectURL(a.href); }); },
         async renovarExpirados() {
           if(!confirm("> ¿RENOVAR TODOS LOS EXPIRADOS POR 1 MES?")) return;
           const users = await Storage.getUsers(), ahora=new Date();
@@ -1797,22 +1985,42 @@
         else { document.querySelectorAll('#adminPage .tab-button')[1].classList.add('active'); document.getElementById('admin-tab-soporte').classList.add('active'); Admin.cargarMensajesAdmin(); Admin.cargarSelectorUsuarios(); }
       };
       window.cambiarAdminSoporteTab = (tab)=>Admin.cambiarSoporteTab(tab);
+      window.eliminarMiCuenta = Auth.eliminarMiCuenta.bind(Auth);
 
       // ==================== MÓDULO ENTRENAMIENTO ====================
       const Training = {
-        startCalc() { UI.validarTodo(); if(document.getElementById("calcBtn").disabled) return; const b=document.getElementById("calcBtn"); Utils.showLoading(b); setTimeout(()=>{ this.calculate(); Utils.hideLoading(b); Utils.showTemporaryMessage(b,"✓ CALCULADO",true); document.getElementById('results').scrollIntoView({behavior:'smooth'}); },300); },
+        async startCalc() { 
+          UI.validarTodo(); 
+          if(document.getElementById("calcBtn").disabled) return; 
+          
+          // Verificar límite de cálculos para no premium
+          if(!AppState.isPremium) {
+            const puedeCalcular = await AppState.incrementarCalculo();
+            if(!puedeCalcular) return;
+          }
+          
+          const b=document.getElementById("calcBtn"); 
+          Utils.showLoading(b); 
+          setTimeout(()=>{ 
+            this.calculate(); 
+            Utils.hideLoading(b); 
+            Utils.showTemporaryMessage(b,"✓ CALCULADO",true); 
+            document.getElementById('results').scrollIntoView({behavior:'smooth'});
+          },300); 
+        },
         calculate() {
-          const n=document.getElementById("name").value.trim(), a=parseInt(document.getElementById("age").value), t=Utils.parseTime(document.getElementById("time").value);
+          const n=AppState.currentUser; // Usar el nombre de usuario actual
+          const a=parseInt(document.getElementById("age").value), t=Utils.parseTime(document.getElementById("time").value);
           if(!n||!a||isNaN(t)) return alert("> COMPLETA TODOS LOS CAMPOS CORRECTAMENTE_");
           const r=t/6, fc=220-a, ul=Math.round(fc*0.92*1.03);
           const pred=[{dist:2,color:"var(--accent-blue)",ritmo:r*0.98},{dist:6,color:"var(--accent-green)",ritmo:r},{dist:10,color:"var(--accent-yellow)",ritmo:r*1.05},{dist:21,color:"var(--accent-red)",ritmo:r*1.12},{dist:42,color:"var(--accent-purple)",ritmo:r*1.20}];
           const zones=[
-            ["Z1","RECUPERACIÓN",0.75,0.80,1.35,"z1","Ritmo: "+Utils.formatR(r*1.35)+" min/km · Hablar fácil"],
-            ["Z2","BASE",0.80,0.90,1.25,"z2","Ritmo: "+Utils.formatR(r*1.25)+" min/km · Charlar cómodo"],
-            ["Z3","TEMPO",0.90,0.95,1.15,"z3","Ritmo: "+Utils.formatR(r*1.15)+" min/km · Hablar forzado"],
-            ["Z4","UMBRAL",0.95,1.02,1.05,"z4","Ritmo: "+Utils.formatR(r*1.05)+" min/km · Frases cortas"],
-            ["Z5","VO₂MÁX",1.02,1.06,0.95,"z5","Ritmo: "+Utils.formatR(r*0.95)+" min/km · Muy duro"],
-            ["Z6","VELOCIDAD",1.06,1.12,0.85,"z6","Ritmo: "+Utils.formatR(r*0.85)+" min/km · Explosivo"]
+            ["Z1","RECUPERACIÓN",0.75,0.80,1.35,"z1","Ritmo: "+Utils.formatR(r*1.35)+" min/km · Objetivo: Recuperación activa, mejorar circulación. Beneficio: Elimina toxinas, prepara para sesiones duras."],
+            ["Z2","BASE",0.80,0.90,1.25,"z2","Ritmo: "+Utils.formatR(r*1.25)+" min/km · Objetivo: Mejorar eficiencia metabólica. Beneficio: Quema de grasas, desarrollo de resistencia aeróbica."],
+            ["Z3","TEMPO",0.90,0.95,1.15,"z3","Ritmo: "+Utils.formatR(r*1.15)+" min/km · Objetivo: Aumentar umbral de lactato. Beneficio: Mejora la capacidad de mantener ritmos rápidos."],
+            ["Z4","UMBRAL",0.95,1.02,1.05,"z4","Ritmo: "+Utils.formatR(r*1.05)+" min/km · Objetivo: Limpieza de lactato. Beneficio: Retrasa la fatiga en ritmos de carrera."],
+            ["Z5","VO₂MÁX",1.02,1.06,0.95,"z5","Ritmo: "+Utils.formatR(r*0.95)+" min/km · Objetivo: Potencia aeróbica máxima. Beneficio: Mejora el consumo máximo de oxígeno."],
+            ["Z6","VELOCIDAD",1.06,1.12,0.85,"z6","Ritmo: "+Utils.formatR(r*0.85)+" min/km · Objetivo: Potencia neuromuscular. Beneficio: Mejora la velocidad y la economía de carrera."]
           ];
           const calc = {name:n, age:a, fcMax:fc, ul:ul, zones, pred, ritmoBase:r};
           AppState.setLastCalc(calc); UI.mostrarResultados(calc); document.getElementById("footer").innerText=`${n} · ${new Date().toLocaleDateString('es-ES')} · RI5`;
@@ -1850,17 +2058,27 @@
         marcarCampoTocado(c) { AppState.camposTocados[c]=true; this.validarCampo(c); this.validarTodo(); },
         validarCampo(c) {
           const el=document.getElementById(c), err=document.getElementById(c+'Error');
+          if(c==='name') return true; // El nombre nunca falla porque es fijo
           if(!AppState.camposTocados[c]){ err.classList.remove('visible'); el.classList.remove('error'); return true; }
           let ok=true;
-          if(c==='name') ok=el.value.trim().length>=2;
-          else if(c==='age'){ const a=parseInt(el.value); ok=!isNaN(a)&&a>=14&&a<=85; }
+          if(c==='age'){ const a=parseInt(el.value); ok=!isNaN(a)&&a>=14&&a<=85; }
           else if(c==='time'){ const t=Utils.parseTime(el.value); ok=!isNaN(t)&&t>=12&&t<=90; }
-          if(!ok){ err.innerText=c==='name'?'> MÍNIMO 2 CARACTERES_':c==='age'?'> EDAD 14-85_':'> FORMATO MM:SS (12-90 MIN)_'; err.classList.add('visible'); el.classList.add('error'); }
+          if(!ok){ err.innerText=c==='age'?'> EDAD 14-85_':'> FORMATO MM:SS (12-90 MIN)_'; err.classList.add('visible'); el.classList.add('error'); }
           else{ err.classList.remove('visible'); el.classList.remove('error'); }
           return ok;
         },
-        validarTodo() { const n=this.validarCampo('name'), a=this.validarCampo('age'), t=this.validarCampo('time'); document.getElementById("calcBtn").disabled = !(n&&a&&t); },
-        mostrarResultados(d) { let html=`<h2>> MÉTRICAS_</h2><div style="text-align:center; margin:20px 0;">${d.name} · ${d.age} años<br>FC MÁX: ${d.fcMax} lpm · UMBRAL: ${d.ul} lpm<br>RITMO 6km: ${Utils.formatR(d.ritmoBase)} min/km</div><h2>> PREDICCIONES_</h2>`; d.pred.forEach(p=>html+=`<div class="pred-bar" style="border-color:${p.color}; color:${p.color};">${p.dist} km → ${Utils.formatR(p.ritmo)} min/km</div>`); html+=`<h2>> ZONAS_</h2>`; d.zones.forEach(z=>{ const min=Math.round(d.ul*z[2]), max=Math.round(d.ul*z[3]); html+=`<div class="zone-card ${z[5]}" onclick="this.classList.toggle('active')"><strong>${z[0]} – ${z[1]}</strong><br>FC: ${min}-${max} lpm<div class="long">${z[6]}</div></div>`; }); html+=`<button class="action-button btn-copy" onclick="window.copyResults()">📋 COPIAR</button>`; document.getElementById("results").innerHTML=html; },
+        validarTodo() { const a=this.validarCampo('age'), t=this.validarCampo('time'); document.getElementById("calcBtn").disabled = !(a&&t); },
+        mostrarResultados(d) { 
+          let html=`<h2>> MÉTRICAS_</h2><div style="text-align:center; margin:20px 0;">${d.name} · ${d.age} años<br>FC MÁX: ${d.fcMax} lpm · UMBRAL: ${d.ul} lpm<br>RITMO 6km: ${Utils.formatR(d.ritmoBase)} min/km</div><h2>> PREDICCIONES_</h2>`; 
+          d.pred.forEach(p=>html+=`<div class="pred-bar" style="border-color:${p.color}; color:${p.color};">${p.dist} km → ${Utils.formatR(p.ritmo)} min/km</div>`); 
+          html+=`<h2>> ZONAS_</h2>`; 
+          d.zones.forEach(z=>{ 
+            const min=Math.round(d.ul*z[2]), max=Math.round(d.ul*z[3]); 
+            html+=`<div class="zone-card ${z[5]}" onclick="this.classList.toggle('active')"><strong>${z[0]} – ${z[1]}</strong><br>FC: ${min}-${max} lpm<div class="long">${z[6]}</div></div>`; 
+          }); 
+          html+=`<button class="action-button btn-copy" onclick="window.copyResults()">📋 COPIAR</button>`; 
+          document.getElementById("results").innerHTML=html; 
+        },
         mostrarResultadosGuardados(d) { this.mostrarResultados(d); },
         switchTab(tab) {
           document.querySelectorAll('.tab-button').forEach(b=>b.classList.remove('active'));
@@ -3069,38 +3287,38 @@
                   { nombre: "Rodaje progresivo", duracion: 65, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 30' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
                 ],
                 series: [
-                  { nombre: "Cuestas medias", duracion: 60, unidad: "min", desc: "10x150m cuesta media.", estructura: "15' calentamiento + 10 cuestas + 10' enfriamiento", sensacion: "Potencia", tipo: "series", zona: "Z4" },
-                  { nombre: "Cuestas largas", duracion: 65, unidad: "min", desc: "9x200m cuesta media.", estructura: "15' calentamiento + 9 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
-                  { nombre: "Cuestas variables", duracion: 65, unidad: "min", desc: "8x(120m + 150m + 200m)", estructura: "15' calentamiento + 8 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
-                  { nombre: "Cuestas repetidas", duracion: 70, unidad: "min", desc: "16x100m cuesta media.", estructura: "15' calentamiento + 16 cuestas + 5' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
-                  { nombre: "Cuestas largas medias", duracion: 75, unidad: "min", desc: "8x220m cuesta media.", estructura: "15' calentamiento + 8 cuestas + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z5" },
-                  { nombre: "Cuestas variadas intensas", duracion: 70, unidad: "min", desc: "9x(130m + 150m) cuesta media.", estructura: "15' calentamiento + 9 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4" },
-                  { nombre: "Cuestas explosivas", duracion: 65, unidad: "min", desc: "18x100m cuesta media.", estructura: "15' calentamiento + 18 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" }
+                  { nombre: "Series 1600m", duracion: 60, unidad: "min", desc: "5x1600m con recuperación.", estructura: "15' calentamiento + 5x1600m + 10' enfriamiento", sensacion: "Intensidad", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 2000m", duracion: 65, unidad: "min", desc: "4x2000m con recuperación 3'30.", estructura: "15' calentamiento + 4x2000m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z4" },
+                  { nombre: "Pirámide maratón", duracion: 70, unidad: "min", desc: "800-1600-2400-3200-2400-1600-800m.", estructura: "15' calentamiento + pirámide + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z4-Z5" },
+                  { nombre: "Series 3000m", duracion: 75, unidad: "min", desc: "3x3000m con recuperación 4'.", estructura: "15' calentamiento + 3x3000m + 10' enfriamiento", sensacion: "Fuerte", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 1000m", duracion: 65, unidad: "min", desc: "8x1000m con recuperación 2'.", estructura: "15' calentamiento + 8x1000m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" },
+                  { nombre: "Fartlek avanzado", duracion: 60, unidad: "min", desc: "Juega con ritmos.", estructura: "10' calentamiento + 35' fartlek + 15' enfriamiento", sensacion: "Divertido", tipo: "series", zona: "Z4" },
+                  { nombre: "Series 800m", duracion: 70, unidad: "min", desc: "12x800m con recuperación 1'30.", estructura: "15' calentamiento + 12x800m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z4" }
                 ],
                 tempo: [
-                  { nombre: "Tempo desnivel", duracion: 60, unidad: "min", desc: "Desnivel continuo.", estructura: "60' con desnivel", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
-                  { nombre: "Tempo montaña", duracion: 65, unidad: "min", desc: "Ritmo fuerte.", estructura: "65' desnivel", sensacion: "Muy exigente", tipo: "tempo", zona: "Z3" },
-                  { nombre: "Tempo variable", duracion: 65, unidad: "min", desc: "Alterna ritmos.", estructura: "65' cambios", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
-                  { nombre: "Tempo sendero largo", duracion: 70, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 50' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
-                  { nombre: "Tempo progresivo", duracion: 70, unidad: "min", desc: "Aumenta ritmo cada 6'.", estructura: "10' calentamiento + 6' Z3 + 6' Z4 + 6' Z3 + 6' Z4 + 6' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
-                  { nombre: "Tempo con cambios", duracion: 65, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 45' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
-                  { nombre: "Tempo umbral sendero", duracion: 75, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 55' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                  { nombre: "Tempo umbral maratón", duracion: 55, unidad: "min", desc: "35' a ritmo umbral.", estructura: "10' calentamiento + 35' umbral + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo maratón", duracion: 60, unidad: "min", desc: "40' a ritmo umbral.", estructura: "10' calentamiento + 40' Z4 + 10' enfriamiento", sensacion: "Sostenido", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo variable", duracion: 60, unidad: "min", desc: "Alterna 8' Z3 / 3' Z4.", estructura: "10' calentamiento + 4x(8' Z3 + 3' Z4) + 5' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo largo", duracion: 65, unidad: "min", desc: "45' a ritmo tempo.", estructura: "10' calentamiento + 45' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 65, unidad: "min", desc: "Aumenta cada 6'.", estructura: "10' calentamiento + 6' Z3 + 6' Z4 + 6' Z3 + 6' Z4 + 6' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 60, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 40' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo umbral largo", duracion: 70, unidad: "min", desc: "50' a ritmo umbral.", estructura: "10' calentamiento + 50' Z4 + 10' enfriamiento", sensacion: "Muy exigente", tipo: "tempo", zona: "Z4" }
                 ],
                 largo: [
-                  { nombre: "Largo montaña", duracion: 135, unidad: "min", desc: "Mixto exigente.", estructura: "135' trail técnico", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
-                  { nombre: "Largo técnico", duracion: 140, unidad: "min", desc: "Alta técnica.", estructura: "140' trail técnico", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
-                  { nombre: "Largo con desnivel", duracion: 145, unidad: "min", desc: "Acumulación.", estructura: "145' con desnivel", sensacion: "Preparación", tipo: "largo", zona: "Z2" },
-                  { nombre: "Largo progresivo", duracion: 140, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "95' Z2 + 45' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo calidad maratón", duracion: 120, unidad: "min", desc: "Progresión últimos 40'.", estructura: "80' Z2 + 40' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo con cambios", duracion: 130, unidad: "min", desc: "Incluye series.", estructura: "90' Z2 + 8x3' Z4 + 16' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo progresivo", duracion: 140, unidad: "min", desc: "Aumenta ritmo cada 40'.", estructura: "60' Z2 + 40' Z3 + 40' Z2", sensacion: "Controlado", tipo: "largo", zona: "Z2-Z3" },
                   { nombre: "Largo específico", duracion: 150, unidad: "min", desc: "Incluye cambios.", estructura: "100' Z2 + 8x3' Z4 + 20' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
-                  { nombre: "Largo calidad", duracion: 155, unidad: "min", desc: "Progresión constante.", estructura: "105' Z2 + 50' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
-                  { nombre: "Largo resistencia", duracion: 160, unidad: "min", desc: "Fondo largo en sendero.", estructura: "160' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                  { nombre: "Largo fondo", duracion: 160, unidad: "min", desc: "Fondo largo continuo.", estructura: "160' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo resistencia", duracion: 170, unidad: "min", desc: "Fondo largo con cambios.", estructura: "120' Z2 + 50' Z3", sensacion: "Resistencia", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo con series", duracion: 180, unidad: "min", desc: "Incluye series largas.", estructura: "120' Z2 + 8x1000m Z4 + 20' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" }
                 ]
               },
               avanzado: {
                 rodaje: [
-                  { nombre: "Rodaje técnico", duracion: 60, unidad: "min", desc: "Máxima técnica.", estructura: "60' técnico", sensacion: "Maestría", tipo: "rodaje", zona: "Z2" },
-                  { nombre: "Sendero avanzado", duracion: 65, unidad: "min", desc: "Técnica elite.", estructura: "65' técnico", sensacion: "Dominio", tipo: "rodaje", zona: "Z2" },
-                  { nombre: "Rodaje desnivel", duracion: 70, unidad: "min", desc: "Acumulación.", estructura: "70' con desnivel", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje alto maratón", duracion: 60, unidad: "min", desc: "Ritmo exigente Z2.", estructura: "60' Z2 alto", sensacion: "Exigente", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje activo", duracion: 65, unidad: "min", desc: "Ritmo vivo.", estructura: "65' Z2 vivo", sensacion: "Sostenible", tipo: "rodaje", zona: "Z2" },
+                  { nombre: "Rodaje técnico", duracion: 70, unidad: "min", desc: "Enfoque técnico.", estructura: "70' Z2 cadencia alta", sensacion: "Eficiente", tipo: "rodaje", zona: "Z2" },
                   { nombre: "Rodaje de mantenimiento", duracion: 55, unidad: "min", desc: "Sesión para mantener forma.", estructura: "55' Z2", sensacion: "Cómodo", tipo: "rodaje", zona: "Z2" },
                   { nombre: "Rodaje con estímulos", duracion: 65, unidad: "min", desc: "Introduce 5 cambios.", estructura: "10' calentamiento + 5x(2' rápido + 3' suave) + 10' enfriamiento", sensacion: "Estimulante", tipo: "rodaje", zona: "Z2" },
                   { nombre: "Rodaje de recuperación", duracion: 50, unidad: "min", desc: "Después de sesión intensa.", estructura: "50' Z1-Z2", sensacion: "Muy suave", tipo: "rodaje", zona: "Z1" },
@@ -3108,44 +3326,82 @@
                   { nombre: "Rodaje progresivo", duracion: 70, unidad: "min", desc: "Aumenta ritmo cada 15'.", estructura: "15' Z2 + 20' Z2 medio + 35' Z2 alto", sensacion: "Progresivo", tipo: "rodaje", zona: "Z2" }
                 ],
                 series: [
-                  { nombre: "Cuestas fuertes", duracion: 70, unidad: "min", desc: "15x200m cuesta fuerte.", estructura: "15' calentamiento + 15 cuestas + 10' enfriamiento", sensacion: "Máxima potencia", tipo: "series", zona: "Z5" },
-                  { nombre: "Cuestas muy fuertes", duracion: 75, unidad: "min", desc: "12x250m cuesta fuerte.", estructura: "15' calentamiento + 12 cuestas + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z5" },
-                  { nombre: "Cuestas largas fuertes", duracion: 80, unidad: "min", desc: "10x300m cuesta fuerte.", estructura: "15' calentamiento + 10 cuestas + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" },
-                  { nombre: "Cuestas explosivas", duracion: 75, unidad: "min", desc: "20x150m cuesta fuerte.", estructura: "15' calentamiento + 20 cuestas + 5' enfriamiento", sensacion: "Explosivas", tipo: "series", zona: "Z5" },
-                  { nombre: "Cuestas variadas fuertes", duracion: 80, unidad: "min", desc: "12x(180m + 200m) cuesta fuerte.", estructura: "15' calentamiento + 12 series + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z5" },
-                  { nombre: "Cuestas en escalera", duracion: 85, unidad: "min", desc: "8x(150m + 200m + 250m + 300m)", estructura: "15' calentamiento + 8 series + 10' enfriamiento", sensacion: "Muy exigente", tipo: "series", zona: "Z5" },
-                  { nombre: "Cuestas máximas", duracion: 90, unidad: "min", desc: "7x400m cuesta fuerte.", estructura: "15' calentamiento + 7 cuestas + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" }
+                  { nombre: "Series 3000m", duracion: 70, unidad: "min", desc: "4x3000m con recuperación.", estructura: "15' calentamiento + 4x3000m + 10' enfriamiento", sensacion: "Muy intenso", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 5000m", duracion: 75, unidad: "min", desc: "3x5000m con recuperación 5'.", estructura: "15' calentamiento + 3x5000m + 10' enfriamiento", sensacion: "Exigente", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 10000m", duracion: 80, unidad: "min", desc: "2x10000m con recuperación 6'.", estructura: "15' calentamiento + 2x10000m + 10' enfriamiento", sensacion: "Máximo", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 2000m", duracion: 70, unidad: "min", desc: "6x2000m con recuperación 2'30.", estructura: "15' calentamiento + 6x2000m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z5" },
+                  { nombre: "Pirámide larga", duracion: 80, unidad: "min", desc: "2000-3000-5000-3000-2000m.", estructura: "15' calentamiento + pirámide + 10' enfriamiento", sensacion: "Completo", tipo: "series", zona: "Z5" },
+                  { nombre: "Fartlek avanzado", duracion: 70, unidad: "min", desc: "Juega con ritmos intensos.", estructura: "10' calentamiento + 45' fartlek + 15' enfriamiento", sensacion: "Divertido", tipo: "series", zona: "Z5" },
+                  { nombre: "Series 1600m", duracion: 75, unidad: "min", desc: "10x1600m con recuperación 2'.", estructura: "15' calentamiento + 10x1600m + 10' enfriamiento", sensacion: "Intenso", tipo: "series", zona: "Z5" }
                 ],
                 tempo: [
-                  { nombre: "Tempo montaña", duracion: 70, unidad: "min", desc: "Ritmo fuerte.", estructura: "70' desnivel intenso", sensacion: "Exigente", tipo: "tempo", zona: "Z3" },
-                  { nombre: "Tempo fuerte", duracion: 75, unidad: "min", desc: "Máxima intensidad.", estructura: "75' desnivel intenso", sensacion: "Muy exigente", tipo: "tempo", zona: "Z3" },
-                  { nombre: "Tempo variable", duracion: 75, unidad: "min", desc: "Cambios constantes.", estructura: "75' cambios", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
-                  { nombre: "Tempo sendero largo", duracion: 80, unidad: "min", desc: "Ritmo sostenido en sendero.", estructura: "10' calentamiento + 60' Z3 + 10' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
-                  { nombre: "Tempo progresivo", duracion: 80, unidad: "min", desc: "Aumenta ritmo cada 4'.", estructura: "10' calentamiento + 4' Z3 + 4' Z4 + 4' Z3 + 4' Z4 + 4' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
-                  { nombre: "Tempo con cambios", duracion: 75, unidad: "min", desc: "Introduce 6 cambios.", estructura: "10' calentamiento + 55' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3" },
-                  { nombre: "Tempo umbral sendero", duracion: 85, unidad: "min", desc: "Ritmo cerca del umbral.", estructura: "10' calentamiento + 65' Z3-Z4 + 10' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z3-Z4" }
+                  { nombre: "Tempo maratón avanzado", duracion: 60, unidad: "min", desc: "45' a ritmo maratón.", estructura: "10' calentamiento + 45' Z4 + 5' enfriamiento", sensacion: "Ritmo carrera", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo umbral", duracion: 65, unidad: "min", desc: "50' a ritmo umbral.", estructura: "10' calentamiento + 50' Z4 + 5' enfriamiento", sensacion: "Exigente", tipo: "tempo", zona: "Z4" },
+                  { nombre: "Tempo variable", duracion: 65, unidad: "min", desc: "Alterna 7' Z3 / 3' Z4.", estructura: "10' calentamiento + 5x(7' Z3 + 3' Z4) + 5' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo largo", duracion: 70, unidad: "min", desc: "55' a ritmo tempo.", estructura: "10' calentamiento + 55' Z3 + 5' enfriamiento", sensacion: "Resistencia", tipo: "tempo", zona: "Z3" },
+                  { nombre: "Tempo progresivo", duracion: 70, unidad: "min", desc: "Aumenta cada 5'.", estructura: "10' calentamiento + 5' Z3 + 5' Z4 + 5' Z3 + 5' Z4 + 5' enfriamiento", sensacion: "Progresivo", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo con cambios", duracion: 65, unidad: "min", desc: "Introduce 6 cambios.", estructura: "10' calentamiento + 45' tempo con cambios + 10' enfriamiento", sensacion: "Dinámico", tipo: "tempo", zona: "Z3-Z4" },
+                  { nombre: "Tempo umbral largo", duracion: 75, unidad: "min", desc: "60' a ritmo umbral.", estructura: "10' calentamiento + 60' Z4 + 5' enfriamiento", sensacion: "Muy exigente", tipo: "tempo", zona: "Z4" }
                 ],
                 largo: [
-                  { nombre: "Largo trail", duracion: 180, unidad: "min", desc: "Simulación ultratrail.", estructura: "180' trail", sensacion: "Preparación", tipo: "largo", zona: "Z2" },
-                  { nombre: "Largo avanzado", duracion: 190, unidad: "min", desc: "Alto volumen.", estructura: "190' trail técnico", sensacion: "Exigente", tipo: "largo", zona: "Z2" },
-                  { nombre: "Largo ultra", duracion: 200, unidad: "min", desc: "Preparación ultra.", estructura: "200' trail", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
-                  { nombre: "Largo progresivo", duracion: 185, unidad: "min", desc: "Aumenta ritmo en llano.", estructura: "125' Z2 + 60' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
-                  { nombre: "Largo específico", duracion: 195, unidad: "min", desc: "Incluye cambios.", estructura: "130' Z2 + 10x3' Z4 + 25' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
-                  { nombre: "Largo calidad", duracion: 205, unidad: "min", desc: "Progresión constante.", estructura: "135' Z2 + 70' Z3", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z3" },
-                  { nombre: "Largo resistencia", duracion: 210, unidad: "min", desc: "Fondo largo en sendero.", estructura: "210' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" }
+                  { nombre: "Largo específico maratón", duracion: 150, unidad: "min", desc: "Cambios a ritmo maratón.", estructura: "90' Z2 + 8x5' Z4 + 20' enfriamiento", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo calidad", duracion: 160, unidad: "min", desc: "Progresión constante.", estructura: "100' Z2 + 60' Z3", sensacion: "Fuerte", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo con series", duracion: 170, unidad: "min", desc: "Series largas.", estructura: "110' Z2 + 6x1000m Z4 + 20' enfriamiento", sensacion: "Exigente", tipo: "largo", zona: "Z2-Z4" },
+                  { nombre: "Largo progresivo", duracion: 180, unidad: "min", desc: "Aumenta ritmo cada 40'.", estructura: "80' Z2 + 50' Z3 + 50' Z2", sensacion: "Controlado", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo fondo", duracion: 190, unidad: "min", desc: "Fondo largo continuo.", estructura: "190' Z2", sensacion: "Resistencia", tipo: "largo", zona: "Z2" },
+                  { nombre: "Largo resistencia", duracion: 200, unidad: "min", desc: "Fondo largo con cambios.", estructura: "140' Z2 + 60' Z3", sensacion: "Resistencia", tipo: "largo", zona: "Z2-Z3" },
+                  { nombre: "Largo ultradistancia", duracion: 210, unidad: "min", desc: "Preparación para maratón.", estructura: "150' Z2 + 60' Z3", sensacion: "Preparación", tipo: "largo", zona: "Z2-Z3" }
                 ]
               }
             }
           }
         },
 
-        toggleCuestionario() { if(!AppState.zonasCalculadas) return alert("> CALCULA ZONAS PRIMERO_"); const q=document.getElementById("cuestionarioEntreno"); q.style.display=q.style.display==="block"?"none":"block"; },
+        toggleCuestionario() { 
+          if(!AppState.zonasCalculadas) return alert("> CALCULA ZONAS PRIMERO_"); 
+          if(!AppState.isPremium) {
+            alert("> SOLO USUARIOS PREMIUM PUEDEN CREAR PLANES_");
+            return;
+          }
+          const q=document.getElementById("cuestionarioEntreno"); 
+          q.style.display=q.style.display==="block"?"none":"block"; 
+        },
         async guardarPlanActual() { if(!AppState.currentUser||!AppState.planGeneradoActual) return; await Storage.setUltimoPlan(AppState.currentUser, AppState.planGeneradoActual); },
-        async mostrarUltimoPlanGuardado() { if(!AppState.currentUser) return alert("> NO HAY USUARIO_"); const stored = await Storage.getUltimoPlan(AppState.currentUser); if(!stored) return alert("> NO HAY PLAN GUARDADO_"); AppState.ultimoPlanParams = stored; document.getElementById("modalidad").value = stored.modalidad; document.getElementById("distObjetivo").value = stored.distancia; document.getElementById("duracionPlan").value = stored.macrociclo / 4; const diasGuardados = stored.diasEntreno || [4,6]; for(let i=1;i<=7;i++){ const cb=document.getElementById(`dia${i}`); if(cb) cb.checked = diasGuardados.includes(i); } document.getElementById("nivel").value = stored.nivel; document.getElementById("experienciaDistancia").value = stored.experiencia || "no"; document.getElementById("objetivoPrincipal").value = stored.objetivo || "mejorar"; document.getElementById("diaLargo").value = stored.diaLargo; document.getElementById("fechaInicio").value = stored.fechaInicio || "2025-03-01"; document.getElementById("cuestionarioEntreno").style.display = "none"; document.getElementById("calendarioEntreno").style.display = "block"; this.generarCalendarioEntreno(); },
-        async borrarPlanGuardado() { if(!AppState.currentUser||!confirm("> ¿ELIMINAR PLAN GUARDADO?_")) return; await Storage.removeUltimoPlan(AppState.currentUser); alert("✅ PLAN ELIMINADO"); },
+        async mostrarUltimoPlanGuardado() { 
+          if(!AppState.currentUser) return alert("> NO HAY USUARIO_"); 
+          if(!AppState.isPremium) {
+            alert("> SOLO USUARIOS PREMIUM PUEDEN VER PLANES_");
+            return;
+          }
+          const stored = await Storage.getUltimoPlan(AppState.currentUser); 
+          if(!stored) return alert("> NO HAY PLAN GUARDADO_"); 
+          AppState.ultimoPlanParams = stored; 
+          document.getElementById("modalidad").value = stored.modalidad; 
+          document.getElementById("distObjetivo").value = stored.distancia; 
+          document.getElementById("duracionPlan").value = stored.macrociclo / 4; 
+          const diasGuardados = stored.diasEntreno || [4,6]; 
+          for(let i=1;i<=7;i++){ const cb=document.getElementById(`dia${i}`); if(cb) cb.checked = diasGuardados.includes(i); } 
+          document.getElementById("nivel").value = stored.nivel; 
+          document.getElementById("experienciaDistancia").value = stored.experiencia || "no"; 
+          document.getElementById("objetivoPrincipal").value = stored.objetivo || "mejorar"; 
+          document.getElementById("diaLargo").value = stored.diaLargo; 
+          document.getElementById("fechaInicio").value = stored.fechaInicio || "2025-03-01"; 
+          document.getElementById("cuestionarioEntreno").style.display = "none"; 
+          document.getElementById("calendarioEntreno").style.display = "block"; 
+          this.generarCalendarioEntreno(); 
+        },
+        async borrarPlanGuardado() { 
+          if(!AppState.currentUser||!confirm("> ¿ELIMINAR PLAN GUARDADO?_")) return; 
+          await Storage.removeUltimoPlan(AppState.currentUser); 
+          alert("✅ PLAN ELIMINADO"); 
+        },
         getRitmoPorZona(z) { if(!AppState.lastRitmoBase) return "Calcula zonas primero"; const f={'Z1':1.35,'Z2':1.25,'Z3':1.15,'Z4':1.05,'Z5':0.95,'Z6':0.85}; if(z.includes('-')){ const [a,b]=z.split('-'); return `${Utils.formatR(AppState.lastRitmoBase*(f[a]||1.15))} – ${Utils.formatR(AppState.lastRitmoBase*(f[b]||1.05))} min/km`; } return Utils.formatR(AppState.lastRitmoBase*(f[z]||1.15))+" min/km"; },
         generarCalendarioEntreno() {
           if(!AppState.zonasCalculadas) return alert("> PRIMERO CALCULA TUS ZONAS_");
+          if(!AppState.isPremium) {
+            alert("> SOLO USUARIOS PREMIUM PUEDEN GENERAR PLANES_");
+            return;
+          }
           const btn = document.querySelector('[onclick="window.generarCalendarioEntreno()"]');
           if(btn) Utils.showLoading(btn);
           setTimeout(()=>{
@@ -3316,10 +3572,8 @@
       // ==================== INICIALIZACIÓN ====================
       document.addEventListener("DOMContentLoaded", async () => {
         if(!await Auth.checkSavedSession()) document.getElementById("loginPage").style.display="flex";
-        document.getElementById("name").addEventListener("blur", ()=>UI.marcarCampoTocado('name'));
         document.getElementById("age").addEventListener("blur", ()=>UI.marcarCampoTocado('age'));
         document.getElementById("time").addEventListener("blur", ()=>UI.marcarCampoTocado('time'));
-        document.getElementById("name").addEventListener("input", ()=>{ if(AppState.camposTocados.name) UI.validarCampo('name'); UI.validarTodo(); });
         document.getElementById("age").addEventListener("input", ()=>{ if(AppState.camposTocados.age) UI.validarCampo('age'); UI.validarTodo(); });
         document.getElementById("time").addEventListener("input", ()=>{ if(AppState.camposTocados.time) UI.validarCampo('time'); UI.validarTodo(); });
         UI.validarTodo();
