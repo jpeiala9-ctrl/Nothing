@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RI5 · RGB EDITION</title>
+  <title>RI5 · EDITION</title>
   
   <!-- MANIFEST (estilo Nothing/RGB) -->
-  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22RI5%20RGB%22%2C%22short_name%22%3A%22RI5%22%2C%22description%22%3A%22Entrenamiento%20runner%20con%20zonas%2C%20planes%20y%20soporte%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23000000%22%2C%22theme_color%22%3A%22%23ff00ff%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23000000%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2268%22%20font-size%3D%2260%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-family%3D%22Arial%22%3ERI5%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22RI5%20EDITION%22%2C%22short_name%22%3A%22RI5%22%2C%22description%22%3A%22Entrenamiento%20runner%20con%20zonas%2C%20planes%20y%20soporte%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23000000%22%2C%22theme_color%22%3A%22%23ff00ff%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23000000%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2268%22%20font-size%3D%2260%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-family%3D%22Arial%22%3ERI5%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
   
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="RI5 RGB">
+  <meta name="apple-mobile-web-app-title" content="RI5">
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23000000%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2268%22%20font-size%3D%2260%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-family%3D%22Arial%22%3ERI5%3C%2Ftext%3E%3C%2Fsvg%3E">
 
   <style>
@@ -176,7 +176,7 @@
       padding-right: 5px;
     }
 
-    /* ===== HEADER CON ICONO DE APAGADO ===== */
+    /* ===== HEADER CON BOTÓN CERRAR SESIÓN ===== */
     .app-header {
       display: flex;
       justify-content: space-between;
@@ -190,92 +190,23 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      text-align: center;
     }
 
-    /* Animación RGB para el botón de usuario */
-    @keyframes rgbButton {
-      0% { 
-        border-color: #ff0000;
-        color: #ff0000;
-        box-shadow: 0 0 10px #ff0000;
-      }
-      20% { 
-        border-color: #ff8800;
-        color: #ff8800;
-        box-shadow: 0 0 10px #ff8800;
-      }
-      40% { 
-        border-color: #ffff00;
-        color: #ffff00;
-        box-shadow: 0 0 10px #ffff00;
-      }
-      60% { 
-        border-color: #00ff00;
-        color: #00ff00;
-        box-shadow: 0 0 10px #00ff00;
-      }
-      80% { 
-        border-color: #0000ff;
-        color: #0000ff;
-        box-shadow: 0 0 10px #0000ff;
-      }
-      100% { 
-        border-color: #ff0000;
-        color: #ff0000;
-        box-shadow: 0 0 10px #ff0000;
-      }
-    }
-
-    /* Botón de usuario con RGB animado */
-    #mainContent .logout-icon {
-      flex-shrink: 0;
-      width: 40px;
-      height: 40px;
-      padding: 0;
+    .logout-button {
       background: transparent;
-      border: 2px solid var(--accent-green);
-      border-radius: 50%;
-      color: var(--accent-green);
-      font-size: 24px;
-      line-height: 1;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: rgbButton 3s linear infinite;
-    }
-
-    #mainContent .logout-icon:hover {
-      background: var(--accent-green);
-      color: var(--bg-primary);
-      border-color: var(--accent-green);
-      animation: none;
-    }
-
-    /* Botón de admin se mantiene rojo sin animación */
-    #adminPage .logout-icon {
-      flex-shrink: 0;
-      width: 40px;
-      height: 40px;
-      padding: 0;
-      background: transparent;
-      border: 2px solid var(--accent-red);
-      border-radius: 50%;
+      border: 1px solid var(--accent-red);
+      border-radius: 40px;
       color: var(--accent-red);
-      font-size: 24px;
-      line-height: 1;
+      font-size: 12px;
+      padding: 8px 12px;
       cursor: pointer;
       transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      white-space: nowrap;
     }
-
-    #adminPage .logout-icon:hover {
+    .logout-button:hover {
       background: var(--accent-red);
       color: var(--bg-primary);
-      border-color: var(--accent-red);
     }
 
     /* ===== TABS DE LOGIN/REGISTRO ===== */
@@ -472,7 +403,7 @@
     .curiosity span { font-size: 18px; line-height: 1.5; position: relative; z-index: 1; }
     .curiosity small { display: block; color: var(--text-secondary); margin-top: 12px; font-size: 12px; }
 
-    /* ===== ZONAS DE ENTRENAMIENTO ===== */
+    /* ===== ZONAS DE ENTRENAMIENTO (simplificadas) ===== */
     .zone-card {
       margin: 16px 0;
       padding: 20px;
@@ -630,7 +561,7 @@
     .btn-plan { border-color: var(--accent-yellow); }
     .btn-view { border-color: var(--accent-purple); }
 
-    /* ===== HISTORIAL (tarjetas compactas con expansión) ===== */
+    /* ===== HISTORIAL (papelera fija) ===== */
     .historial-controls {
       display: flex;
       justify-content: flex-end;
@@ -652,7 +583,7 @@
     .historial-list { display: flex; flex-direction: column; gap: 12px; }
     .historial-item {
       position: relative;
-      padding: 12px 40px 12px 12px;
+      padding: 12px 12px 12px 12px; /* Quitamos espacio a la derecha */
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
       border-radius: 16px;
@@ -679,9 +610,8 @@
     }
     .historial-item .delete-icon {
       position: absolute;
-      top: 50%;
-      right: 10px;
-      transform: translateY(-50%);
+      top: 12px; /* Fijo en la parte superior */
+      right: 12px; /* Fijo en la derecha */
       background: transparent;
       border: none;
       color: var(--accent-red);
@@ -690,9 +620,10 @@
       width: auto;
       padding: 5px;
       margin: 0;
-      z-index: 2;
+      z-index: 5; /* Siempre por encima */
       opacity: 0.7;
       transition: opacity 0.2s;
+      line-height: 1;
     }
     .historial-item .delete-icon:hover {
       opacity: 1;
@@ -875,7 +806,7 @@
     /* ===== ADMIN PANEL ===== */
     .admin-panel { margin: 30px 0; padding: 20px; background: var(--bg-secondary); border-radius: 24px; }
 
-    /* Estadísticas */
+    /* Estadísticas clickeables */
     .admin-stats {
       display: flex;
       gap: 12px;
@@ -885,20 +816,27 @@
     }
     .stat-badge {
       background: var(--stat-bg);
-      padding: 6px 14px;
+      padding: 12px 24px;
       border-radius: 40px;
       border: 1px solid var(--border-color);
-      font-size: 13px;
+      font-size: 16px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .stat-badge:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(10,132,255,0.3);
     }
     .stat-badge .number {
       color: var(--accent-blue);
       font-weight: bold;
+      font-size: 20px;
     }
 
-    /* Botón para abrir modal de usuarios */
     .btn-ver-usuarios {
       width: 100%;
       padding: 16px;
@@ -1266,13 +1204,17 @@
       .dia-checkbox {
         min-width: 40px;
       }
+      .logout-button {
+        font-size: 10px;
+        padding: 6px 8px;
+      }
     }
   </style>
 </head>
 <body>
   <!-- BANNER PWA -->
   <div id="pwa-banner" style="display:none;">
-    <span>📲 INSTALA RI5 RGB EN TU MÓVIL</span>
+    <span>📲 INSTALA RI5 EN TU MÓVIL</span>
     <button onclick="window.instalarPWA()">INSTALAR</button>
     <button class="close-banner" onclick="window.cerrarBannerPWA()">✕</button>
   </div>
@@ -1304,7 +1246,7 @@
   <!-- LOGIN PAGE -->
   <div class="wrapper" id="loginPage">
     <div class="card">
-      <h1>RI5 RGB</h1>
+      <h1>RI5</h1>
       <p style="color: var(--text-secondary); margin:20px 0; text-align:center;">> SISTEMA DE ACCESO_</p>
       <div class="auth-tabs">
         <button class="auth-tab active" onclick="window.switchAuthTab('login')">[LOGIN]</button>
@@ -1332,8 +1274,8 @@
   <div class="wrapper" id="adminPage" style="display:none;">
     <div class="card admin-card">
       <div class="app-header">
-        <h1>RI5·ADMIN RGB</h1>
-        <button class="logout-icon" onclick="window.logoutAdmin()" title="Cerrar sesión">⏻</button>
+        <h1>RI5·ADMIN</h1>
+        <button class="logout-button" onclick="window.logoutAdmin()">CERRAR SESIÓN</button>
       </div>
       <p style="color: var(--accent-green); margin:20px 0; text-align:center;" id="adminWelcome"></p>
       <div class="tabs-container">
@@ -1342,11 +1284,8 @@
           <button class="tab-button" onclick="window.switchAdminTab('soporte')" id="adminSoporteTab">SOPORTE</button>
         </div>
         <div id="admin-tab-usuarios" class="tab-content active">
-          <!-- Estadísticas -->
+          <!-- Estadísticas clickeables -->
           <div class="admin-stats" id="adminStats"></div>
-          <div class="admin-panel">
-            <button class="btn-ver-usuarios" onclick="window.abrirModalUsuarios()">👥 VER USUARIOS</button>
-          </div>
           <button class="admin-btn admin-export-btn" onclick="window.exportarUsuariosCSV()" style="width:100%; margin:10px 0;">📥 EXPORTAR USUARIOS CSV</button>
           <button class="admin-btn" onclick="window.renovarExpirados()" style="width:100%;">🔄 RENOVAR EXPIRADOS</button>
         </div>
@@ -1361,6 +1300,11 @@
               <div id="listaMensajesRecibidosAdmin"></div>
             </div>
             <div id="admin-soporte-enviados" class="soporte-panel">
+              <div class="nuevo-mensaje" style="margin-bottom:20px;">
+                <select id="adminSelectorUsuarios" style="margin-bottom:10px;"></select>
+                <textarea id="adminMensaje" placeholder="> ESCRIBE TU MENSAJE..."></textarea>
+                <button class="send-message-btn" onclick="window.enviarMensajeAdmin()" style="margin-top:10px;">📤 ENVIAR MENSAJE</button>
+              </div>
               <div id="listaMensajesEnviadosAdmin"></div>
             </div>
           </div>
@@ -1374,7 +1318,7 @@
     <div class="modal-overlay" onclick="if(event.target===this) document.getElementById('modalUsuarios').classList.remove('active')">
       <div class="modal-content">
         <button class="modal-close" onclick="document.getElementById('modalUsuarios').classList.remove('active')">✕</button>
-        <h2>👥 USUARIOS REGISTRADOS</h2>
+        <h2 id="modalUsuariosTitulo">👥 USUARIOS</h2>
         <div class="modal-search">
           <input type="text" id="modalBuscarUsuario" placeholder="🔍 Buscar por nombre...">
         </div>
@@ -1387,8 +1331,8 @@
   <div class="wrapper" id="mainContent" style="display:none;">
     <div class="card">
       <div class="app-header">
-        <h1 id="ri5Title" onclick="window.showPremiumBenefits()">RI5 RGB</h1>
-        <button class="logout-icon" onclick="window.logoutUser()" title="Cerrar sesión">⏻</button>
+        <h1 id="ri5Title" onclick="window.showPremiumBenefits()">RI5</h1>
+        <button class="logout-button" onclick="window.logoutUser()">CERRAR SESIÓN</button>
       </div>
       <p style="color: var(--text-secondary); margin:20px 0; text-align:center;" id="userWelcome"></p>
       <div class="tabs-container">
@@ -1623,7 +1567,7 @@
           const expiry = new Date(); expiry.setMonth(expiry.getMonth()+3);
           users[u] = { password: Utils.hashPassword(p), created: new Date().toISOString(), expires: expiry.toISOString(), premium: true };
           await Storage.saveUsers(users);
-          await Storage.enviarMensajeAdminAUsuario(u, "¡Bienvenido a RI5 RGB! Disfruta de 3 meses premium.");
+          await Storage.enviarMensajeAdminAUsuario(u, "¡Bienvenido a RI5! Disfruta de 3 meses premium.");
           AppState.setCurrentUser(u, true);
           document.getElementById("loginPage").style.opacity="0";
           setTimeout(()=>{
@@ -1691,24 +1635,44 @@
           const users = await Storage.getUsers();
           const total = Object.keys(users).length, ahora = new Date();
           const activos = Object.values(users).filter(u=>new Date(u.expires)>ahora).length, expirados = total-activos;
-          document.getElementById("adminStats").innerHTML = `<span class="stat-badge">📊 TOTAL <span class="number">${total}</span></span><span class="stat-badge">✅ ACTIVOS <span class="number">${activos}</span></span><span class="stat-badge">⏳ EXPIRADOS <span class="number">${expirados}</span></span>`;
+          document.getElementById("adminStats").innerHTML = `
+            <span class="stat-badge" onclick="window.abrirModalUsuarios('total')">📊 TOTAL <span class="number">${total}</span></span>
+            <span class="stat-badge" onclick="window.abrirModalUsuarios('activos')">✅ ACTIVOS <span class="number">${activos}</span></span>
+            <span class="stat-badge" onclick="window.abrirModalUsuarios('expirados')">⏳ EXPIRADOS <span class="number">${expirados}</span></span>
+          `;
           document.getElementById("adminWelcome").innerText = `> ADMIN · ${new Date().toLocaleString()}`;
           this.cargarMensajesAdmin();
+          this.cargarSelectorUsuarios();
         },
-        async abrirModalUsuarios() {
+        async abrirModalUsuarios(filtro='total') {
           const users = await Storage.getUsers();
           const modal = document.getElementById('modalUsuarios');
           const listEl = document.getElementById('modalUserList');
-          this.renderizarListaUsuarios(users, listEl);
+          const titulo = document.getElementById('modalUsuariosTitulo');
+          
+          let tituloTexto = '👥 TODOS LOS USUARIOS';
+          if(filtro === 'activos') tituloTexto = '✅ USUARIOS ACTIVOS';
+          if(filtro === 'expirados') tituloTexto = '⏳ USUARIOS EXPIRADOS';
+          titulo.innerText = tituloTexto;
+          
+          this.renderizarListaUsuarios(users, listEl, '', filtro);
           modal.classList.add('active');
-          document.getElementById('modalBuscarUsuario').oninput = (e)=>this.filtrarUsuariosModal(e.target.value);
+          document.getElementById('modalBuscarUsuario').oninput = (e)=>this.filtrarUsuariosModal(e.target.value, filtro);
         },
-        renderizarListaUsuarios(users, container, filtro='') {
+        renderizarListaUsuarios(users, container, filtro='', tipoFiltro='total') {
           const ahora = new Date();
-          const items = Object.entries(users).filter(([u])=>u.toLowerCase().includes(filtro.toLowerCase())).map(([u,d])=>{
+          const items = Object.entries(users)
+            .filter(([u,d])=>u.toLowerCase().includes(filtro.toLowerCase()))
+            .filter(([u,d])=>{
+              if(tipoFiltro === 'activos') return new Date(d.expires) > ahora;
+              if(tipoFiltro === 'expirados') return new Date(d.expires) <= ahora;
+              return true;
+            })
+            .map(([u,d])=>{
             const creado = new Date(d.created).toLocaleDateString();
             const expiry = new Date(d.expires).toLocaleDateString();
             const premium = d.premium ? '✅ PREMIUM' : '❌ NO PREMIUM';
+            const estado = new Date(d.expires) > ahora ? '🟢 ACTIVO' : '🔴 EXPIRADO';
             return `
               <div class="usuario-item" onclick="window.toggleUsuario(this)">
                 <div class="usuario-header">
@@ -1720,6 +1684,7 @@
                     <span>📅 ${creado}</span>
                     <span>⏳ ${expiry}</span>
                     <span>${premium}</span>
+                    <span>${estado}</span>
                   </div>
                   <div class="modal-user-actions">
                     <button onclick="event.stopPropagation(); window.extenderUsuario('${u}',1)">+1 MES</button>
@@ -1734,7 +1699,12 @@
           }).join('');
           container.innerHTML = items || '<p style="text-align:center; padding:20px;">📭 NO HAY USUARIOS</p>';
         },
-        filtrarUsuariosModal(filtro) { Storage.getUsers().then(u=>{ const l=document.getElementById('modalUserList'); this.renderizarListaUsuarios(u,l,filtro); }); },
+        filtrarUsuariosModal(filtro, tipoFiltro) { 
+          Storage.getUsers().then(u=>{ 
+            const l=document.getElementById('modalUserList'); 
+            this.renderizarListaUsuarios(u,l,filtro,tipoFiltro); 
+          }); 
+        },
         async extenderUsuario(u,m) {
           const users = await Storage.getUsers();
           if(users[u]){ const e=new Date(users[u].expires); e.setMonth(e.getMonth()+m); users[u].expires=e.toISOString(); await Storage.saveUsers(users); this.actualizarAdminPanel(); alert(`✅ ${u} extendido ${m} mes`); this.abrirModalUsuarios(); }
@@ -1778,6 +1748,34 @@
           AppState.mensajesNoLeidosAdmin = noLeidosRecibidos;
           this.actualizarBadgeAdminSoporte();
         },
+        async cargarSelectorUsuarios() {
+          const users = await Storage.getUsers();
+          const select = document.getElementById('adminSelectorUsuarios');
+          let options = '<option value="todos">📢 TODOS LOS USUARIOS</option>';
+          Object.keys(users).sort().forEach(u => {
+            options += `<option value="${u}">${u}</option>`;
+          });
+          select.innerHTML = options;
+        },
+        async enviarMensajeAdmin() {
+          const select = document.getElementById('adminSelectorUsuarios');
+          const destino = select.value;
+          const texto = document.getElementById('adminMensaje').value.trim();
+          if(!texto) return alert('> ESCRIBE UN MENSAJE');
+          
+          if(destino === 'todos') {
+            const users = await Storage.getUsers();
+            for(let usuario of Object.keys(users)) {
+              await Storage.enviarMensajeAdminAUsuario(usuario, texto);
+            }
+            alert('✅ MENSAJE ENVIADO A TODOS LOS USUARIOS');
+          } else {
+            await Storage.enviarMensajeAdminAUsuario(destino, texto);
+            alert(`✅ MENSAJE ENVIADO A ${destino}`);
+          }
+          document.getElementById('adminMensaje').value = '';
+          this.cargarMensajesAdmin();
+        },
         actualizarBadgeAdminSoporte() { const t=document.getElementById('adminSoporteTab'); if(AppState.mensajesNoLeidosAdmin>0) t.classList.add('soporte-unread'); else t.classList.remove('soporte-unread'); },
         cambiarSoporteTab(tab) { document.querySelectorAll('#admin-tab-soporte .soporte-tab').forEach(t=>t.classList.remove('active')); document.querySelectorAll('#admin-tab-soporte .soporte-panel').forEach(p=>p.classList.remove('active')); if(tab==='recibidos'){ document.querySelectorAll('#admin-tab-soporte .soporte-tab')[0].classList.add('active'); document.getElementById('admin-soporte-recibidos').classList.add('active'); }else{ document.querySelectorAll('#admin-tab-soporte .soporte-tab')[1].classList.add('active'); document.getElementById('admin-soporte-enviados').classList.add('active'); } }
       };
@@ -1790,12 +1788,13 @@
       window.enviarMensajeAUsuario = Admin.enviarMensajeAUsuario.bind(Admin);
       window.exportarUsuariosCSV = Admin.exportarUsuariosCSV.bind(Admin);
       window.renovarExpirados = Admin.renovarExpirados.bind(Admin);
+      window.enviarMensajeAdmin = Admin.enviarMensajeAdmin.bind(Admin);
       window.borrarMensajeAdmin = (k,i)=>Storage.borrarMensaje(k,i).then(()=>Admin.cargarMensajesAdmin());
       window.switchAdminTab = function(tab) {
         document.querySelectorAll('#adminPage .tab-button').forEach(b=>b.classList.remove('active'));
         document.querySelectorAll('#adminPage .tab-content').forEach(c=>c.classList.remove('active'));
         if(tab==='usuarios'){ document.querySelectorAll('#adminPage .tab-button')[0].classList.add('active'); document.getElementById('admin-tab-usuarios').classList.add('active'); }
-        else { document.querySelectorAll('#adminPage .tab-button')[1].classList.add('active'); document.getElementById('admin-tab-soporte').classList.add('active'); Admin.cargarMensajesAdmin(); }
+        else { document.querySelectorAll('#adminPage .tab-button')[1].classList.add('active'); document.getElementById('admin-tab-soporte').classList.add('active'); Admin.cargarMensajesAdmin(); Admin.cargarSelectorUsuarios(); }
       };
       window.cambiarAdminSoporteTab = (tab)=>Admin.cambiarSoporteTab(tab);
 
@@ -1808,15 +1807,15 @@
           const r=t/6, fc=220-a, ul=Math.round(fc*0.92*1.03);
           const pred=[{dist:2,color:"var(--accent-blue)",ritmo:r*0.98},{dist:6,color:"var(--accent-green)",ritmo:r},{dist:10,color:"var(--accent-yellow)",ritmo:r*1.05},{dist:21,color:"var(--accent-red)",ritmo:r*1.12},{dist:42,color:"var(--accent-purple)",ritmo:r*1.20}];
           const zones=[
-            ["Z1","RECUPERACIÓN",0.75,0.80,1.35,"z1","RITMO: "+Utils.formatR(r*1.35)+"<br><br>🔹 Recuperación activa."],
-            ["Z2","BASE",0.80,0.90,1.25,"z2","RITMO: "+Utils.formatR(r*1.25)+"<br><br>🔹 Mejora eficiencia metabólica."],
-            ["Z3","TEMPO",0.90,0.95,1.15,"z3","RITMO: "+Utils.formatR(r*1.15)+"<br><br>🔹 Tolerancia al lactato."],
-            ["Z4","UMBRAL",0.95,1.02,1.05,"z4","RITMO: "+Utils.formatR(r*1.05)+"<br><br>🔹 Limpieza de lactato."],
-            ["Z5","VO₂MÁX",1.02,1.06,0.95,"z5","RITMO: "+Utils.formatR(r*0.95)+"<br><br>🔹 Potencia aeróbica máxima."],
-            ["Z6","VELOCIDAD",1.06,1.12,0.85,"z6","RITMO: "+Utils.formatR(r*0.85)+"<br><br>🔹 Potencia neuromuscular."]
+            ["Z1","RECUPERACIÓN",0.75,0.80,1.35,"z1","Ritmo: "+Utils.formatR(r*1.35)+" min/km · Hablar fácil"],
+            ["Z2","BASE",0.80,0.90,1.25,"z2","Ritmo: "+Utils.formatR(r*1.25)+" min/km · Charlar cómodo"],
+            ["Z3","TEMPO",0.90,0.95,1.15,"z3","Ritmo: "+Utils.formatR(r*1.15)+" min/km · Hablar forzado"],
+            ["Z4","UMBRAL",0.95,1.02,1.05,"z4","Ritmo: "+Utils.formatR(r*1.05)+" min/km · Frases cortas"],
+            ["Z5","VO₂MÁX",1.02,1.06,0.95,"z5","Ritmo: "+Utils.formatR(r*0.95)+" min/km · Muy duro"],
+            ["Z6","VELOCIDAD",1.06,1.12,0.85,"z6","Ritmo: "+Utils.formatR(r*0.85)+" min/km · Explosivo"]
           ];
           const calc = {name:n, age:a, fcMax:fc, ul:ul, zones, pred, ritmoBase:r};
-          AppState.setLastCalc(calc); UI.mostrarResultados(calc); document.getElementById("footer").innerText=`${n} · ${new Date().toLocaleDateString('es-ES')} · RI5 RGB`;
+          AppState.setLastCalc(calc); UI.mostrarResultados(calc); document.getElementById("footer").innerText=`${n} · ${new Date().toLocaleDateString('es-ES')} · RI5`;
           this.guardarCalculoAutomatico(calc);
         },
         async guardarCalculoAutomatico(calc) {
@@ -1832,11 +1831,11 @@
         },
         copyResults() {
           if(!AppState.lastName) return alert("> CALCULA ZONAS PRIMERO_");
-          let txt = "🔹 RI5 RGB - ZONAS DE ENTRENO 🔹\n\n";
+          let txt = "🔹 RI5 - ZONAS DE ENTRENO 🔹\n\n";
           txt += `👤 ${AppState.lastName} · ${AppState.lastAge} años\n❤️ FC MÁX: ${AppState.lastFC} lpm · UMBRAL: ${AppState.lastUL} lpm\n⏱️ RITMO 6km: ${Utils.formatR(AppState.lastRitmoBase)} min/km\n\n📊 PREDICCIONES:\n`;
           AppState.lastPred.forEach(p=>txt+=`   ${p.dist} km → ${Utils.formatR(p.ritmo)} min/km\n`);
           txt+=`\n🎯 ZONAS:\n`;
-          AppState.lastZones.forEach(z=>{ const min=Math.round(AppState.lastUL*z[2]), max=Math.round(AppState.lastUL*z[3]); txt+=`   ${z[0]} ${z[1]}: ${min}-${max} lpm · ${z[6].replace(/<br>/g,' ').replace(/🔹/g,'•')}\n`; });
+          AppState.lastZones.forEach(z=>{ const min=Math.round(AppState.lastUL*z[2]), max=Math.round(AppState.lastUL*z[3]); txt+=`   ${z[0]} ${z[1]}: ${min}-${max} lpm · ${z[6]}\n`; });
           navigator.clipboard.writeText(txt).then(()=>{ const btn=document.querySelector('.btn-copy'); if(btn) Utils.showTemporaryMessage(btn,"✅ COPIADO",true); }).catch(()=>alert("> NO SE PUDO COPIAR."));
         }
       };
@@ -1943,7 +1942,7 @@
 
       // ==================== MÓDULO PLAN GENERATOR (con matriz completa y sin repeticiones) ====================
       const PlanGenerator = {
-        // Matriz de entrenamientos COMPLETA y AMPLIADA
+        // Matriz de entrenamientos COMPLETA y AMPLIADA (idéntica a la original)
         ENTRENAMIENTOS_DB: {
           runner: {
             "2k": {
