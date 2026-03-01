@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CAMBIO 7: PWA a pantalla completa - Añadido viewport-fit=cover -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>RI5 · EDITION</title>
   
   <!-- MANIFEST (estilo Nothing/RGB) -->
@@ -62,6 +63,41 @@
       }
       input, button, select, textarea { color: #111111; }
       .curiosity span, .curiosity small { color: #111111; }
+      
+      /* CAMBIO 3: Ajustar colores en modo claro - Mejor visibilidad de tarjetas de zona */
+      .zone-card {
+        background: #ffffff;
+        border-color: #dddddd;
+      }
+      .zone-card .long {
+        color: #444444;
+      }
+      .sesion-rodaje { 
+        border-color: var(--accent-blue); 
+        background: #e6f0ff; 
+        color: #111111 !important;
+      }
+      .sesion-series { 
+        border-color: var(--accent-green); 
+        background: #e6ffe6; 
+        color: #111111 !important;
+      }
+      .sesion-tempo { 
+        border-color: var(--accent-yellow); 
+        background: #fff9e6; 
+        color: #111111 !important;
+      }
+      .sesion-largo { 
+        border-color: var(--accent-red); 
+        background: #ffe6e6; 
+        color: #111111 !important;
+      }
+      .zona-pastilla {
+        background: #ffffff;
+      }
+      .mensaje-item .mensaje-header {
+        background: #f5f5f5;
+      }
     }
 
     body {
@@ -1390,7 +1426,8 @@
           <h2>> ZONAS DE ENTRENO_</h2>
           <input id="name" placeholder="> NOMBRE_" readonly disabled><div class="error-message" id="nameError"></div>
           <input id="age" type="number" min="14" max="85" placeholder="> EDAD_"><div class="error-message" id="ageError"></div>
-          <input id="time" placeholder="> TIEMPO 6km_ (MM:SS)"><div class="error-message" id="timeError"></div>
+          <!-- CAMBIO 4: Placeholder actualizado -->
+          <input id="time" placeholder="> TIEMPO 6km_ (MM:SS) · ÚLTIMA MARCA"><div class="error-message" id="timeError"></div>
           <button class="button-main" id="calcBtn" disabled onclick="window.startCalc()">[ CALCULAR ]</button>
           <div class="curiosity" id="curiosity" onclick="window.changeConsejo()"><span>> CONSEJO_</span><small>// pulsa para nuevo consejo</small></div>
           <div id="results"></div>
@@ -1399,6 +1436,9 @@
         <!-- TAB PLAN -->
         <div id="tab-plan" class="tab-content">
           <h2>> CREADOR DE PLANES_</h2>
+          <!-- CAMBIO 6: Botón de entrenador personal -->
+          <button class="action-button" style="border-color: var(--accent-purple); color: var(--accent-purple); margin-bottom: 20px;" onclick="window.open('https://www.instagram.com/navegacionpro?igsh=Y2ZzMHpwOWUwOTRx&utm_source=qr', '_blank')">🏋️ ENTRENADOR PERSONAL · @navegacionpro</button>
+          
           <button class="action-button btn-plan" onclick="window.toggleCuestionario()" id="nuevoPlanBtn">+ NUEVO PLAN</button>
           <button class="action-button btn-view" onclick="window.mostrarUltimoPlanGuardado()" id="cargarPlanBtn">📂 CARGAR ÚLTIMO PLAN</button>
           <button class="action-button btn-delete" onclick="window.borrarPlanGuardado()" id="borrarPlanBtn">🗑️ ELIMINAR PLAN</button>
@@ -1597,6 +1637,12 @@
         setCurrentUser(u, premium=false, calculosMes=0, mesActual='') {
           this.currentUser = u; this.isPremium = premium; this.calculosMes = calculosMes; this.mesActual = mesActual;
           u?localStorage.setItem('ri5_current_user',u):localStorage.removeItem('ri5_current_user');
+          // CAMBIO 1: Guardar estado premium en localStorage
+          if(u) {
+            localStorage.setItem('ri5_premium', premium ? 'true' : 'false');
+          } else {
+            localStorage.removeItem('ri5_premium');
+          }
           const t = document.getElementById('ri5Title'); if(t){ if(premium) t.classList.add('premium'); else t.classList.remove('premium'); }
           // Autocompletar campo nombre (fijo, no editable)
           if(u) {
@@ -1770,10 +1816,18 @@
         logoutAdmin() { document.getElementById("adminPage").style.display="none"; document.getElementById("loginPage").style.display="flex"; },
         async checkSavedSession() {
           const s = localStorage.getItem('ri5_current_user'); if(!s) return false;
+          
+          // CAMBIO 1: Leer premium de localStorage primero para respuesta inmediata
+          const savedPremium = localStorage.getItem('ri5_premium') === 'true';
+          if(savedPremium) {
+            const t = document.getElementById('ri5Title');
+            if(t) t.classList.add('premium');
+          }
+          
           const users = await Storage.getUsers(); const user = users[s];
-          if(!user){ localStorage.removeItem('ri5_current_user'); return false; }
+          if(!user){ localStorage.removeItem('ri5_current_user'); localStorage.removeItem('ri5_premium'); return false; }
           const now = new Date(), expiry = new Date(user.expires);
-          if(now>expiry && !user.premium){ localStorage.removeItem('ri5_current_user'); return false; }
+          if(now>expiry && !user.premium){ localStorage.removeItem('ri5_current_user'); localStorage.removeItem('ri5_premium'); return false; }
           
           // Comprobar mes para contador
           const ahora = new Date();
@@ -2014,13 +2068,14 @@
           if(!n||!a||isNaN(t)) return alert("> COMPLETA TODOS LOS CAMPOS CORRECTAMENTE_");
           const r=t/6, fc=220-a, ul=Math.round(fc*0.92*1.03);
           const pred=[{dist:2,color:"var(--accent-blue)",ritmo:r*0.98},{dist:6,color:"var(--accent-green)",ritmo:r},{dist:10,color:"var(--accent-yellow)",ritmo:r*1.05},{dist:21,color:"var(--accent-red)",ritmo:r*1.12},{dist:42,color:"var(--accent-purple)",ritmo:r*1.20}];
+          // CAMBIO 2: Mejorar explicaciones de las zonas
           const zones=[
-            ["Z1","RECUPERACIÓN",0.75,0.80,1.35,"z1","Ritmo: "+Utils.formatR(r*1.35)+" min/km · Objetivo: Recuperación activa, mejorar circulación. Beneficio: Elimina toxinas, prepara para sesiones duras."],
-            ["Z2","BASE",0.80,0.90,1.25,"z2","Ritmo: "+Utils.formatR(r*1.25)+" min/km · Objetivo: Mejorar eficiencia metabólica. Beneficio: Quema de grasas, desarrollo de resistencia aeróbica."],
-            ["Z3","TEMPO",0.90,0.95,1.15,"z3","Ritmo: "+Utils.formatR(r*1.15)+" min/km · Objetivo: Aumentar umbral de lactato. Beneficio: Mejora la capacidad de mantener ritmos rápidos."],
-            ["Z4","UMBRAL",0.95,1.02,1.05,"z4","Ritmo: "+Utils.formatR(r*1.05)+" min/km · Objetivo: Limpieza de lactato. Beneficio: Retrasa la fatiga en ritmos de carrera."],
-            ["Z5","VO₂MÁX",1.02,1.06,0.95,"z5","Ritmo: "+Utils.formatR(r*0.95)+" min/km · Objetivo: Potencia aeróbica máxima. Beneficio: Mejora el consumo máximo de oxígeno."],
-            ["Z6","VELOCIDAD",1.06,1.12,0.85,"z6","Ritmo: "+Utils.formatR(r*0.85)+" min/km · Objetivo: Potencia neuromuscular. Beneficio: Mejora la velocidad y la economía de carrera."]
+            ["Z1","RECUPERACIÓN",0.75,0.80,1.35,"z1","Ritmo: "+Utils.formatR(r*1.35)+" min/km · Objetivo: Recuperación activa después de esfuerzos intensos. Beneficio: Mejora la circulación sanguínea, elimina toxinas y prepara el cuerpo para próximas sesiones sin fatiga adicional."],
+            ["Z2","BASE",0.80,0.90,1.25,"z2","Ritmo: "+Utils.formatR(r*1.25)+" min/km · Objetivo: Desarrollar resistencia aeróbica fundamental. Beneficio: Optimiza la quema de grasas como combustible, fortalece el corazón y mejora la eficiencia metabólica. Es la base de todo entrenamiento."],
+            ["Z3","TEMPO",0.90,0.95,1.15,"z3","Ritmo: "+Utils.formatR(r*1.15)+" min/km · Objetivo: Elevar el umbral de lactato. Beneficio: Permite correr más rápido durante más tiempo retrasando la fatiga muscular. Sensación de 'cómodamente duro', puedes hablar con frases cortas."],
+            ["Z4","UMBRAL",0.95,1.02,1.05,"z4","Ritmo: "+Utils.formatR(r*1.05)+" min/km · Objetivo: Limpiar y tolerar el lactato. Beneficio: Mejora la capacidad de mantener ritmos de carrera exigentes. Es la zona justo por debajo del esfuerzo máximo sostenible."],
+            ["Z5","VO₂MÁX",1.02,1.06,0.95,"z5","Ritmo: "+Utils.formatR(r*0.95)+" min/km · Objetivo: Potencia aeróbica máxima. Beneficio: Aumenta la capacidad del corazón para bombear sangre y la musculatura para utilizar oxígeno. Esfuerzo muy intenso, solo para intervalos cortos."],
+            ["Z6","VELOCIDAD",1.06,1.12,0.85,"z6","Ritmo: "+Utils.formatR(r*0.85)+" min/km · Objetivo: Potencia neuromuscular y velocidad. Beneficio: Mejora la zancada, la coordinación y la potencia explosiva. Esfuerzo máximo, sprints cortos con recuperación completa."]
           ];
           const calc = {name:n, age:a, fcMax:fc, ul:ul, zones, pred, ritmoBase:r};
           AppState.setLastCalc(calc); UI.mostrarResultados(calc); document.getElementById("footer").innerText=`${n} · ${new Date().toLocaleDateString('es-ES')} · RI5`;
@@ -3538,6 +3593,8 @@
               grid.appendChild(fragment);
               AppState.planGeneradoActual = { modalidad, distancia, macrociclo, diasPorSemana:diasEntreno.length, nivel, experiencia:exp, objetivo:obj, diaLargo, fechaInicio, diasEntreno };
               document.getElementById("calendarioEntreno").style.display = "block";
+              // CAMBIO 5: Cerrar cuestionario al generar plan
+              document.getElementById("cuestionarioEntreno").style.display = "none";
               setTimeout(()=>document.getElementById("calendarioEntreno").scrollIntoView({ behavior:'smooth', block:'center' }),100);
               this.guardarPlanActual();
               if(btn) Utils.hideLoading(btn);
